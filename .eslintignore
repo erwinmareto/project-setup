@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+
+# Build output
+.next/
+out/
+
+# Static files
+public/
+
+# Environment variables
+*.env
+
+# Log files
+*.log
+
+# Miscellaneous
+*.lock
+*.tmp
+*.cache
+*.DS_Store
+
+# Coverage directory
+coverage/
+
+# Dist directory (if you have a custom build setup)
+dist/
