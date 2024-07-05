@@ -16,3 +16,5 @@ If your code does not pass the prettier check run `yarn prettier:format` to fix 
 
 If your code does not pass the ESlint check(`next lint`), read the errors carefully and fix the code
 (_this is going to be a real pain_)
+
+It will also run `next build` before pushing. **If your has any error, It will not pass `next build` therefore your code will not be pushed.**

@@ -1,27 +1,27 @@
-# Node modules
-node_modules/
+.next
+next-env.d.ts
+node_modules
+yarn.lock
+package-lock.json
+public
 
-# Build output
-.next/
-out/
+.eslintcache
 
-# Static files
-public/
+# JSON files
+tsconfig.json
 
-# Environment variables
-*.env
+# Export
+out
+.vscode/settings.json
+.idea/*
 
-# Log files
-*.log
+# Enviroment variables
+.env
+.env*
 
-# Miscellaneous
-*.lock
-*.tmp
-*.cache
-*.DS_Store
+# Changelog
+CHANGELOG.md
 
-# Coverage directory
-coverage/
-
-# Dist directory (if you have a custom build setup)
-dist/
+# This should NOT be here
+src/components/ui/*
+**/types.ts
