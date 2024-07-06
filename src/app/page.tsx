@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import HomePage from '@/components/pages/Home';
+import Chart from '@/components/parts/Chart';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -48,6 +49,8 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 gap-4">
       <HomePage />
+
+      <Chart />
 
       {username && (
         <div className="flex flex-col bg-slate-600 rounded-lg p-8 gap-4">
