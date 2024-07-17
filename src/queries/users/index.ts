@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { getUsers } from '@/repositories/users';
+import { getUsers, getWithSearchParams } from '@/repositories/users';
 
 export const getUsersKey = () => ['users'];
 
@@ -11,4 +11,20 @@ export const useUsers = () => {
   });
 
   return result;
+};
+
+export const useSearch = (filters: URLSearchParams) => {
+  const result = useQuery({
+    queryKey: ['search', filters],
+    queryFn: () => getWithSearchParams(filters)
+  });
+
+  return result;
+};
+
+export const useMutateSearch = (filters: URLSearchParams) => {
+  useMutation({
+    mutationKey: ['searchMutate'],
+    mutationFn: () => getWithSearchParams(filters)
+  });
 };

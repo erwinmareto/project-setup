@@ -11,3 +11,8 @@ export const loginSchema = z.object({
     message: 'UserID must be at least 4 characters.'
   })
 });
+
+export const postSchema = z.object({
+  id: z.string().min(2, { message: 'ID must be a number.' }),
+  postId: z.string({ message: 'Post ID must be a number.' })
+});
