@@ -13,6 +13,6 @@ export const loginSchema = z.object({
 });
 
 export const postSchema = z.object({
-  id: z.string().min(2, { message: 'ID must be a number.' }),
+  id: z.string({ message: 'ID must be a number.' }),
   postId: z.string({ message: 'Post ID must be a number.' })
 });

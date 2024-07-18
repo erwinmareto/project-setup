@@ -16,7 +16,7 @@ export const fetcher = async ({ method = 'GET', url, filters, ...args }: Fetcher
       finalURL.searchParams.append(key, value as string);
     });
   }
-  console.log(finalURL.toString(), '<<<<<<<<<<<<<<<<<<<<<<<,');
+  console.log(finalURL.toString(), '<<<<<<<<<<FINAL URL FOR FETCH,');
 
   try {
     const response = await fetch(finalURL, {
