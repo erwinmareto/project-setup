@@ -2,9 +2,20 @@
 
 import { useState } from 'react';
 
+import { Edit, Ellipsis, Trash } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import {
+  Pagination,
+  PaginationContent,
+  // PaginationEllipsis,
+  PaginationItem,
+  // PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from '@/components/ui/pagination';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { combineSearchParams, removeSearchParams } from '@/lib/url';
 
 const Filter = () => {
@@ -59,9 +70,51 @@ const Filter = () => {
       <Button onClick={handlePrevPage} disabled={page === 1} variant="ghost">
         Prev
       </Button>
-      <Button onClick={handleNextPage} variant="outline">
-        Next
-      </Button>
+      <Button onClick={handleNextPage}>Next</Button>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline">
+            <Ellipsis />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="flex flex-col gap-1 w-[170px] p-2">
+          <Button
+            variant="ghost"
+            className="text-[#4336F3] flex justify-start gap-2 hover:bg-indigo-100 hover:text-[#4336F3]"
+          >
+            <Edit />
+            Edit
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-red-400 flex justify-start gap-2 hover:bg-red-100 hover:text-red-400"
+          >
+            <Trash />
+            Delete
+          </Button>
+        </PopoverContent>
+      </Popover>
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href="#"
+              className="border border-slate-500 flex justify-center items-center bg-white h-[36px] w-[42px] text-[#4336F3] "
+            />
+          </PaginationItem>
+          {/* <PaginationItem>
+            <PaginationLink href="#">1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem> */}
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </section>
   );
 };
