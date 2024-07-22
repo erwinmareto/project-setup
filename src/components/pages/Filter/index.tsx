@@ -101,7 +101,8 @@ const Filter = () => {
           <PaginationItem>
             <PaginationPrevious
               href="#"
-              className="border border-slate-500 flex justify-center items-center bg-white h-[36px] w-[42px] text-[#4336F3] "
+              className="border border-slate-500 flex justify-center 
+              items-center bg-white h-[36px] w-[42px] text-[#4336F3] "
             />
           </PaginationItem>
           {/* <PaginationItem>

@@ -1,5 +1,7 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import HomePage from '@/components/pages/Home';
 import Old from '@/components/pages/Old';
 import Chart from '@/components/parts/Chart';
@@ -11,7 +13,9 @@ export default function Home() {
 
       <Chart />
 
-      <Old />
+      <Suspense>
+        <Old />
+      </Suspense>
     </main>
   );
 }
