@@ -16,20 +16,22 @@ const HomePage = () => {
           queryResult={usersQuery}
           renderLoading={
             <div className="flex flex-col gap-4">
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-[100px]" />
-              <Skeleton className="h-4 w-[100px]" />
+              <Skeleton className="h-4 w-[100px] bg-primary-50" />
+              <Skeleton className="h-4 w-[100px] bg-secondary-0" />
+              <Skeleton className="h-4 w-[100px] bg-secondary-20" />
+              <Skeleton className="h-4 w-[100px] bg-secondary-40" />
+              <Skeleton className="h-4 w-[100px] bg-secondary-45" />
+              <Skeleton className="h-4 w-[100px] bg-secondary-foreground" />
+              <Skeleton className="h-4 w-[100px] bg-primary-50" />
+              <Skeleton className="h-4 w-[100px] bg-primary-70" />
             </div>
           }
           render={(users) => (
             <>
               {users.map((user) => (
-                <li key={user.email}>{user.name}</li>
+                <li className="font-light" key={user.email}>
+                  {user.name}
+                </li>
               ))}
             </>
           )}

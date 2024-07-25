@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply font-inter;
+    @apply font-general-sans;
   }
   :root {
     --background: 0 0% 100%;

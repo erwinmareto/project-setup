@@ -19,7 +19,20 @@ const config = {
     },
     extend: {
       fontFamily: {
-        inter: ['var(--font-inter)']
+        inter: ['var(--font-inter)'],
+        'general-sans': ['var(--font-general-sans)']
+      },
+      fontSize: {
+        'heading-1': '2.625rem', // 42px
+        'heading-2': '2.375rem', // 36px
+        'heading-3': '2.0rem', // 32px
+        'heading-4': '1.75rem', // 28px
+        'heading-5': '1.5rem', // 24px
+        'heading-6': '1.375rem', // 24px
+        'body-lg': '1.125rem', // 18px
+        'body-md': '1rem', // 16px
+        'body-sm': '0.875rem', // 14px
+        'body-xs': '0.75rem' // 12px
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -29,11 +42,26 @@ const config = {
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
+          foreground: 'hsl(var(--primary-foreground))',
+          0: '#FFFFFF',
+          20: '#E9E9E9',
+          30: '#D2D2D2',
+          35: '#BCBCBC',
+          40: '#A5A5A5',
+          45: '#5B5B5B',
+          50: '#727272',
+          55: '#565656',
+          70: '#2B2B2B',
+          80: '#1D1D1D',
+          90: '#090909'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
+          foreground: 'hsl(var(--secondary-foreground))',
+          '0': '#ECEBFF',
+          '20': '#A9A3FF',
+          '40': '#4336F3',
+          '45': '#3128B5'
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
