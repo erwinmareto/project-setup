@@ -3,7 +3,7 @@ import { CalendarCheck, CalendarClock, CalendarX, TrendingUp } from 'lucide-reac
 import OverviewCard from '@/components/parts/OverviewCard';
 import PaymentChart from '@/components/parts/PaymentChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
-import { columns } from '@/components/parts/SubscriptionTable/columns';
+import { dashboardColumns } from '@/components/parts/SubscriptionTable/columns';
 import { Badge } from '@/components/ui/badge';
 import {
   Select,
@@ -51,7 +51,7 @@ const Dashboard = () => {
       <section>
         <h6 className="font-semibold text-primary-80 text-heading-6">My Subscriptions</h6>
         <div className="bg-primary-0 p-5 mt-4">
-          <SubscriptionTable columns={columns} data={mockData} />
+          <SubscriptionTable columns={dashboardColumns} data={mockData} />
         </div>
       </section>
 

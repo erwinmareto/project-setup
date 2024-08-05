@@ -21,7 +21,7 @@ export type FilterFn<TData> = {
   filterValue: any;
 };
 
-export const completeColumns: ColumnDef<Subscription>[] = [
+export const listColumns: ColumnDef<Subscription>[] = [
   {
     id: 'select',
     header: ({ table }) => {
@@ -198,7 +198,7 @@ export const completeColumns: ColumnDef<Subscription>[] = [
     }
   }
 ];
-export const columns: ColumnDef<Subscription>[] = [
+export const dashboardColumns: ColumnDef<Subscription>[] = [
   {
     id: 'select',
     header: ({ table }) => {
