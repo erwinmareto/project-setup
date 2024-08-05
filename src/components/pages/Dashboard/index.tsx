@@ -43,7 +43,7 @@ const Dashboard = () => {
       <section>
         <h6 className="font-semibold text-primary-80 text-heading-6">My Subscriptions</h6>
         <div className="bg-primary-0 p-5 mt-4">
-          <SubscriptionTable columns={dashboardColumns} data={mockData} />
+          <SubscriptionTable columns={dashboardColumns} data={mockData} variant="dashboard" />
         </div>
       </section>
 

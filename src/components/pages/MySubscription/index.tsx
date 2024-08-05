@@ -2,9 +2,9 @@ import ChartInfo from '@/components/parts/ChartInfo';
 import CostChart from '@/components/parts/CostChart';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
-import { listColumns } from '@/components/parts/SubscriptionTable/columns';
+import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockData } from '@/lib/mockData';
+import { mockData, mockTransactions } from '@/lib/mockData';
 
 const MySubscription = () => {
   return (
@@ -32,6 +32,12 @@ const MySubscription = () => {
                 </ChartInfo>
               </section>
             </div>
+
+            <SubscriptionTable
+              columns={transactionColumns}
+              data={mockTransactions}
+              variant="transactions"
+            />
           </TabsContent>
         </Tabs>
       </article>
