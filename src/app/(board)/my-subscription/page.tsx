@@ -1,3 +1,6 @@
+import ChartInfo from '@/components/parts/ChartInfo';
+import CostChart from '@/components/parts/CostChart';
+import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns } from '@/components/parts/SubscriptionTable/columns';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -16,7 +19,20 @@ export default function MySubscriptionPage() {
           <TabsContent value="list">
             <SubscriptionTable columns={listColumns} data={mockData} variant="list" />
           </TabsContent>
-          <TabsContent value="history">Change your password here.</TabsContent>
+          <TabsContent value="history">
+            <div className="flex flex-col lg:grid lg:grid-cols-12">
+              <section className="lg:col-span-7">
+                <ChartInfo total="spendings">
+                  <SpendingsChart />
+                </ChartInfo>
+              </section>
+              <section className="lg:col-span-5">
+                <ChartInfo total="cost">
+                  <CostChart />
+                </ChartInfo>
+              </section>
+            </div>
+          </TabsContent>
         </Tabs>
       </article>
     </section>

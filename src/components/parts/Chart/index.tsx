@@ -5,8 +5,7 @@ import {
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig
+  ChartTooltipContent
 } from '@/components/ui/chart';
 
 const Chart = () => {
@@ -28,7 +27,7 @@ const Chart = () => {
       label: 'Mobile',
       color: '#60a5fa'
     }
-  } satisfies ChartConfig;
+  };
 
   return (
     <ChartContainer config={chartConfig} className="max-h-[200px] w-[400px] rounded-xl">
