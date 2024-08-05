@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/table';
 import {
   SUBSCRIPTION_CATEGORIES,
+  SUBSCRIPTION_CYCLES,
   SUBSCRIPTION_PRICE_RANGES,
   SUBSCRIPTION_STATUS
 } from '@/lib/constants';
@@ -37,9 +38,14 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  variant?: 'dashboard' | 'list' | 'transactions';
 }
 
-const SubscriptionTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
+const SubscriptionTable = <TData, TValue>({
+  columns,
+  data,
+  variant
+}: DataTableProps<TData, TValue>) => {
   const [openFilters, setOpenFilters] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -117,9 +123,11 @@ const SubscriptionTable = <TData, TValue>({ columns, data }: DataTableProps<TDat
                 Delete Selection
               </Button>
             )}
-            <Link href="/subscriptions">
-              <Button variant="secondary">See all Subscriptions</Button>
-            </Link>
+            {variant !== 'list' && (
+              <Link href="/subscriptions">
+                <Button variant="secondary">See all Subscriptions</Button>
+              </Link>
+            )}
             <Link href="/add">
               <Button className="gap-2">
                 <Plus className="w-4 h-4" />
@@ -141,6 +149,13 @@ const SubscriptionTable = <TData, TValue>({ columns, data }: DataTableProps<TDat
               title="status"
               data={SUBSCRIPTION_STATUS}
             />
+            {variant === 'list' && (
+              <FilterDropdown
+                filterFn={handleFilterValue}
+                title="cycle"
+                data={SUBSCRIPTION_CYCLES}
+              />
+            )}
             <FilterDropdown
               filterFn={handleFilterValue}
               title="pricing"
