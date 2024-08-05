@@ -38,13 +38,13 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  variant?: 'dashboard' | 'list' | 'transactions';
+  variant: 'dashboard' | 'list' | 'transactions';
 }
 
 const SubscriptionTable = <TData, TValue>({
   columns,
   data,
-  variant
+  variant = 'dashboard'
 }: DataTableProps<TData, TValue>) => {
   const [openFilters, setOpenFilters] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -101,9 +101,11 @@ const SubscriptionTable = <TData, TValue>({
       <div className="flex flex-col gap-4 mb-8">
         <div className="flex justify-between">
           <div className="flex gap-2 w-1/3">
-            <Button size="icon" variant="secondary" onClick={handleOpenFilters} className="p-3">
-              <Filter />
-            </Button>
+            {variant !== 'transactions' && (
+              <Button size="icon" variant="secondary" onClick={handleOpenFilters} className="p-3">
+                <Filter />
+              </Button>
+            )}
 
             <div className="relative flex justify-center items-center">
               <Input
@@ -123,17 +125,27 @@ const SubscriptionTable = <TData, TValue>({
                 Delete Selection
               </Button>
             )}
-            {variant !== 'list' && (
+            {variant === 'dashboard' && (
               <Link href="/subscriptions">
                 <Button variant="secondary">See all Subscriptions</Button>
               </Link>
             )}
-            <Link href="/add">
-              <Button className="gap-2">
-                <Plus className="w-4 h-4" />
-                Add Subscription
+
+            {variant !== 'transactions' && (
+              <Link href="/add">
+                <Button className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  Add Subscription
+                </Button>
+              </Link>
+            )}
+
+            {variant === 'transactions' && (
+              <Button variant="secondary" onClick={handleOpenFilters} className="gap-1">
+                <Filter className="w-4 h-4" />
+                Filter
               </Button>
-            </Link>
+            )}
           </div>
         </div>
 
