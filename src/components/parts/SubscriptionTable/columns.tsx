@@ -190,25 +190,10 @@ export const completeColumns: ColumnDef<Subscription>[] = [
     header: () => <p className="font-medium text-primary-80 text-body-md">Actions</p>,
     cell: () => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem className="text-secondary-40 gap-2 focus:text-secondary-40">
-              <Edit3 className="w-5 h-5" /> Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-destructive-foreground gap-2
-            focus:bg-destructive focus:text-destructive-foreground"
-            >
-              <Trash2 className="w-5 h-5" /> Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex gap-3 justify-center items-center">
+          <Edit3 className="w-6 h-6 text-secondary-40" />
+          <Trash2 className="w-6 h-6 text-destructive-foreground" />
+        </div>
       );
     }
   }
