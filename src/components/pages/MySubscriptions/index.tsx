@@ -6,7 +6,7 @@ import { listColumns, transactionColumns } from '@/components/parts/Subscription
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockData, mockTransactions } from '@/lib/mockData';
 
-const MySubscription = () => {
+const MySubscriptions = () => {
   return (
     <section className="col-span-12 rounded-lg">
       <h6 className="font-semibold text-primary-80 text-heading-6 mb-4">My Subscription</h6>
@@ -45,4 +45,4 @@ const MySubscription = () => {
   );
 };
 
-export default MySubscription;
+export default MySubscriptions;

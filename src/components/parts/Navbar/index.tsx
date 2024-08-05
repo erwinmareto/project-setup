@@ -34,7 +34,7 @@ const Navbar = () => {
           Dashboard
         </Link>
         <Link
-          href="/my-subscription"
+          href="/my-subscriptions"
           className="flex justify-center items-center gap-2 font-medium text-body-lg 
           text-primary-50 transition-colors hover:text-secondary-40"
         >
