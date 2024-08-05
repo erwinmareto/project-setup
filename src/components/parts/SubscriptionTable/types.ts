@@ -21,3 +21,13 @@ export type Subscription = {
   cycle: Cycles;
   payment: string;
 };
+
+export type Transaction = {
+  id: string;
+  appName: string;
+  category: SubscriptionCategory;
+  pricing: number;
+  status: SubStatus;
+  payment: string;
+  paymentDate: Date;
+};
