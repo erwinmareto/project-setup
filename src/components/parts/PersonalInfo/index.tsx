@@ -94,7 +94,7 @@ const PersonalInfo = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="johndoe@gmail.com" {...field} />
+                      <Input placeholder="johndoe@gmail.com" type="email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -151,7 +151,12 @@ const PersonalInfo = () => {
                             </SelectGroup>
                           </SelectContent>
                         </Select>
-                        <Input placeholder="012345678910" {...field} className="rounded-l-none" />
+                        <Input
+                          placeholder="012345678910"
+                          {...field}
+                          className="rounded-l-none"
+                          type="tel"
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
