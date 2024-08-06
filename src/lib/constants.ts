@@ -25,3 +25,6 @@ export const SUBSCRIPTION_PRICE_RANGES: SubscriptionPriceRanges = {
 
 // Subscription Status
 export const SUBSCRIPTION_STATUS = ['Inactive', 'Upcoming', 'Active', 'Overdue'];
+
+// Subscription Cycles
+export const SUBSCRIPTION_CYCLES = ['Daily', 'Weekly', 'Monthly', 'Yearly'];

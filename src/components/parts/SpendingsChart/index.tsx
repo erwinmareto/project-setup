@@ -11,7 +11,7 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 
-const PaymentChart = () => {
+const SpendingsChart = () => {
   const chartData = [
     { month: 'January', 2024: 145, 2023: 282 },
     { month: 'February', 2024: 312, 2023: 197 },
@@ -78,4 +78,4 @@ const PaymentChart = () => {
     </ChartContainer>
   );
 };
-export default PaymentChart;
+export default SpendingsChart;
