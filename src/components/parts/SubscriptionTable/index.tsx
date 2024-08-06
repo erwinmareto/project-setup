@@ -100,7 +100,7 @@ const SubscriptionTable = <TData, TValue>({
     <>
       <div className="flex flex-col gap-4 mb-8">
         <div className="flex justify-between">
-          <div className="flex gap-2 w-1/3">
+          <div className="flex items-center gap-2 w-1/3">
             {variant !== 'transactions' && (
               <Button size="icon" variant="secondary" onClick={handleOpenFilters} className="p-3">
                 <Filter />
@@ -112,6 +112,7 @@ const SubscriptionTable = <TData, TValue>({
                 placeholder="Search..."
                 value={(table.getColumn('appName')?.getFilterValue() as string) ?? ''}
                 onChange={(event) => table.getColumn('appName')?.setFilterValue(event.target.value)}
+                isFilter
               />
               <div className="absolute text-primary-55 right-3 z-10">
                 <Search className="w-4 h-4" />
@@ -176,7 +177,7 @@ const SubscriptionTable = <TData, TValue>({
           </div>
         )}
       </div>
-      <div className="rounded-md border">
+      <section className="rounded-md border">
         <Table>
           <TableHeader className="bg-primary-20">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -219,7 +220,7 @@ const SubscriptionTable = <TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </section>
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="flex justify-center items-center gap-6">
           <p>Rows per page </p>
