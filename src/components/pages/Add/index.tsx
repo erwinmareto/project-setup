@@ -3,7 +3,7 @@
 import { ArrowLeft } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
-import { Step1Form, Step2Form } from '@/components/parts/SubscriptionForms';
+import { Step1Form, Step2Form, Step3Form } from '@/components/parts/SubscriptionForms';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -70,6 +70,7 @@ const Add = () => {
 
           {pathname === '/add/step-1' && <Step1Form />}
           {pathname === '/add/step-2' && <Step2Form />}
+          {pathname === '/add/step-3' && <Step3Form />}
         </section>
       </main>
     </section>

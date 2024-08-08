@@ -22,3 +22,8 @@ export const step2Schema = z
     message: 'Payment End must be after Payment Start',
     path: ['paymentEnd']
   });
+
+export const step3Schema = z.object({
+  time: z.string(),
+  email: z.string().min(2).max(50)
+});
