@@ -39,15 +39,15 @@ const BreadcrumbLink = React.forwardRef<
   React.ComponentPropsWithoutRef<'a'> & {
     asChild?: boolean;
     order?: number;
+    isFilled: boolean;
   }
->(({ asChild, className, order, ...props }, ref) => {
+>(({ asChild, className, order, isFilled, ...props }, ref) => {
   const Comp = asChild ? Slot : 'a';
 
   return (
     <div className="flex justify-center items-center gap-2">
       <p className="bg-secondary-40 text-primary-0 px-2 py-1 rounded-2xl">
-        {order?.toString().padStart(2, '0')}
-        {/* <Check className="size-4" /> */}
+        {isFilled ? <Check className="size-4" /> : order?.toString().padStart(2, '0')}
       </p>
       <Comp
         ref={ref}
@@ -61,18 +61,28 @@ BreadcrumbLink.displayName = 'BreadcrumbLink';
 
 const BreadcrumbPage = React.forwardRef<
   HTMLSpanElement,
-  React.ComponentPropsWithoutRef<'span'> & { order?: number }
->(({ className, order, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<'span'> & { order?: number; isFilled: boolean; isCurrent: boolean }
+>(({ className, order, isFilled, isCurrent, ...props }, ref) => (
   <div className="flex justify-center items-center gap-2">
-    <p className="bg-secondary-40 text-primary-0 px-2 py-1 rounded-2xl">
-      {order?.toString().padStart(2, '0')}
+    <p
+      className={cn(
+        'px-2 py-1 rounded-2xl',
+        isFilled || isCurrent ? 'bg-secondary-40 text-primary-0' : 'bg-primary-20 text-primary-45'
+      )}
+    >
+      {/* {order?.toString().padStart(2, '0')} */}
+      {isFilled ? <Check className="size-4" /> : order?.toString().padStart(2, '0')}
     </p>
     <span
       ref={ref}
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn('font-medium text-primary-80 text-body-sm', className)}
+      className={cn(
+        'font-medium text-body-sm',
+        isFilled || isCurrent ? 'text-primary-80' : 'text-primary-40',
+        className
+      )}
       {...props}
     />
   </div>

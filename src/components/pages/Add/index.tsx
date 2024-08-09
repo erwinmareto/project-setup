@@ -12,15 +12,21 @@ import {
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
+import { useStep1Context } from '@/context/Step1Context';
+import { useStep2Context } from '@/context/Step2Context';
+import { useStep3Context } from '@/context/Step3Context';
 
 const Add = () => {
   const pathname = usePathname();
+
+  const { appName } = useStep1Context();
+  const { cycle } = useStep2Context();
+  const { email } = useStep3Context();
 
   return (
     <section className="flex justify-center items-center col-span-12">
@@ -36,39 +42,60 @@ const Add = () => {
           <Breadcrumb className="px-10 mb-4">
             <BreadcrumbList>
               <BreadcrumbItem>
-                {pathname === '/add/step-1' ? (
+                {/* {pathname === '/add/step-1' ? (
                   <BreadcrumbPage order={1} className="text-primary-80">
                     Subscription Info
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink order={1} href="/add/step-1">
+                  <BreadcrumbLink order={1} href="/add/step-1" isFilled={!!appName}>
                     Subscription Info
                   </BreadcrumbLink>
-                )}
+                )} */}
+
+                <BreadcrumbPage
+                  order={1}
+                  isFilled={!!appName}
+                  isCurrent={pathname === '/add/step-1'}
+                >
+                  Subscription Info
+                </BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                {pathname === '/add/step-2' ? (
+                {/* {pathname === '/add/step-2' ? (
                   <BreadcrumbPage order={2} className="text-primary-80">
                     Payment Detail
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink order={2} href="/add/step-2">
+                  <BreadcrumbLink order={2} href="/add/step-2" isFilled={!!cycle}>
                     Payment Detail
                   </BreadcrumbLink>
-                )}
+                )} */}
+
+                <BreadcrumbPage order={2} isFilled={!!cycle} isCurrent={pathname === '/add/step-2'}>
+                  Payment Detail
+                </BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                {pathname === '/add/step-3' ? (
+                {/* {pathname === '/add/step-3' ? (
                   <BreadcrumbPage order={3} className="text-primary-80">
                     Reminder Settings
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink order={3} href="/add/step-3">
+                  <BreadcrumbLink order={3} href="/add/step-3" isFilled={!!email}>
                     Reminder Settings
                   </BreadcrumbLink>
-                )}
+                )} */}
+
+                <BreadcrumbPage
+                  order={3}
+                  isFilled={!!email}
+                  isCurrent={pathname === '/add/step-3'}
+                  // className={`${pathname === '/add/step-3' && 'text-primary-80'}`}
+                >
+                  Reminder Settings
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
