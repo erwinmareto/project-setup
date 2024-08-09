@@ -30,11 +30,14 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { useStep2Context } from '@/context/Step2Context';
 import { cn } from '@/lib/utils';
 import { step2Schema } from '@/lib/validations/add';
 
 const Step2Form = () => {
   const router = useRouter();
+  const { setCycle, setPaymentStart, setPaymentEnd, setPrice, setPaymentMethod } =
+    useStep2Context();
 
   const step2Form = useForm<z.infer<typeof step2Schema>>({
     resolver: zodResolver(step2Schema)
@@ -42,6 +45,13 @@ const Step2Form = () => {
 
   function onSubmit(values: z.infer<typeof step2Schema>) {
     console.log(values);
+
+    setCycle(values.cycle);
+    setPaymentStart(values.paymentStart);
+    setPaymentEnd(values.paymentEnd);
+    setPrice(values.price);
+    setPaymentMethod(values.paymentMethod);
+
     router.push('/add/step-3');
   }
 

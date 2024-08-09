@@ -26,10 +26,12 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { useStep3Context } from '@/context/Step3Context';
 import { step3Schema } from '@/lib/validations/add';
 
 const Step3Form = () => {
   const router = useRouter();
+  const { setEmail, setTime } = useStep3Context();
 
   const step3Form = useForm<z.infer<typeof step3Schema>>({
     resolver: zodResolver(step3Schema)
@@ -37,6 +39,10 @@ const Step3Form = () => {
 
   function onSubmit(values: z.infer<typeof step3Schema>) {
     console.log(values);
+
+    setEmail(values.email);
+    setTime(parseInt(values.time)); // don't know if it's going to be string or number
+
     router.push('/add/confirm');
   }
 

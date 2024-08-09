@@ -27,10 +27,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { useStep1Context } from '@/context/Step1Context';
 import { step1Schema } from '@/lib/validations/add';
 
 const Step1Form = () => {
   const router = useRouter();
+  const { setIcon, setAppName, setCategory } = useStep1Context();
 
   const step1Form = useForm<z.infer<typeof step1Schema>>({
     resolver: zodResolver(step1Schema),
@@ -47,6 +49,10 @@ const Step1Form = () => {
 
   function onSubmit(values: z.infer<typeof step1Schema>) {
     console.log(values);
+    setIcon(values.icon);
+    setAppName(values.appName);
+    setCategory(values.category);
+
     router.push('/add/step-2');
   }
 
