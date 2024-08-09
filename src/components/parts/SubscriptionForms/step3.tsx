@@ -31,10 +31,14 @@ import { step3Schema } from '@/lib/validations/add';
 
 const Step3Form = () => {
   const router = useRouter();
-  const { setEmail, setTime } = useStep3Context();
+  const { email, time, setEmail, setTime } = useStep3Context();
 
   const step3Form = useForm<z.infer<typeof step3Schema>>({
-    resolver: zodResolver(step3Schema)
+    resolver: zodResolver(step3Schema),
+    defaultValues: {
+      time: time.toString(),
+      email: email
+    }
   });
 
   function onSubmit(values: z.infer<typeof step3Schema>) {
@@ -106,7 +110,7 @@ const Step3Form = () => {
           />
 
           <div className="flex justify-end gap-2">
-            <Link href="/add/step-1">
+            <Link href="/add/step-2">
               <Button type="button" variant="secondary">
                 <ChevronLeft className="w-4 h-4 mr-2" />
                 Prev

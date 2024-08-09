@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { CalendarDays, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
@@ -30,17 +32,37 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { useStep1Context } from '@/context/Step1Context';
 import { useStep2Context } from '@/context/Step2Context';
 import { cn } from '@/lib/utils';
 import { step2Schema } from '@/lib/validations/add';
 
 const Step2Form = () => {
   const router = useRouter();
-  const { setCycle, setPaymentStart, setPaymentEnd, setPrice, setPaymentMethod } =
-    useStep2Context();
+  const { icon, appName, category } = useStep1Context();
+
+  const {
+    cycle,
+    paymentStart,
+    paymentEnd,
+    price,
+    paymentMethod,
+    setCycle,
+    setPaymentStart,
+    setPaymentEnd,
+    setPrice,
+    setPaymentMethod
+  } = useStep2Context();
 
   const step2Form = useForm<z.infer<typeof step2Schema>>({
-    resolver: zodResolver(step2Schema)
+    resolver: zodResolver(step2Schema),
+    defaultValues: {
+      cycle: cycle,
+      paymentStart: paymentStart,
+      paymentEnd: paymentEnd,
+      price: price,
+      paymentMethod: paymentMethod
+    }
   });
 
   function onSubmit(values: z.infer<typeof step2Schema>) {
@@ -54,6 +76,14 @@ const Step2Form = () => {
 
     router.push('/add/step-3');
   }
+
+  useEffect(() => {
+    console.log(icon, appName, category);
+
+    if (!icon && !appName && !category) {
+      router.back();
+    }
+  });
 
   return (
     <Card className="px-6 py-8">

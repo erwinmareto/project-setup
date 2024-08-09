@@ -32,13 +32,14 @@ import { step1Schema } from '@/lib/validations/add';
 
 const Step1Form = () => {
   const router = useRouter();
-  const { setIcon, setAppName, setCategory } = useStep1Context();
+  const { icon, appName, category, setIcon, setAppName, setCategory } = useStep1Context();
 
   const step1Form = useForm<z.infer<typeof step1Schema>>({
     resolver: zodResolver(step1Schema),
     defaultValues: {
-      appName: '',
-      category: ''
+      icon: icon,
+      appName: appName,
+      category: category
     }
   });
 
@@ -57,8 +58,10 @@ const Step1Form = () => {
   }
 
   useEffect(() => {
+    // if (appName) return; // IF YOU GO BACK TO STEP 1 IT WILL RESET THE APP NAME TO THE VALUE OF ICON
     step1Form.setValue('appName', selectedIcon);
-  }, [selectedIcon, step1Form]);
+    console.log(icon, appName, category, '<<<<<<<<<<<<<<<<');
+  }, [selectedIcon, step1Form, icon, appName, category]);
 
   return (
     <Card className="px-6 py-8">
@@ -81,7 +84,7 @@ const Step1Form = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="bg-primary-0 mt-2">
-                          <SelectValue placeholder="Select icon" />
+                          <SelectValue placeholder={icon} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -104,7 +107,7 @@ const Step1Form = () => {
               <FormItem>
                 <FormLabel>Subscription Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g. Netflix" {...field} />
+                  <Input placeholder="e.g. Netflix" {...field} defaultValue={appName} />
                 </FormControl>
                 <FormDescription className="text-primary-60">
                   Subscription name will automatically fill based on your chosen popular apps
@@ -125,7 +128,7 @@ const Step1Form = () => {
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="bg-primary-0 mt-2">
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={category} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
