@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+
 import { format } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import ConfirmationModal from '@/components/parts/ConfirmationModal';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useStep1Context } from '@/context/Step1Context';
@@ -13,6 +16,7 @@ import { useStep3Context } from '@/context/Step3Context';
 
 const CofirmFormSteps = () => {
   const router = useRouter();
+  const [successOpen, setSuccessOpen] = useState(false);
   const { appName, category, setAppName, setCategory } = useStep1Context();
   const {
     cycle,
@@ -40,6 +44,10 @@ const CofirmFormSteps = () => {
     setEmail('');
 
     router.push('/dashboard');
+  };
+
+  const handleSuccessOpen = () => {
+    setSuccessOpen(!successOpen);
   };
 
   return (
@@ -81,10 +89,19 @@ const CofirmFormSteps = () => {
           </Button>
         </Link>
         {/* <Link href="/dashboard"> */}
-        <Button type="submit" onClick={clearContext}>
-          Save and confirm
-          <ChevronRight className="w-4 h-4 ml-2" />
-        </Button>
+        <ConfirmationModal
+          imagePath="/modal-icons/success.png"
+          openState={successOpen}
+          openHandler={handleSuccessOpen}
+          title="Success!"
+          description="Your subscription has saved."
+          clickEvent={() => router.push('/dashboard')}
+        >
+          <Button type="submit" onClick={clearContext}>
+            Save and confirm
+            <ChevronRight className="w-4 h-4 ml-2" />
+          </Button>
+        </ConfirmationModal>
         {/* </Link> */}
       </div>
     </>
