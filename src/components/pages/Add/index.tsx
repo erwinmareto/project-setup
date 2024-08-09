@@ -1,8 +1,11 @@
 'use client';
 
-import { ArrowLeft } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
+import { ArrowLeft } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+
+import ConfirmationModal from '@/components/parts/ConfirmationModal';
 import {
   ConfirmFormSteps,
   Step1Form,
@@ -22,19 +25,35 @@ import { useStep2Context } from '@/context/Step2Context';
 import { useStep3Context } from '@/context/Step3Context';
 
 const Add = () => {
+  const router = useRouter();
   const pathname = usePathname();
 
+  const [warningOpen, setWarningOpen] = useState(false);
   const { appName } = useStep1Context();
   const { cycle } = useStep2Context();
   const { email } = useStep3Context();
+
+  const handleWarningOpen = () => {
+    setWarningOpen(!warningOpen);
+  };
 
   return (
     <section className="flex justify-center items-center col-span-12">
       <main className="bg-primary-0 rounded-lg p-4">
         <header className="flex items-center gap-3 mb-8">
-          <Button variant="outline">
-            <ArrowLeft />
-          </Button>
+          <ConfirmationModal
+            imagePath="/modal-icons/warning.png"
+            openState={warningOpen}
+            openHandler={handleWarningOpen}
+            clickEvent={() => router.push('/dashboard')}
+            title="Are you sure?"
+            description="Once canceled, you will not be able to recover this subscription!"
+            cancleable
+          >
+            <Button variant="outline">
+              <ArrowLeft />
+            </Button>
+          </ConfirmationModal>
           <h6 className="font-medium text-heading-6">Add Subscription</h6>
         </header>
 
