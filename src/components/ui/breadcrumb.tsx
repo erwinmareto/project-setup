@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { ChevronRight, MoreHorizontal } from 'lucide-react';
+import { Check, MoreHorizontal } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { ArrowLine } from '@/assets/icons';
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
@@ -37,42 +38,60 @@ const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
   React.ComponentPropsWithoutRef<'a'> & {
     asChild?: boolean;
+    order?: number;
+    isFilled: boolean;
   }
->(({ asChild, className, ...props }, ref) => {
+>(({ asChild, className, order, isFilled, ...props }, ref) => {
   const Comp = asChild ? Slot : 'a';
 
   return (
-    <Comp
-      ref={ref}
-      className={cn('transition-colors hover:text-foreground', className)}
-      {...props}
-    />
+    <div className="flex justify-center items-center gap-2">
+      <p className="bg-secondary-40 text-primary-0 px-2 py-1 rounded-2xl">
+        {isFilled ? <Check className="size-4" /> : order?.toString().padStart(2, '0')}
+      </p>
+      <Comp
+        ref={ref}
+        className={cn('transition-colors font-medium hover:text-foreground', className)}
+        {...props}
+      />
+    </div>
   );
 });
 BreadcrumbLink.displayName = 'BreadcrumbLink';
 
-const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWithoutRef<'span'>>(
-  ({ className, ...props }, ref) => (
+const BreadcrumbPage = React.forwardRef<
+  HTMLSpanElement,
+  React.ComponentPropsWithoutRef<'span'> & { order?: number; isFilled: boolean; isCurrent: boolean }
+>(({ className, order, isFilled, isCurrent, ...props }, ref) => (
+  <div className="flex justify-center items-center gap-2">
+    <p
+      className={cn(
+        'px-2 py-1 rounded-2xl',
+        isFilled || isCurrent ? 'bg-secondary-40 text-primary-0' : 'bg-primary-20 text-primary-45'
+      )}
+    >
+      {/* {order?.toString().padStart(2, '0')} */}
+      {isFilled ? <Check className="size-4" /> : order?.toString().padStart(2, '0')}
+    </p>
     <span
       ref={ref}
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn('font-normal text-foreground', className)}
+      className={cn(
+        'font-medium text-body-sm',
+        isFilled || isCurrent ? 'text-primary-80' : 'text-primary-40',
+        className
+      )}
       {...props}
     />
-  )
-);
+  </div>
+));
 BreadcrumbPage.displayName = 'BreadcrumbPage';
 
 const BreadcrumbSeparator = ({ children, className, ...props }: React.ComponentProps<'li'>) => (
-  <li
-    role="presentation"
-    aria-hidden="true"
-    className={cn('[&>svg]:size-3.5', className)}
-    {...props}
-  >
-    {children ?? <ChevronRight />}
+  <li role="presentation" aria-hidden="true" className={className} {...props}>
+    {children ?? <ArrowLine />}
   </li>
 );
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator';

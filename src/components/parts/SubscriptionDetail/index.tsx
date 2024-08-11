@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { ArrowLeft, Check, Edit3, FilmIcon, MoreHorizontal, Trash2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +18,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 
 const SubscriptionDetail = () => {
+  const router = useRouter();
   const [warningOpen, setWarningOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
 
@@ -85,6 +87,7 @@ const SubscriptionDetail = () => {
               imagePath="/modal-icons/success.png"
               openState={successOpen}
               openHandler={handleSuccessOpen}
+              clickEvent={() => router.push('/dashboard')}
               title="Congratulations!"
               description="Your subscription has been marked as paid."
             >
@@ -97,6 +100,7 @@ const SubscriptionDetail = () => {
               imagePath="/modal-icons/warning.png"
               openState={warningOpen}
               openHandler={handleWarningOpen}
+              clickEvent={() => router.push('/dashboard')}
               title="Are you sure?"
               description="Once cancelled, you will not be able to reactivate your subscription."
               cancleable
