@@ -31,7 +31,7 @@ const ForgotPasswordForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-    router.push('/confirm-password');
+    router.push('/check-email');
   }
 
   return (
