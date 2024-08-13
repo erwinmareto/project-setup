@@ -1,3 +1,7 @@
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+
 import ChartInfo from '@/components/parts/ChartInfo';
 import CostChart from '@/components/parts/CostChart';
 import SpendingsChart from '@/components/parts/SpendingsChart';
@@ -7,11 +11,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockData, mockTransactions } from '@/lib/mockData';
 
 const MySubscriptions = () => {
+  const searchParams = useSearchParams();
+  const selectedTab = searchParams.get('tabs');
+
   return (
     <section className="col-span-12 rounded-lg">
       <h6 className="font-semibold text-primary-80 text-heading-6 mb-4">My Subscription</h6>
       <article className="bg-primary-0 px-5 py-2">
-        <Tabs defaultValue="list">
+        <Tabs defaultValue={selectedTab === 'history' ? selectedTab : 'list'}>
           <TabsList className="mb-6">
             <TabsTrigger value="list">List of Subscriptions</TabsTrigger>
             <TabsTrigger value="history">Payment History</TabsTrigger>
