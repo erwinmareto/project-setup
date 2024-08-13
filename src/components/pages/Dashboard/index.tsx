@@ -19,7 +19,7 @@ const Dashboard = () => {
             totalSubscriptions={10}
             title="Active Subscriptions"
             description="Manage all your active subscriptions efficiently"
-            link="/active"
+            link="?status=active"
           />
           <OverviewCard
             status="warning"
@@ -27,7 +27,7 @@ const Dashboard = () => {
             totalSubscriptions={6}
             title="Upcoming Subscriptions"
             description="Manage all your upcoming subscriptions efficiently"
-            link="/upcoming"
+            link="?status=upcoming"
           />
           <OverviewCard
             status="destructive"
@@ -35,7 +35,7 @@ const Dashboard = () => {
             totalSubscriptions={8}
             title="Inactive Subscriptions"
             description="Manage all your inactive subscriptions efficiently"
-            link="/inactive"
+            link="?status=inactive"
           />
         </div>
       </section>

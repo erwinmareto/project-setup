@@ -33,7 +33,7 @@ const OverviewCard = ({
         <p className="text-body-sm text-primary-55">{description}</p>
       </CardContent>
       <CardFooter>
-        <Link href={`/dashboard${link}`} className="link">
+        <Link href={`/my-subscriptions${link}`} className="link">
           <p>See subscription details</p>
           <ArrowUpRight />
         </Link>
