@@ -29,20 +29,16 @@ export default function Home() {
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      username: '',
-      password: ''
-    }
+    resolver: zodResolver(loginSchema)
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof loginSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    setUsername(values.username);
+    setUsername(values.email);
     setPassword(values.password);
-    setUserId(values.userId);
+    setUserId(values.email);
     console.log(values);
   }
 
@@ -65,7 +61,7 @@ export default function Home() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
@@ -92,7 +88,7 @@ export default function Home() {
           />
           <FormField
             control={form.control}
-            name="userId"
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Context User ID Test</FormLabel>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -21,6 +22,7 @@ import { Input } from '@/components/ui/input';
 import { setNewPasswordSchema } from '@/lib/validations/auth';
 
 const SetNewPasswordForm = () => {
+  const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [revealOld, setRevealOld] = useState(false);
   const [revealNew, setRevealNew] = useState(false);
@@ -56,6 +58,7 @@ const SetNewPasswordForm = () => {
       description="Your password has been reset, you can login with your new password"
       openState={openModal}
       openHandler={handleOpenModal}
+      clickEvent={() => router.push('/dashboard')}
     >
       <Form {...setNewPasswordForm}>
         <form
