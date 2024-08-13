@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, Filter, Plus, Search, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import { NoSearchResult } from '@/assets/icons';
 import FilterDropdown from '@/components/parts/FilterDropdown';
@@ -46,6 +47,9 @@ const SubscriptionTable = <TData, TValue>({
   data,
   variant = 'dashboard'
 }: DataTableProps<TData, TValue>) => {
+  const searchParams = useSearchParams();
+  const currentStatus = searchParams.get('status');
+
   const [openFilters, setOpenFilters] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -87,6 +91,9 @@ const SubscriptionTable = <TData, TValue>({
   };
 
   useEffect(() => {
+    console.log(currentStatus, '!!><><><><><>!');
+    table.getColumn('status')?.setFilterValue(currentStatus);
+
     // This is how to get the original datas
     console.log(rowSelection, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log(!!rowSelection, '<>>>>>>>>>>>>>>>>>>>>>>>>>>>');
@@ -94,7 +101,7 @@ const SubscriptionTable = <TData, TValue>({
     const selectedRows = table.getSelectedRowModel().rows; // There are rows, flat rows and rows by Id
     const originalDatas = selectedRows.map((row) => row.original);
     console.log(originalDatas, '<<<<<<<<<<<<<<<<<<');
-  });
+  }, [currentStatus, rowSelection, table]);
 
   return (
     <>
@@ -127,13 +134,13 @@ const SubscriptionTable = <TData, TValue>({
               </Button>
             )}
             {variant === 'dashboard' && (
-              <Link href="/subscriptions">
+              <Link href="/my-subscriptions">
                 <Button variant="secondary">See all Subscriptions</Button>
               </Link>
             )}
 
             {variant !== 'transactions' && (
-              <Link href="/add">
+              <Link href="/add/step-1">
                 <Button className="gap-2">
                   <Plus className="w-4 h-4" />
                   Add Subscription
