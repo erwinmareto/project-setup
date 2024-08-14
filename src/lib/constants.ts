@@ -1,3 +1,7 @@
+export const ACCESS_TOKEN_KEY = process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY;
+
+export const EMAIL_KEY = process.env.NEXT_PUBLIC_EMAIL_KEY;
+
 // Subscription Categories
 export const SUBSCRIPTION_CATEGORIES = [
   'Entertainment',
