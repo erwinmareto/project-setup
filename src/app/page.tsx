@@ -20,10 +20,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useUserContext } from '@/context/UserContext';
+import { getCookie, setAccessToken } from '@/lib/cookies';
 import { loginSchema } from '@/lib/validations/auth';
 
 export default function Home() {
-  const { userId, setUserId } = useUserContext();
+  const { userId } = useUserContext();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -38,8 +39,12 @@ export default function Home() {
     // ✅ This will be type-safe and validated.
     setUsername(values.email);
     setPassword(values.password);
-    setUserId(values.email);
+
+    setAccessToken('somerandomasstoken');
+
     console.log(values);
+    const theCookie = getCookie('access_token');
+    console.log(theCookie, 'COKIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
   }
 
   return (

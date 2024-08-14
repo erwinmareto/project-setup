@@ -2,10 +2,11 @@
 
 import ReactQuery from '@/components/parts/ReactQuery';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useUsers } from '@/queries/users';
+import { useComments } from '@/queries/users';
 
 const HomePage = () => {
-  const usersQuery = useUsers();
+  // const usersQuery = useUsers();
+  const commentsQuery = useComments();
 
   return (
     <div className="flex flex-col gap-4">
@@ -13,7 +14,7 @@ const HomePage = () => {
 
       <ul className="font-light">
         <ReactQuery
-          queryResult={usersQuery}
+          queryResult={commentsQuery}
           renderLoading={
             <div className="flex flex-col gap-4">
               <Skeleton className="h-4 w-[100px] bg-primary-50" />
@@ -26,12 +27,13 @@ const HomePage = () => {
               <Skeleton className="h-4 w-[100px] bg-primary-70" />
             </div>
           }
-          render={(users) => (
+          render={(comments) => (
             <>
-              {users.map((user) => (
-                <li className="font-light" key={user.email}>
-                  {user.name}
-                </li>
+              {comments.map((comment: any) => (
+                <div key={comment.id}>
+                  <li className="font-semibold">Post ID: {comment.postId}</li>
+                  <li className="font-light">{comment.body}</li>
+                </div>
               ))}
             </>
           )}
