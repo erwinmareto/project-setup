@@ -49,11 +49,7 @@ const BreadcrumbLink = React.forwardRef<
       <p className="bg-secondary-40 text-primary-0 px-2 py-1 rounded-2xl">
         {isFilled ? <Check className="size-4" /> : order?.toString().padStart(2, '0')}
       </p>
-      <Comp
-        ref={ref}
-        className={cn('transition-colors font-medium hover:text-foreground', className)}
-        {...props}
-      />
+      <Comp ref={ref} className={cn('transition-colors font-medium hover:text-foreground', className)} {...props} />
     </div>
   );
 });

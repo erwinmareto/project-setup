@@ -9,15 +9,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { registerSchema } from '@/lib/validations/auth';
@@ -25,15 +17,11 @@ import { registerSchema } from '@/lib/validations/auth';
 const RegisterForm = () => {
   const [revealPassword, setRevealPassword] = useState(false);
   const [revealConfirm, setRevealConfirm] = useState(false);
-  // 1. Define your form.
   const registerForm = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema)
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof registerSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
@@ -88,11 +76,7 @@ const RegisterForm = () => {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative flex justify-center items-center">
-                  <Input
-                    placeholder="Enter your password"
-                    type={revealPassword ? 'text' : 'password'}
-                    {...field}
-                  />
+                  <Input placeholder="Enter your password" type={revealPassword ? 'text' : 'password'} {...field} />
                   <div className="absolute right-3 text-primary-40" onClick={handleRevealPassword}>
                     {revealPassword ? <EyeOff /> : <Eye />}
                   </div>
@@ -112,11 +96,7 @@ const RegisterForm = () => {
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <div className="relative flex justify-center items-center">
-                  <Input
-                    placeholder="Confirm your password"
-                    type={revealConfirm ? 'text' : 'password'}
-                    {...field}
-                  />
+                  <Input placeholder="Confirm your password" type={revealConfirm ? 'text' : 'password'} {...field} />
                   <div className="absolute right-3 text-primary-40" onClick={handleRevealConfirm}>
                     {revealConfirm ? <EyeOff /> : <Eye />}
                   </div>

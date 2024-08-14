@@ -21,14 +21,7 @@ import { NoSearchResult } from '@/assets/icons';
 import FilterDropdown from '@/components/parts/FilterDropdown';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import {
   SUBSCRIPTION_CATEGORIES,
   SUBSCRIPTION_CYCLES,
@@ -42,11 +35,7 @@ interface DataTableProps<TData, TValue> {
   variant: 'dashboard' | 'list' | 'transactions';
 }
 
-const SubscriptionTable = <TData, TValue>({
-  columns,
-  data,
-  variant = 'dashboard'
-}: DataTableProps<TData, TValue>) => {
+const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard' }: DataTableProps<TData, TValue>) => {
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get('status');
 
@@ -159,28 +148,12 @@ const SubscriptionTable = <TData, TValue>({
 
         {openFilters && (
           <div className="flex gap-4">
-            <FilterDropdown
-              filterFn={handleFilterValue}
-              title="category"
-              data={SUBSCRIPTION_CATEGORIES}
-            />
-            <FilterDropdown
-              filterFn={handleFilterValue}
-              title="status"
-              data={SUBSCRIPTION_STATUS}
-            />
+            <FilterDropdown filterFn={handleFilterValue} title="category" data={SUBSCRIPTION_CATEGORIES} />
+            <FilterDropdown filterFn={handleFilterValue} title="status" data={SUBSCRIPTION_STATUS} />
             {variant === 'list' && (
-              <FilterDropdown
-                filterFn={handleFilterValue}
-                title="cycle"
-                data={SUBSCRIPTION_CYCLES}
-              />
+              <FilterDropdown filterFn={handleFilterValue} title="cycle" data={SUBSCRIPTION_CYCLES} />
             )}
-            <FilterDropdown
-              filterFn={handleFilterValue}
-              title="pricing"
-              data={SUBSCRIPTION_PRICE_RANGES}
-            />
+            <FilterDropdown filterFn={handleFilterValue} title="pricing" data={SUBSCRIPTION_PRICE_RANGES} />
           </div>
         )}
       </div>
@@ -192,9 +165,7 @@ const SubscriptionTable = <TData, TValue>({
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -206,9 +177,7 @@ const SubscriptionTable = <TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))

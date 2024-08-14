@@ -9,15 +9,7 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { passwordSchema } from '@/lib/validations/password';
 
@@ -45,9 +37,7 @@ const PasswordForm = () => {
     <main className="p-3 lg:col-span-9">
       <Card className="px-6 py-8">
         <Form {...passwordForm}>
-          <h6 className="font-semibold text-primary-80 text-heading-6 mb-6">
-            Manage your password
-          </h6>
+          <h6 className="font-semibold text-primary-80 text-heading-6 mb-6">Manage your password</h6>
           <form onSubmit={passwordForm.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={passwordForm.control}
@@ -57,11 +47,7 @@ const PasswordForm = () => {
                   <FormLabel>Old Password</FormLabel>
                   <FormControl>
                     <div className="relative flex justify-center items-center">
-                      <Input
-                        placeholder="Enter new password"
-                        type={oldReveal ? 'text' : 'password'}
-                        {...field}
-                      />
+                      <Input placeholder="Enter new password" type={oldReveal ? 'text' : 'password'} {...field} />
                       <div className="absolute right-3 text-primary-40" onClick={handleOldReveal}>
                         {oldReveal ? <EyeOff /> : <Eye />}
                       </div>
@@ -80,11 +66,7 @@ const PasswordForm = () => {
                   <FormLabel>New Password</FormLabel>
                   <FormControl>
                     <div className="relative flex justify-center items-center">
-                      <Input
-                        placeholder="Enter new password"
-                        type={newReveal ? 'text' : 'password'}
-                        {...field}
-                      />
+                      <Input placeholder="Enter new password" type={newReveal ? 'text' : 'password'} {...field} />
                       <div className="absolute right-3 text-primary-40" onClick={handleNewReveal}>
                         {newReveal ? <EyeOff /> : <Eye />}
                       </div>

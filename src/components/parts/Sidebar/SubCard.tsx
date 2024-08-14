@@ -18,9 +18,7 @@ const SubCard = ({ history }: { history?: boolean }) => {
         {history ? (
           <p className="font-semibold text-body-md text-primary-80">-Rp 20.000</p>
         ) : (
-          <Badge className="bg-destructive text-destructive-foreground hover:bg-destructive-hover">
-            7 Days Left
-          </Badge>
+          <Badge className="bg-destructive text-destructive-foreground hover:bg-destructive-hover">7 Days Left</Badge>
         )}
       </div>
     </div>

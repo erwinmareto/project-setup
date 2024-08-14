@@ -14,10 +14,7 @@ const Options = () => {
       <Link href="/profile" className="flex">
         <Button
           variant={pathname === '/profile' ? 'secondary' : 'ghost'}
-          className={cn(
-            'flex-1 justify-start',
-            pathname !== '/profile' && 'text-primary-50 hover:text-secondary-40'
-          )}
+          className={cn('flex-1 justify-start', pathname !== '/profile' && 'text-primary-50 hover:text-secondary-40')}
         >
           My Profile
         </Button>
@@ -25,10 +22,7 @@ const Options = () => {
       <Link href="/password" className="flex">
         <Button
           variant={pathname === '/password' ? 'secondary' : 'ghost'}
-          className={cn(
-            'flex-1 justify-start',
-            pathname !== '/password' && 'text-primary-50 hover:text-secondary-40'
-          )}
+          className={cn('flex-1 justify-start', pathname !== '/password' && 'text-primary-50 hover:text-secondary-40')}
         >
           Password
         </Button>
@@ -47,10 +41,7 @@ const Options = () => {
       <Link href="/general" className="flex">
         <Button
           variant={pathname === '/general' ? 'secondary' : 'ghost'}
-          className={cn(
-            'flex-1 justify-start',
-            pathname !== '/general' && 'text-primary-50 hover:text-secondary-40'
-          )}
+          className={cn('flex-1 justify-start', pathname !== '/general' && 'text-primary-50 hover:text-secondary-40')}
         >
           General
         </Button>

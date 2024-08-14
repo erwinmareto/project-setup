@@ -10,14 +10,7 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -26,15 +19,12 @@ import { loginSchema } from '@/lib/validations/auth';
 const LoginForm = () => {
   const [reveal, setReveal] = useState(false);
   const [remember, setRemember] = useState(false);
-  // 1. Define your form.
+
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema)
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
@@ -76,11 +66,7 @@ const LoginForm = () => {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative flex justify-center items-center">
-                  <Input
-                    placeholder="Enter your password"
-                    type={reveal ? 'text' : 'password'}
-                    {...field}
-                  />
+                  <Input placeholder="Enter your password" type={reveal ? 'text' : 'password'} {...field} />
                   <div className="absolute right-3 text-primary-40" onClick={handleReveal}>
                     {reveal ? <EyeOff /> : <Eye />}
                   </div>
@@ -92,10 +78,7 @@ const LoginForm = () => {
                   <Checkbox id="remember" onCheckedChange={handleRemember} />
                   <Label htmlFor="remember">Remember me</Label>
                 </div>
-                <Link
-                  href="forgot-password"
-                  className="font-medium text-secondary-40 text-body-md hover:underline"
-                >
+                <Link href="forgot-password" className="font-medium text-secondary-40 text-body-md hover:underline">
                   Forgot Password?
                 </Link>
               </div>

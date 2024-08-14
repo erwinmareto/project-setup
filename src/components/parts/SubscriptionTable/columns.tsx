@@ -30,10 +30,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
       return (
         <div className="flex justify-center items-center">
           <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
-            }
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         </div>
@@ -42,10 +39,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center items-center">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
+          <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
         </div>
       );
     }
@@ -173,11 +167,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const status = row.getValue<SubStatus>('status');
       return (
-        <Badge
-          variant={row.getValue<SubStatus>('status')}
-          status={status}
-          className="capitalize font-medium"
-        >
+        <Badge variant={row.getValue<SubStatus>('status')} status={status} className="capitalize font-medium">
           {status}
         </Badge>
       );
@@ -204,10 +194,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
       return (
         <div className="flex justify-center items-center">
           <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
-            }
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         </div>
@@ -216,10 +203,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center items-center">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
+          <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
         </div>
       );
     }
@@ -332,11 +316,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const status = row.getValue<SubStatus>('status');
       return (
-        <Badge
-          variant={row.getValue<SubStatus>('status')}
-          status={status}
-          className="capitalize font-medium"
-        >
+        <Badge variant={row.getValue<SubStatus>('status')} status={status} className="capitalize font-medium">
           {status}
         </Badge>
       );
@@ -351,10 +331,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
       return (
         <div className="flex justify-center items-center">
           <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
-            }
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         </div>
@@ -363,10 +340,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center items-center">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
+          <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
         </div>
       );
     }
@@ -464,11 +438,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const status = row.getValue<SubStatus>('status');
       return (
-        <Badge
-          variant={row.getValue<SubStatus>('status')}
-          status={status}
-          className="capitalize font-medium"
-        >
+        <Badge variant={row.getValue<SubStatus>('status')} status={status} className="capitalize font-medium">
           {status}
         </Badge>
       );

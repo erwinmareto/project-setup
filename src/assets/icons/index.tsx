@@ -68,13 +68,7 @@ export const WalletWithCards = () => {
 
 export const NoSearchResult = () => {
   return (
-    <svg
-      width="166"
-      height="132"
-      viewBox="0 0 166 132"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="166" height="132" viewBox="0 0 166 132" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="0.5" width="165" height="132" fill="white" />
       <path
         fillRule="evenodd"
@@ -139,12 +133,7 @@ export const NoSearchResult = () => {
         stroke="#1F64E7"
         strokeWidth="2.5"
       />
-      <path
-        d="M104.78 87.7793L112.04 95.0393"
-        stroke="white"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
+      <path d="M104.78 87.7793L112.04 95.0393" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
       <path
         fillRule="evenodd"
         clipRule="evenodd"

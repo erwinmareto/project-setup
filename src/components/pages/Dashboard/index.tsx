@@ -50,10 +50,7 @@ const Dashboard = () => {
         <div className="bg-primary-0 p-5 mt-4">
           <ReactQuery
             queryResult={allSubscripitonsQuery}
-            // render={(data) => <p>{data.id}</p>}
-            render={(subData) => (
-              <SubscriptionTable columns={dashboardColumns} data={subData} variant="dashboard" />
-            )}
+            render={(subData) => <SubscriptionTable columns={dashboardColumns} data={subData} variant="dashboard" />}
           />
         </div>
       </section>

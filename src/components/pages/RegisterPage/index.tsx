@@ -7,9 +7,7 @@ const Register = () => {
         <article className="flex flex-col gap-9">
           <div className="flex flex-col gap-2 max-w-[32rem]">
             <h2 className="font-semibold text-primary-70 text-heading-2">Create Your Account.</h2>
-            <p className="text-primary-45">
-              Welcome to Reminderoo. Enter your email address and password to Sign Up.
-            </p>
+            <p className="text-primary-45">Welcome to Reminderoo. Enter your email address and password to Sign Up.</p>
           </div>
 
           <RegisterForm />

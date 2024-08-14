@@ -10,23 +10,9 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useStep1Context } from '@/context/Step1Context';
 import { step1Schema } from '@/lib/validations/add';
 
@@ -122,9 +108,7 @@ const Step1Form = () => {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
-                  Category
-                </FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Category</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="bg-primary-0 mt-2">

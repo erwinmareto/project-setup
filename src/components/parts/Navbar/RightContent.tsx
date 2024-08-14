@@ -62,10 +62,7 @@ const RightContent = () => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex justify-center items-center gap-3 hover:bg-transparent p-0"
-          >
+          <Button variant="ghost" className="flex justify-center items-center gap-3 hover:bg-transparent p-0">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
               <AvatarFallback>CN</AvatarFallback>

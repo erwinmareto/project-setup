@@ -17,11 +17,7 @@ const Step3Provider = ({ children }: { children: ReactNode }) => {
   const [time, setTime] = useState(1);
   const [email, setEmail] = useState('');
 
-  return (
-    <Step3Context.Provider value={{ time, email, setTime, setEmail }}>
-      {children}
-    </Step3Context.Provider>
-  );
+  return <Step3Context.Provider value={{ time, email, setTime, setEmail }}>{children}</Step3Context.Provider>;
 };
 
 export default Step3Provider;

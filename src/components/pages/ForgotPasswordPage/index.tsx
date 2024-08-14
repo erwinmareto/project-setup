@@ -12,9 +12,7 @@ const ForgotPassword = () => {
               <Lock className="w-7 h-7 text-secondary-40" />
             </div>
             <h3 className="font-semibold text-primary-70 text-heading-3">Forgot Your Password?</h3>
-            <p className="text-primary-45">
-              Enter your email and we&apos;ll send you a link to reset your password.
-            </p>
+            <p className="text-primary-45">Enter your email and we&apos;ll send you a link to reset your password.</p>
           </div>
 
           <ForgotPasswordForm />

@@ -10,23 +10,9 @@ import { z } from 'zod';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { profileSchema } from '@/lib/validations/profile';
 
@@ -69,9 +55,7 @@ const PersonalInfo = () => {
 
         <Card className="px-6 py-8">
           <Form {...profileForm}>
-            <h6 className="font-semibold text-primary-80 text-heading-6 mb-6">
-              Personal Information
-            </h6>
+            <h6 className="font-semibold text-primary-80 text-heading-6 mb-6">Personal Information</h6>
             <form onSubmit={profileForm.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={profileForm.control}
@@ -151,12 +135,7 @@ const PersonalInfo = () => {
                             </SelectGroup>
                           </SelectContent>
                         </Select>
-                        <Input
-                          placeholder="012345678910"
-                          {...field}
-                          className="rounded-l-none"
-                          type="tel"
-                        />
+                        <Input placeholder="012345678910" {...field} className="rounded-l-none" type="tel" />
                       </div>
                     </FormControl>
                     <FormMessage />

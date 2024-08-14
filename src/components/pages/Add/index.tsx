@@ -6,12 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
-import {
-  ConfirmFormSteps,
-  Step1Form,
-  Step2Form,
-  Step3Form
-} from '@/components/parts/SubscriptionForms';
+import { ConfirmFormSteps, Step1Form, Step2Form, Step3Form } from '@/components/parts/SubscriptionForms';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -71,11 +66,7 @@ const Add = () => {
                   </BreadcrumbLink>
                 )} */}
 
-                <BreadcrumbPage
-                  order={1}
-                  isFilled={!!appName}
-                  isCurrent={pathname === '/add/step-1'}
-                >
+                <BreadcrumbPage order={1} isFilled={!!appName} isCurrent={pathname === '/add/step-1'}>
                   Subscription Info
                 </BreadcrumbPage>
               </BreadcrumbItem>

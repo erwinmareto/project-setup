@@ -3,14 +3,7 @@ import { ReactNode } from 'react';
 import { TrendingUp } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 
 // will probably need prop for the date range select
@@ -41,15 +34,11 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
         {total === 'spendings' ? (
           <div className="flex gap-7">
             <div>
-              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">
-                Spent Last Year
-              </p>
+              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">Spent Last Year</p>
               <h4 className="font-semibold text-heading-6 md:text-heading-4">Rp 575.000</h4>
             </div>
             <div>
-              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">
-                Spent This Year
-              </p>
+              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">Spent This Year</p>
               <div className="flex justify-center items-center gap-2">
                 <h4 className="font-semibold text-heading-6 md:text-heading-4">Rp 825.000</h4>
 
@@ -62,9 +51,7 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
         ) : (
           <div className="flex justify-end">
             <div>
-              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">
-                Total Subscriptions
-              </p>
+              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">Total Subscriptions</p>
               <h4 className="font-semibold text-heading-6 md:text-heading-4">12</h4>
             </div>
           </div>

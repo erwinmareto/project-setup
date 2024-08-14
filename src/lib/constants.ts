@@ -2,22 +2,12 @@ export const ACCESS_TOKEN_KEY = process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY;
 
 export const EMAIL_KEY = process.env.NEXT_PUBLIC_EMAIL_KEY;
 
-// Subscription Categories
-export const SUBSCRIPTION_CATEGORIES = [
-  'Entertainment',
-  'Work',
-  'Home',
-  'Games',
-  'Education',
-  'Health',
-  'Others'
-];
+export const SUBSCRIPTION_CATEGORIES = ['Entertainment', 'Work', 'Home', 'Games', 'Education', 'Health', 'Others'];
 
 export interface SubscriptionPriceRanges {
   [key: string]: number[];
 }
 
-// Subscription Price Ranges
 export const SUBSCRIPTION_PRICE_RANGES: SubscriptionPriceRanges = {
   'Less than Rp.100.000': [0, 100],
   'Rp.100.000 - Rp.200.000': [100, 200],
@@ -27,8 +17,6 @@ export const SUBSCRIPTION_PRICE_RANGES: SubscriptionPriceRanges = {
   'Rp.500.000 and above': [500, Infinity]
 };
 
-// Subscription Status
 export const SUBSCRIPTION_STATUS = ['Inactive', 'Upcoming', 'Active', 'Overdue'];
 
-// Subscription Cycles
 export const SUBSCRIPTION_CYCLES = ['Daily', 'Weekly', 'Monthly', 'Yearly'];

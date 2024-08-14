@@ -8,38 +8,25 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { forgotPasswordSchema } from '@/lib/validations/auth';
 
 const ForgotPasswordForm = () => {
   const router = useRouter();
-  // 1. Define your form.
+
   const forgorPasswordForm = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema)
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof forgotPasswordSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
     router.push('/check-email');
   }
 
   return (
     <Form {...forgorPasswordForm}>
-      <form
-        onSubmit={forgorPasswordForm.handleSubmit(onSubmit)}
-        className="flex flex-col space-y-8"
-      >
+      <form onSubmit={forgorPasswordForm.handleSubmit(onSubmit)} className="flex flex-col space-y-8">
         <FormField
           control={forgorPasswordForm.control}
           name="email"

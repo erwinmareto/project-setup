@@ -53,11 +53,7 @@ const MySubscriptions = () => {
             <ReactQuery
               queryResult={transactionsQuery}
               render={(transactionData) => (
-                <SubscriptionTable
-                  columns={transactionColumns}
-                  data={transactionData}
-                  variant="transactions"
-                />
+                <SubscriptionTable columns={transactionColumns} data={transactionData} variant="transactions" />
               )}
             />
           </TabsContent>

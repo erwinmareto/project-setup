@@ -9,22 +9,9 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { useStep3Context } from '@/context/Step3Context';
 import { step3Schema } from '@/lib/validations/add';
@@ -59,9 +46,7 @@ const Step3Form = () => {
             name="time"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
-                  Remind me
-                </FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Remind me</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="bg-primary-0 mt-2">
@@ -85,9 +70,7 @@ const Step3Form = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
-                  Remind With
-                </FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Remind With</FormLabel>
                 <FormControl>
                   <div className="flex">
                     <div className="flex items-center text-primary-55 text-body-md gap-2 pl-4 border rounded-l">
@@ -96,12 +79,7 @@ const Step3Form = () => {
                       <Separator orientation="vertical" />
                     </div>
 
-                    <Input
-                      type="email"
-                      placeholder="Enter email"
-                      {...field}
-                      className="rounded-l-none"
-                    />
+                    <Input type="email" placeholder="Enter email" {...field} className="rounded-l-none" />
                   </div>
                 </FormControl>
                 <FormMessage />

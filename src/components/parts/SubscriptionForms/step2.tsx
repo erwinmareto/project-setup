@@ -13,24 +13,11 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { useStep1Context } from '@/context/Step1Context';
 import { useStep2Context } from '@/context/Step2Context';
@@ -94,9 +81,7 @@ const Step2Form = () => {
             name="cycle"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
-                  Payment Cycle
-                </FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Payment Cycle</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="bg-primary-0 mt-2">
@@ -121,18 +106,13 @@ const Step2Form = () => {
               name="paymentStart"
               render={({ field }) => (
                 <FormItem className="flex flex-col flex-1">
-                  <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
-                    Payment Start
-                  </FormLabel>
+                  <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Payment Start</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant={'outline'}
-                          className={cn(
-                            'pl-3 text-left font-normal',
-                            !field.value && 'text-muted-foreground'
-                          )}
+                          className={cn('pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                           {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                           <CalendarDays className="ml-auto h-4 w-4 text-primary-40" />
@@ -140,12 +120,7 @@ const Step2Form = () => {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
                     </PopoverContent>
                   </Popover>
                   <FormMessage />
@@ -158,18 +133,13 @@ const Step2Form = () => {
               name="paymentEnd"
               render={({ field }) => (
                 <FormItem className="flex flex-col flex-1">
-                  <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
-                    Payment End
-                  </FormLabel>
+                  <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Payment End</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant={'outline'}
-                          className={cn(
-                            'pl-3 text-left font-normal',
-                            !field.value && 'text-muted-foreground'
-                          )}
+                          className={cn('pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                           {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                           <CalendarDays className="ml-auto h-4 w-4 text-primary-40" />
@@ -177,12 +147,7 @@ const Step2Form = () => {
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
                     </PopoverContent>
                   </Popover>
                   <FormMessage />
@@ -196,9 +161,7 @@ const Step2Form = () => {
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
-                  Amount
-                </FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Amount</FormLabel>
                 <FormControl>
                   <div className="flex">
                     <div className="flex items-center text-primary-55 text-body-md gap-4 pl-4 border rounded-l">

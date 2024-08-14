@@ -22,8 +22,7 @@ const SideAuth = () => {
           <div className="max-w-xl">
             <h1 className="font-medium text-primary-0 text-heading-1">Timely Payment Reminders</h1>
             <p className="text-primary-0 text-body-md ">
-              Receive timely reminders before your subscription bills are due, so you never miss a
-              payment.
+              Receive timely reminders before your subscription bills are due, so you never miss a payment.
             </p>
           </div>
         </div>
