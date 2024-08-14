@@ -1,7 +1,7 @@
 import { getCookie as getCookieNext, setCookie } from 'cookies-next';
 import { OptionsType } from 'cookies-next/lib/types';
 
-import { ACCESS_TOKEN_KEY } from './constants';
+import { ACCESS_TOKEN_KEY } from './constants/storageKeys';
 
 export const getNextCookieStore = () => {
   const { cookies } = require('next/headers');

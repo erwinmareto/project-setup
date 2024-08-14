@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_KEY } from './constants';
+import { ACCESS_TOKEN_KEY } from './constants/storageKeys';
 import { getCookie } from './cookies';
 
 interface FetcherProps extends RequestInit {
