@@ -4,15 +4,20 @@ import { useSearchParams } from 'next/navigation';
 
 import ChartInfo from '@/components/parts/ChartInfo';
 import CostChart from '@/components/parts/CostChart';
+import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockData, mockTransactions } from '@/lib/mockData';
+import { useAllSubscriptions } from '@/queries/subscriptions';
+import { useAllTransactions } from '@/queries/transactions';
 
 const MySubscriptions = () => {
   const searchParams = useSearchParams();
   const selectedTab = searchParams.get('tabs');
+
+  const subscriptionsQuery = useAllSubscriptions();
+  const transactionsQuery = useAllTransactions();
 
   return (
     <section className="col-span-12 rounded-lg">
@@ -24,7 +29,12 @@ const MySubscriptions = () => {
             <TabsTrigger value="history">Payment History</TabsTrigger>
           </TabsList>
           <TabsContent value="list">
-            <SubscriptionTable columns={listColumns} data={mockData} variant="list" />
+            <ReactQuery
+              queryResult={subscriptionsQuery}
+              render={(subscriptionData) => (
+                <SubscriptionTable columns={listColumns} data={subscriptionData} variant="list" />
+              )}
+            />
           </TabsContent>
           <TabsContent value="history">
             <div className="flex flex-col mb-9 lg:grid lg:grid-cols-12">
@@ -40,10 +50,15 @@ const MySubscriptions = () => {
               </section>
             </div>
 
-            <SubscriptionTable
-              columns={transactionColumns}
-              data={mockTransactions}
-              variant="transactions"
+            <ReactQuery
+              queryResult={transactionsQuery}
+              render={(transactionData) => (
+                <SubscriptionTable
+                  columns={transactionColumns}
+                  data={transactionData}
+                  variant="transactions"
+                />
+              )}
             />
           </TabsContent>
         </Tabs>

@@ -1,6 +1,7 @@
 'use client';
 
 import { ColumnDef, Row } from '@tanstack/react-table';
+import { format, parseISO } from 'date-fns';
 import { ChevronsUpDown, Edit3, Mail, MoreHorizontal, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -137,16 +138,10 @@ export const listColumns: ColumnDef<Subscription>[] = [
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
-    cell: ({ getValue }) => {
-      return (
-        <p>
-          {getValue<Date>().toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        </p>
-      );
+    cell: ({ row }) => {
+      const parsedDate = parseISO(row.getValue<string>('nextPayment'));
+      const formattedDate = format(parsedDate, 'MMMM d, yyyy');
+      return <p>{formattedDate}</p>;
     }
   },
   {
@@ -302,16 +297,10 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
-    cell: ({ getValue }) => {
-      return (
-        <p>
-          {getValue<Date>().toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        </p>
-      );
+    cell: ({ row }) => {
+      const parsedDate = parseISO(row.getValue<string>('paymentDate'));
+      const formattedDate = format(parsedDate, 'MMMM d, yyyy');
+      return <p>{formattedDate}</p>;
     }
   },
   {
@@ -455,16 +444,10 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
-    cell: ({ getValue }) => {
-      return (
-        <p>
-          {getValue<Date>().toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        </p>
-      );
+    cell: ({ row }) => {
+      const parsedDate = parseISO(row.getValue<string>('nextPayment'));
+      const formattedDate = format(parsedDate, 'MMMM d, yyyy');
+      return <p>{formattedDate}</p>;
     }
   },
   {

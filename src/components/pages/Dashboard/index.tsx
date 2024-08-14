@@ -1,13 +1,18 @@
+'use client';
+
 import { CalendarCheck, CalendarClock, CalendarX } from 'lucide-react';
 
 import ChartInfo from '@/components/parts/ChartInfo';
 import OverviewCard from '@/components/parts/OverviewCard';
+import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { dashboardColumns } from '@/components/parts/SubscriptionTable/columns';
-import { mockData } from '@/lib/mockData';
+import { useAllSubscriptions } from '@/queries/subscriptions';
 
 const Dashboard = () => {
+  const allSubscripitonsQuery = useAllSubscriptions();
+
   return (
     <div className="flex flex-col gap-6">
       <section>
@@ -43,7 +48,13 @@ const Dashboard = () => {
       <section>
         <h6 className="font-semibold text-primary-80 text-heading-6">My Subscriptions</h6>
         <div className="bg-primary-0 p-5 mt-4">
-          <SubscriptionTable columns={dashboardColumns} data={mockData} variant="dashboard" />
+          <ReactQuery
+            queryResult={allSubscripitonsQuery}
+            // render={(data) => <p>{data.id}</p>}
+            render={(subData) => (
+              <SubscriptionTable columns={dashboardColumns} data={subData} variant="dashboard" />
+            )}
+          />
         </div>
       </section>
 

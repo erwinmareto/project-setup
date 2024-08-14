@@ -15,14 +15,14 @@ export const fetcher = async ({ method = 'GET', url, filters, ...args }: Fetcher
   const accessToken = getCookie(ACCESS_TOKEN_KEY as string);
 
   const finalURL = new URL(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`);
-  console.log(finalURL, '><><><><><><><><>');
+  // console.log(finalURL, '><><><><><><><><>');
 
   if (filters) {
     filters.forEach((value, key) => {
       finalURL.searchParams.append(key, value as string);
     });
   }
-  console.log(finalURL.toString(), '<<<<<<<<<<FINAL URL FOR FETCH,');
+  // console.log(finalURL.toString(), '<<<<<<<<<<FINAL URL FOR FETCH,');
 
   const headers: HeadersInit = {
     // 'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const fetcher = async ({ method = 'GET', url, filters, ...args }: Fetcher
 
     const data = await response.json();
     console.log(data, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-    console.log(headers, 'HEADERSSSSSSSSSSSSSSS');
+    // console.log(headers, 'HEADERSSSSSSSSSSSSSSS');
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -59,6 +59,8 @@ export const fetcher = async ({ method = 'GET', url, filters, ...args }: Fetcher
 
     return data;
   } catch (error) {
+    console.log(error, 'EROOOOOOOOOOOOOOOOOOOOOORRRRRRRRR');
+
     throw error;
   }
 };
