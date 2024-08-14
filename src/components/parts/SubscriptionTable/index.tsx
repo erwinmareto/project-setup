@@ -27,7 +27,7 @@ import {
   SUBSCRIPTION_CYCLES,
   SUBSCRIPTION_PRICE_RANGES,
   SUBSCRIPTION_STATUS
-} from '@/lib/constants';
+} from '@/lib/constants/datas';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
