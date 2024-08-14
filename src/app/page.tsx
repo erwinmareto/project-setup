@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useUserContext } from '@/context/UserContext';
+import { getCookie, setAccessToken } from '@/lib/cookies';
 import { loginSchema } from '@/lib/validations/auth';
 
 export default function Home() {
@@ -43,7 +44,12 @@ export default function Home() {
     setUsername(values.username);
     setPassword(values.password);
     setUserId(values.userId);
+
+    setAccessToken('somerandomasstoken');
+
     console.log(values);
+    const theCookie = getCookie('access_token');
+    console.log(theCookie, 'COKIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
   }
 
   return (
