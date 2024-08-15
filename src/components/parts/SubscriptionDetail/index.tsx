@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { ArrowLeft, Check, Edit3, FilmIcon, MoreHorizontal, Trash2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +18,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 
 const SubscriptionDetail = () => {
+  const router = useRouter();
   const [warningOpen, setWarningOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
 
@@ -28,15 +30,11 @@ const SubscriptionDetail = () => {
     setWarningOpen(!warningOpen);
   };
 
-  useEffect(() => {
-    console.log(warningOpen);
-  }, [warningOpen]);
   return (
     <section className="bg-primary-0 p-7 rounded-lg lg:col-span-8">
-      {/* <article className="flex flex-col gap-7"> */}
       <header className="flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => router.back()}>
             <ArrowLeft />
           </Button>
           <h6 className="font-medium text-heading-6">Subscription Detail</h6>
@@ -85,6 +83,7 @@ const SubscriptionDetail = () => {
               imagePath="/modal-icons/success.png"
               openState={successOpen}
               openHandler={handleSuccessOpen}
+              clickEvent={() => router.push('/dashboard')}
               title="Congratulations!"
               description="Your subscription has been marked as paid."
             >
@@ -97,6 +96,7 @@ const SubscriptionDetail = () => {
               imagePath="/modal-icons/warning.png"
               openState={warningOpen}
               openHandler={handleWarningOpen}
+              clickEvent={() => router.push('/dashboard')}
               title="Are you sure?"
               description="Once cancelled, you will not be able to reactivate your subscription."
               cancleable
@@ -154,8 +154,6 @@ const SubscriptionDetail = () => {
           </div>
         </div>
       </article>
-
-      {/* </article> */}
     </section>
   );
 };

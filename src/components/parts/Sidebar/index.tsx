@@ -33,7 +33,7 @@ const Sidebar = () => {
               <SubCard history />
 
               <Separator />
-              <Link href="/history" className="link py-3">
+              <Link href="/my-subscriptions?tabs=history" className="link py-3">
                 <p>See all History Payments</p>
                 <ArrowUpRight />
               </Link>

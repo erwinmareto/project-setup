@@ -2,12 +2,7 @@
 
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart';
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 const chartData = [
   { app: 'Netflix', cost: 186, category: 'Entertainment' },
   { app: 'Creative Cloud', cost: 305, category: 'Work' },

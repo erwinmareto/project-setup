@@ -1,11 +1,4 @@
-export type SubscriptionCategory =
-  | 'entertainment'
-  | 'work'
-  | 'home'
-  | 'games'
-  | 'education'
-  | 'health'
-  | 'others';
+export type SubscriptionCategory = 'entertainment' | 'work' | 'home' | 'games' | 'education' | 'health' | 'others';
 
 export type SubStatus = 'inactive' | 'upcoming' | 'active' | 'overdue';
 

@@ -1,7 +1,9 @@
 'use client';
 
 import { ColumnDef, Row } from '@tanstack/react-table';
+import { format, parseISO } from 'date-fns';
 import { ChevronsUpDown, Edit3, Mail, MoreHorizontal, Trash2 } from 'lucide-react';
+import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,10 +30,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
       return (
         <div className="flex justify-center items-center">
           <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
-            }
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         </div>
@@ -40,10 +39,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center items-center">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
+          <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
         </div>
       );
     }
@@ -61,12 +57,14 @@ export const listColumns: ColumnDef<Subscription>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex gap-2">
-          <div className="bg-secondary-40 rounded-sm">
-            <Mail className="w-5 h-5" />
+        <Link href={`/subscriptions/${row.original.id}`}>
+          <div className="flex gap-2 hover:underline">
+            <div className="bg-secondary-40 rounded-sm">
+              <Mail className="w-5 h-5" />
+            </div>
+            <p>{row.getValue<string>('appName')}</p>
           </div>
-          <p>{row.getValue<string>('appName')}</p>
-        </div>
+        </Link>
       );
     }
   },
@@ -134,16 +132,10 @@ export const listColumns: ColumnDef<Subscription>[] = [
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
-    cell: ({ getValue }) => {
-      return (
-        <p>
-          {getValue<Date>().toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        </p>
-      );
+    cell: ({ row }) => {
+      const parsedDate = parseISO(row.getValue<string>('nextPayment'));
+      const formattedDate = format(parsedDate, 'MMMM d, yyyy');
+      return <p>{formattedDate}</p>;
     }
   },
   {
@@ -175,11 +167,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const status = row.getValue<SubStatus>('status');
       return (
-        <Badge
-          variant={row.getValue<SubStatus>('status')}
-          status={status}
-          className="capitalize font-medium"
-        >
+        <Badge variant={row.getValue<SubStatus>('status')} status={status} className="capitalize font-medium">
           {status}
         </Badge>
       );
@@ -206,10 +194,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
       return (
         <div className="flex justify-center items-center">
           <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
-            }
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         </div>
@@ -218,10 +203,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center items-center">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
+          <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
         </div>
       );
     }
@@ -239,12 +221,14 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex gap-2">
-          <div className="bg-secondary-40 rounded-sm">
-            <Mail className="w-5 h-5" />
+        <Link href={`/subscriptions/${row.original.id}`}>
+          <div className="flex gap-2 hover:underline">
+            <div className="bg-secondary-40 rounded-sm">
+              <Mail className="w-5 h-5" />
+            </div>
+            <p>{row.getValue<string>('appName')}</p>
           </div>
-          <p>{row.getValue<string>('appName')}</p>
-        </div>
+        </Link>
       );
     }
   },
@@ -297,16 +281,10 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
-    cell: ({ getValue }) => {
-      return (
-        <p>
-          {getValue<Date>().toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        </p>
-      );
+    cell: ({ row }) => {
+      const parsedDate = parseISO(row.getValue<string>('paymentDate'));
+      const formattedDate = format(parsedDate, 'MMMM d, yyyy');
+      return <p>{formattedDate}</p>;
     }
   },
   {
@@ -338,11 +316,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const status = row.getValue<SubStatus>('status');
       return (
-        <Badge
-          variant={row.getValue<SubStatus>('status')}
-          status={status}
-          className="capitalize font-medium"
-        >
+        <Badge variant={row.getValue<SubStatus>('status')} status={status} className="capitalize font-medium">
           {status}
         </Badge>
       );
@@ -357,10 +331,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
       return (
         <div className="flex justify-center items-center">
           <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
-            }
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         </div>
@@ -369,10 +340,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center items-center">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
+          <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
         </div>
       );
     }
@@ -390,12 +358,14 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex gap-2">
-          <div className="bg-secondary-40 rounded-sm">
-            <Mail className="w-5 h-5" />
+        <Link href={`/subscriptions/${row.original.id}`}>
+          <div className="flex gap-2 hover:underline">
+            <div className="bg-secondary-40 rounded-sm">
+              <Mail className="w-5 h-5" />
+            </div>
+            <p>{row.getValue<string>('appName')}</p>
           </div>
-          <p>{row.getValue<string>('appName')}</p>
-        </div>
+        </Link>
       );
     }
   },
@@ -448,16 +418,10 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
-    cell: ({ getValue }) => {
-      return (
-        <p>
-          {getValue<Date>().toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        </p>
-      );
+    cell: ({ row }) => {
+      const parsedDate = parseISO(row.getValue<string>('nextPayment'));
+      const formattedDate = format(parsedDate, 'MMMM d, yyyy');
+      return <p>{formattedDate}</p>;
     }
   },
   {
@@ -474,11 +438,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       const status = row.getValue<SubStatus>('status');
       return (
-        <Badge
-          variant={row.getValue<SubStatus>('status')}
-          status={status}
-          className="capitalize font-medium"
-        >
+        <Badge variant={row.getValue<SubStatus>('status')} status={status} className="capitalize font-medium">
           {status}
         </Badge>
       );

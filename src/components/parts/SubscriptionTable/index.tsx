@@ -15,25 +15,19 @@ import {
 } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, Filter, Plus, Search, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import { NoSearchResult } from '@/assets/icons';
 import FilterDropdown from '@/components/parts/FilterDropdown';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import {
   SUBSCRIPTION_CATEGORIES,
   SUBSCRIPTION_CYCLES,
   SUBSCRIPTION_PRICE_RANGES,
   SUBSCRIPTION_STATUS
-} from '@/lib/constants';
+} from '@/lib/constants/datas';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,11 +35,10 @@ interface DataTableProps<TData, TValue> {
   variant: 'dashboard' | 'list' | 'transactions';
 }
 
-const SubscriptionTable = <TData, TValue>({
-  columns,
-  data,
-  variant = 'dashboard'
-}: DataTableProps<TData, TValue>) => {
+const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard' }: DataTableProps<TData, TValue>) => {
+  const searchParams = useSearchParams();
+  const currentStatus = searchParams.get('status');
+
   const [openFilters, setOpenFilters] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -87,6 +80,9 @@ const SubscriptionTable = <TData, TValue>({
   };
 
   useEffect(() => {
+    console.log(currentStatus, '!!><><><><><>!');
+    table.getColumn('status')?.setFilterValue(currentStatus);
+
     // This is how to get the original datas
     console.log(rowSelection, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.log(!!rowSelection, '<>>>>>>>>>>>>>>>>>>>>>>>>>>>');
@@ -94,13 +90,13 @@ const SubscriptionTable = <TData, TValue>({
     const selectedRows = table.getSelectedRowModel().rows; // There are rows, flat rows and rows by Id
     const originalDatas = selectedRows.map((row) => row.original);
     console.log(originalDatas, '<<<<<<<<<<<<<<<<<<');
-  });
+  }, [currentStatus, rowSelection, table]);
 
   return (
     <>
       <div className="flex flex-col gap-4 mb-8">
         <div className="flex justify-between">
-          <div className="flex gap-2 w-1/3">
+          <div className="flex items-center gap-2 w-1/3">
             {variant !== 'transactions' && (
               <Button size="icon" variant="secondary" onClick={handleOpenFilters} className="p-3">
                 <Filter />
@@ -112,6 +108,7 @@ const SubscriptionTable = <TData, TValue>({
                 placeholder="Search..."
                 value={(table.getColumn('appName')?.getFilterValue() as string) ?? ''}
                 onChange={(event) => table.getColumn('appName')?.setFilterValue(event.target.value)}
+                isFilter
               />
               <div className="absolute text-primary-55 right-3 z-10">
                 <Search className="w-4 h-4" />
@@ -126,13 +123,13 @@ const SubscriptionTable = <TData, TValue>({
               </Button>
             )}
             {variant === 'dashboard' && (
-              <Link href="/subscriptions">
+              <Link href="/my-subscriptions">
                 <Button variant="secondary">See all Subscriptions</Button>
               </Link>
             )}
 
             {variant !== 'transactions' && (
-              <Link href="/add">
+              <Link href="/add/step-1">
                 <Button className="gap-2">
                   <Plus className="w-4 h-4" />
                   Add Subscription
@@ -151,32 +148,16 @@ const SubscriptionTable = <TData, TValue>({
 
         {openFilters && (
           <div className="flex gap-4">
-            <FilterDropdown
-              filterFn={handleFilterValue}
-              title="category"
-              data={SUBSCRIPTION_CATEGORIES}
-            />
-            <FilterDropdown
-              filterFn={handleFilterValue}
-              title="status"
-              data={SUBSCRIPTION_STATUS}
-            />
+            <FilterDropdown filterFn={handleFilterValue} title="category" data={SUBSCRIPTION_CATEGORIES} />
+            <FilterDropdown filterFn={handleFilterValue} title="status" data={SUBSCRIPTION_STATUS} />
             {variant === 'list' && (
-              <FilterDropdown
-                filterFn={handleFilterValue}
-                title="cycle"
-                data={SUBSCRIPTION_CYCLES}
-              />
+              <FilterDropdown filterFn={handleFilterValue} title="cycle" data={SUBSCRIPTION_CYCLES} />
             )}
-            <FilterDropdown
-              filterFn={handleFilterValue}
-              title="pricing"
-              data={SUBSCRIPTION_PRICE_RANGES}
-            />
+            <FilterDropdown filterFn={handleFilterValue} title="pricing" data={SUBSCRIPTION_PRICE_RANGES} />
           </div>
         )}
       </div>
-      <div className="rounded-md border">
+      <section className="rounded-md border">
         <Table>
           <TableHeader className="bg-primary-20">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -184,9 +165,7 @@ const SubscriptionTable = <TData, TValue>({
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -198,9 +177,7 @@ const SubscriptionTable = <TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
@@ -219,7 +196,7 @@ const SubscriptionTable = <TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </section>
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="flex justify-center items-center gap-6">
           <p>Rows per page </p>

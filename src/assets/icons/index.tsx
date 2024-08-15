@@ -1,4 +1,4 @@
-export const CircleDollar = () => {
+export const CircleDollar = ({ isAuth }: { isAuth?: boolean }) => {
   return (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_791_11562)">
@@ -30,7 +30,7 @@ export const CircleDollar = () => {
           11.6176 11.3528 11.778 11.2519 11.987C11.1511 12.196 11.1374 12.4365 11.2139 12.6556C11.2903 12.8747 11.4507
           13.0545 11.6597 13.1553C11.8687 13.2562 12.1092 13.2698 12.3283 13.1934L14.8067 12.3283C15.6831 12.0224
           16.6451 12.0772 17.4812 12.4806C18.3172 12.884 18.9587 13.6029 19.2646 14.4793Z"
-          fill="#ECEBFF"
+          fill={isAuth ? '#4336F3' : '#ECEBFF'}
         />
       </g>
       <defs>
@@ -68,13 +68,7 @@ export const WalletWithCards = () => {
 
 export const NoSearchResult = () => {
   return (
-    <svg
-      width="166"
-      height="132"
-      viewBox="0 0 166 132"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="166" height="132" viewBox="0 0 166 132" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="0.5" width="165" height="132" fill="white" />
       <path
         fillRule="evenodd"
@@ -139,12 +133,7 @@ export const NoSearchResult = () => {
         stroke="#1F64E7"
         strokeWidth="2.5"
       />
-      <path
-        d="M104.78 87.7793L112.04 95.0393"
-        stroke="white"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
+      <path d="M104.78 87.7793L112.04 95.0393" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -174,6 +163,122 @@ export const NoSearchResult = () => {
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const BackgroundSquares = () => {
+  return (
+    <>
+      <svg
+        className="absolute left-1/3 top-0"
+        width="267"
+        height="354"
+        viewBox="0 0 267 354"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          x="155.781"
+          y="-148"
+          width="117"
+          height="490"
+          transform="rotate(18.5372 155.781 -148)"
+          fill="url(#paint0_linear_306_8554)"
+          fillOpacity="0.25"
+        />
+        <defs>
+          <linearGradient
+            id="paint0_linear_306_8554"
+            x1="214.281"
+            y1="-341"
+            x2="214.281"
+            y2="342"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0.112359" stopColor="white" />
+            <stop offset="0.936081" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <svg
+        className="absolute right-0 -top-10"
+        width="346"
+        height="606"
+        viewBox="0 0 346 606"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          x="243.433"
+          y="-158"
+          width="117"
+          height="765.705"
+          transform="rotate(18.5372 243.433 -158)"
+          fill="url(#paint0_linear_306_8555)"
+          fillOpacity="0.25"
+        />
+        <defs>
+          <linearGradient
+            id="paint0_linear_306_8555"
+            x1="301.933"
+            y1="-459.594"
+            x2="301.933"
+            y2="607.705"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0.112359" stopColor="white" />
+            <stop offset="0.936081" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <svg
+        className="absolute left-0 -bottom-20"
+        width="270"
+        height="583"
+        viewBox="0 0 270 583"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          x="3.70447"
+          y="758.628"
+          width="117"
+          height="765.705"
+          transform="rotate(-159.66 3.70447 758.628)"
+          fill="url(#paint0_linear_306_8563)"
+          fillOpacity="0.25"
+        />
+        <defs>
+          <linearGradient
+            id="paint0_linear_306_8563"
+            x1="62.2045"
+            y1="457.034"
+            x2="62.2045"
+            y2="1524.33"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0.112359" stopColor="white" />
+            <stop offset="0.936081" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </>
+  );
+};
+
+export const ArrowLine = () => {
+  return (
+    <svg width="49" height="13" viewBox="0 0 49 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M48.2803 7.03033C48.5732 6.73744 48.5732 6.26256 48.2803 5.96967L43.5074 1.1967C43.2145
+         0.903806 42.7396 0.903806 42.4467 1.1967C42.1538 1.48959 42.1538 1.96447 42.4467 2.25736L46.6893
+          6.5L42.4467 10.7426C42.1538 11.0355 42.1538 11.5104 42.4467 11.8033C42.7396 12.0962 43.2145 12.0962
+           43.5074 11.8033L48.2803 7.03033ZM0.75 7.25H47.75V5.75H0.75V7.25Z"
+        fill="#BCBCBC"
       />
     </svg>
   );

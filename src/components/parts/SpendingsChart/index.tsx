@@ -62,18 +62,8 @@ const SpendingsChart = () => {
         </defs>
         <ChartLegend content={<ChartLegendContent />} />
 
-        <Area
-          dataKey="2023"
-          fill="url(#secondary-0-gradient)"
-          strokeWidth={3}
-          stroke="var(--color-2023)"
-        />
-        <Area
-          dataKey="2024"
-          fill="url(#secondary-400-gradient)"
-          strokeWidth={3}
-          stroke="var(--color-2024)"
-        />
+        <Area dataKey="2023" fill="url(#secondary-0-gradient)" strokeWidth={3} stroke="var(--color-2023)" />
+        <Area dataKey="2024" fill="url(#secondary-400-gradient)" strokeWidth={3} stroke="var(--color-2024)" />
       </AreaChart>
     </ChartContainer>
   );

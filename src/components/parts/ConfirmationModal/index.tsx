@@ -25,6 +25,7 @@ export interface ConfirmationModalProps {
   title: string;
   description: string;
   cancleable?: boolean;
+  clickEvent: () => void;
 }
 
 const ConfirmationModal = ({
@@ -34,6 +35,7 @@ const ConfirmationModal = ({
   title,
   description,
   cancleable,
+  clickEvent,
   children
 }: ConfirmationModalProps) => {
   return (
@@ -52,7 +54,7 @@ const ConfirmationModal = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           {cancleable && <AlertDialogCancel>Cancel</AlertDialogCancel>}
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={clickEvent}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

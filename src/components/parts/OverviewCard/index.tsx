@@ -6,14 +6,7 @@ import { cn } from '@/lib/utils';
 
 import { OverviewCardProps } from './types';
 
-const OverviewCard = ({
-  icon,
-  totalSubscriptions,
-  status,
-  title,
-  description,
-  link
-}: OverviewCardProps) => {
+const OverviewCard = ({ icon, totalSubscriptions, status, title, description, link }: OverviewCardProps) => {
   return (
     // the max-lg is temporary until we have a proper responsive design
     <Card className="border-none max-lg:flex-shrink-0 max-lg:w-72">
@@ -33,7 +26,7 @@ const OverviewCard = ({
         <p className="text-body-sm text-primary-55">{description}</p>
       </CardContent>
       <CardFooter>
-        <Link href={`/dashboard${link}`} className="link">
+        <Link href={`/my-subscriptions${link}`} className="link">
           <p>See subscription details</p>
           <ArrowUpRight />
         </Link>
