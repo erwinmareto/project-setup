@@ -5,22 +5,30 @@ import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 import ReactQuery from '@/components/parts/ReactQuery';
-import { Subscription } from '@/components/parts/SubscriptionTable/types';
+import { Subscription, Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Separator } from '@/components/ui/separator';
 import { useAllSubscriptions } from '@/queries/subscriptions';
+import { useAllTransactions } from '@/queries/transactions';
 
 import SubCard from './SubCard';
 
 const Sidebar = () => {
   const allSubscripitonsQuery = useAllSubscriptions();
+  const allTransactionsQuery = useAllTransactions();
 
   const getExpiringSubs = (subs: Subscription[]) => {
     const filteredSubs = subs.filter(
       (sub: Subscription) =>
         differenceInDays(sub.nextPayment, new Date()) > 0 && differenceInDays(sub.nextPayment, new Date()) <= 7
     );
-
     return filteredSubs;
+  };
+
+  const getLast5Transactions = (subs: Transaction[]) => {
+    const totalSubs = subs.length;
+    const last5 = subs.slice(totalSubs - 5);
+
+    return last5;
   };
 
   return (
@@ -50,13 +58,27 @@ const Sidebar = () => {
           <h6 className="text-heading-6 font-semibold">Payment History</h6>
           <div className="w-[21rem] bg-primary-0 rounded-xl">
             <div className="px-5">
-              {/* <SubCard history />
-              <Separator />
-              <SubCard history />
-              <Separator />
-              <SubCard history /> */}
+              <ReactQuery
+                queryResult={allTransactionsQuery}
+                render={(data) => {
+                  const last5 = getLast5Transactions(data);
+                  return last5.map((transaction) => (
+                    <>
+                      <SubCard
+                        key={transaction.id}
+                        title={transaction.appName}
+                        category={transaction.category}
+                        paymentDate={transaction.paymentDate}
+                        price={transaction.pricing}
+                        isHistory
+                      />
 
-              <Separator />
+                      <Separator />
+                    </>
+                  ));
+                }}
+              />
+
               <Link href="/my-subscriptions?tabs=history" className="link py-3">
                 <p>See all History Payments</p>
                 <ArrowUpRight />
