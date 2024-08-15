@@ -9,7 +9,7 @@ export type Subscription = {
   appName: string;
   category: SubscriptionCategory;
   pricing: number;
-  nextPayment: Date;
+  nextPayment: string;
   status: SubStatus;
   cycle: Cycles;
   payment: string;
@@ -22,5 +22,5 @@ export type Transaction = {
   pricing: number;
   status: SubStatus;
   payment: string;
-  paymentDate: Date;
+  paymentDate: string;
 };
