@@ -1,3 +1,5 @@
+import { Cycles, SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
+
 export type UserContextType = {
   userId: string;
   setUserId: (userId: string) => void;
@@ -6,22 +8,22 @@ export type UserContextType = {
 export type Step1ContextType = {
   icon: string;
   appName: string;
-  category: string;
+  category: SubscriptionCategory;
   setIcon: (icon: string) => void;
   setAppName: (appName: string) => void;
-  setCategory: (category: string) => void;
+  setCategory: (category: SubscriptionCategory) => void;
 };
 
 export type Step2ContextType = {
-  cycle: string;
+  cycle: Cycles;
   paymentStart: Date;
   paymentEnd: Date;
-  price: string;
+  price: number;
   paymentMethod: string;
-  setCycle: (cycle: string) => void;
+  setCycle: (cycle: Cycles) => void;
   setPaymentStart: (paymentStart: Date) => void;
   setPaymentEnd: (paymentEnd: Date) => void;
-  setPrice: (price: string) => void;
+  setPrice: (price: number) => void;
   setPaymentMethod: (paymentMethod: string) => void;
 };
 
