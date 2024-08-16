@@ -2,20 +2,29 @@
 
 import { useState } from 'react';
 
-import { format } from 'date-fns';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { differenceInDays, format } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import { SubStatus } from '@/components/parts/SubscriptionTable/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useStep1Context } from '@/context/Step1Context';
 import { useStep2Context } from '@/context/Step2Context';
 import { useStep3Context } from '@/context/Step3Context';
+import { ALL_SUBSCRIPTIONS_KEY } from '@/lib/constants/queryKeys';
+import { formatIDR } from '@/lib/utils';
+import { addSubscription } from '@/repositories/subscriptions';
+
+import { SubscriptionPayload } from './types';
 
 const CofirmFormSteps = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const [successOpen, setSuccessOpen] = useState(false);
   const { appName, category, setAppName, setCategory } = useStep1Context();
   const {
@@ -34,20 +43,52 @@ const CofirmFormSteps = () => {
 
   const clearContext = () => {
     setAppName('');
-    setCategory('');
-    setCycle('');
+    setCategory('others');
+    setCycle('monthly');
     setPaymentStart(new Date());
     setPaymentEnd(new Date());
-    setPrice('');
+    setPrice(0);
     setPaymentMethod('');
     setTime(1);
     setEmail('');
 
-    router.push('/dashboard');
+    // router.push('/dashboard');
   };
 
   const handleSuccessOpen = () => {
     setSuccessOpen(!successOpen);
+  };
+
+  const addSubscriptionMutation = useMutation({
+    mutationFn: addSubscription,
+    onSuccess: () => {
+      console.log('sucessssssssssssssssss logeddd indnnnnnn');
+      queryClient.invalidateQueries({
+        queryKey: [ALL_SUBSCRIPTIONS_KEY]
+      });
+    }
+  });
+
+  const submitAddSubscription = () => {
+    const status: SubStatus =
+      differenceInDays(paymentStart, new Date()) < 0
+        ? 'overdue'
+        : differenceInDays(paymentStart, new Date()) < 7
+          ? 'upcoming'
+          : 'active';
+    const payload: SubscriptionPayload = {
+      appName,
+      category,
+      cycle,
+      nextPayment: paymentStart.toISOString(),
+      pricing: price,
+      payment: paymentMethod,
+      status
+    };
+    addSubscriptionMutation.mutate(payload);
+    handleSuccessOpen();
+    clearContext();
+    // router.replace('/dashboard');
   };
 
   return (
@@ -70,7 +111,7 @@ const CofirmFormSteps = () => {
           <div className="flex flex-col gap-3 font-medium text-primary-90 text-body-md capitalize">
             <p>{appName}</p>
             <p>{category}</p>
-            <p>Rp{price}</p>
+            <p>{formatIDR(price)}</p>
             <p>{cycle}</p>
             <p>{format(paymentStart, 'PPP')}</p>
             <p>{format(paymentEnd, 'PPP')}</p>
@@ -88,7 +129,7 @@ const CofirmFormSteps = () => {
             Back
           </Button>
         </Link>
-        {/* <Link href="/dashboard"> */}
+
         <ConfirmationModal
           imagePath="/modal-icons/success.png"
           openState={successOpen}
@@ -97,12 +138,11 @@ const CofirmFormSteps = () => {
           description="Your subscription has saved."
           clickEvent={() => router.push('/dashboard')}
         >
-          <Button type="submit" onClick={clearContext}>
+          <Button type="submit" onClick={submitAddSubscription}>
             Save and confirm
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
         </ConfirmationModal>
-        {/* </Link> */}
       </div>
     </>
   );

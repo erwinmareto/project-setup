@@ -169,7 +169,7 @@ const Step2Form = () => {
                       <Separator orientation="vertical" />
                     </div>
 
-                    <Input placeholder="0" {...field} className="rounded-l-none" />
+                    <Input type="string" placeholder="0" {...field} className="rounded-l-none" />
                   </div>
                 </FormControl>
                 <FormMessage />
