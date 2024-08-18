@@ -7,3 +7,10 @@ export const getAllSubscription = async () => {
 
   return response;
 };
+
+export const getSubscriptionById = async (id: string) => {
+  const response = await fetcher({
+    url: `/subscriptions/${id}`
+  });
+  return response;
+};

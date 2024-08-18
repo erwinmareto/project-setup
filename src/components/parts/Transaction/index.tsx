@@ -1,4 +1,7 @@
+import { format } from 'date-fns';
 import { FilmIcon } from 'lucide-react';
+
+import { formatIDR } from '@/lib/utils';
 
 // date should probably be type Date and icon is either a file path(string) or a ReactNode
 export interface TransactionProps {
@@ -16,10 +19,10 @@ const Transaction = ({ appName, date, pricing }: TransactionProps) => {
         </div>
         <div>
           <p className="font-medium text-primary-80 text-body-lg">{appName}</p>
-          <p className="font-medium text-primary-50 text-body-sm">{date}</p>
+          <p className="font-medium text-primary-50 text-body-sm">{format(date, 'dd MMM yyyy')}</p>
         </div>
       </div>
-      <h6 className="font-semibold text-primary-80 text-heading-6">- Rp{pricing}.000</h6>
+      <h6 className="font-semibold text-primary-80 text-heading-6">- {formatIDR(pricing)}</h6>
     </div>
   );
 };

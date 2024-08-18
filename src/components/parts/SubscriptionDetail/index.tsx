@@ -2,10 +2,13 @@
 
 import { useState } from 'react';
 
+import { format } from 'date-fns';
 import { ArrowLeft, Check, Edit3, FilmIcon, MoreHorizontal, Trash2, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import { Subscription } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,9 +19,11 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { formatIDR } from '@/lib/utils';
 
-const SubscriptionDetail = () => {
+const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const router = useRouter();
+  const { id } = useParams();
   const [warningOpen, setWarningOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
 
@@ -47,9 +52,11 @@ const SubscriptionDetail = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[10.75rem]">
-            <DropdownMenuItem className="text-secondary-40 gap-2 focus:text-secondary-40">
-              <Edit3 className="w-5 h-5" /> Edit
-            </DropdownMenuItem>
+            <Link href={`/edit/${id}/step-1`}>
+              <DropdownMenuItem className="text-secondary-40 gap-2 focus:text-secondary-40">
+                <Edit3 className="w-5 h-5" /> Edit
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem
               className="text-destructive-foreground gap-2
             focus:bg-destructive focus:text-destructive-foreground"
@@ -73,8 +80,8 @@ const SubscriptionDetail = () => {
               <FilmIcon />
             </div>
             <div>
-              <h6 className="font-semibold text-heading-6">Creative Cloud</h6>
-              <p className="font-medium text-primary-50 text-body-sm">Work</p>
+              <h6 className="font-semibold text-heading-6">{data?.appName}</h6>
+              <p className="font-medium text-primary-50 text-body-sm capitalize">{data?.category}</p>
             </div>
           </div>
 
@@ -111,24 +118,24 @@ const SubscriptionDetail = () => {
         <Card className="flex justify-between items-center p-4 h-20">
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Status</p>
-            <Badge variant="upcoming" status="upcoming">
-              Upcoming
+            <Badge variant={data?.status} status={data?.status}>
+              {data?.status}
             </Badge>
           </div>
           <Separator orientation="vertical" />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-lg">Dana</p>
+            <p className="font-medium text-body-lg">{data?.payment}</p>
           </div>
           <Separator orientation="vertical" />
           <div>
-            <p className="font-medium text-primary-50 text-body-sm">Status</p>
-            <p className="font-medium text-body-lg">15 July 2024</p>
+            <p className="font-medium text-primary-50 text-body-sm">Next Payment</p>
+            <p className="font-medium text-body-lg">{format(data?.nextPayment, 'dd MMM yyyy')}</p>
           </div>
           <Separator orientation="vertical" />
           <div>
-            <p className="font-medium text-primary-50 text-body-sm">Status</p>
-            <p className="font-medium text-body-lg">Rp25.000</p>
+            <p className="font-medium text-primary-50 text-body-sm">Price</p>
+            <p className="font-medium text-body-lg">{formatIDR(data?.pricing)}</p>
           </div>
         </Card>
         <Separator />
@@ -144,10 +151,10 @@ const SubscriptionDetail = () => {
             <p className="font-medium text-primary-55 text-body-md">Payment Method</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p className="font-medium text-primary-90 text-body-md">Creative Cloud</p>
-            <p className="font-medium text-primary-90 text-body-md">Work</p>
-            <p className="font-medium text-primary-90 text-body-md">Rp25.000</p>
-            <p className="font-medium text-primary-90 text-body-md">Monthly</p>
+            <p className="font-medium text-primary-90 text-body-md">{data?.appName}</p>
+            <p className="font-medium text-primary-90 text-body-md capitalize">{data?.category}</p>
+            <p className="font-medium text-primary-90 text-body-md">{formatIDR(data?.pricing)}</p>
+            <p className="font-medium text-primary-90 text-body-md capitalize">{data?.cycle}</p>
             <p className="font-medium text-primary-90 text-body-md">15 March 2024</p>
             <p className="font-medium text-primary-90 text-body-md">15 July 2024</p>
             <p className="font-medium text-primary-90 text-body-md">Dana - 08123456789</p>
