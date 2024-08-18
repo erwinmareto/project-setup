@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { formatIDR } from '@/lib/utils';
 
 import { Cycles, Subscription, SubscriptionCategory, SubStatus, Transaction } from './types';
 
@@ -95,13 +96,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const formattedNumber = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(row.getValue<number>('pricing') * 1000);
-
+      const formattedNumber = formatIDR(row.getValue<number>('pricing'));
       return <p>{formattedNumber}</p>;
     },
     filterFn: 'inNumberRange'
@@ -259,12 +254,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const formattedNumber = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(row.getValue<number>('pricing') * 1000);
+      const formattedNumber = formatIDR(row.getValue<number>('pricing'));
 
       return <p>- {formattedNumber}</p>;
     },
@@ -396,12 +386,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const formattedNumber = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(row.getValue<number>('pricing') * 1000);
+      const formattedNumber = formatIDR(row.getValue<number>('pricing'));
 
       return <p>{formattedNumber}</p>;
     },

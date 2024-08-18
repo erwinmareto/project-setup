@@ -1,27 +1,42 @@
-import { WalletWithCards } from '@/assets/icons';
-import { Badge } from '@/components/ui/badge';
+import { differenceInDays, format } from 'date-fns';
 
-const SubCard = ({ history }: { history?: boolean }) => {
+import { WalletWithCards } from '@/assets/icons';
+import { SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
+import { Badge } from '@/components/ui/badge';
+import { formatIDR } from '@/lib/utils';
+
+export type SubCardProps = {
+  isHistory?: boolean;
+  title: string;
+  category: SubscriptionCategory;
+  paymentDate?: string;
+  price?: number;
+};
+
+const SubCard = ({ title, category, paymentDate, isHistory, price }: SubCardProps) => {
   return (
-    <div className="flex justify-center items-center gap-10">
-      <div className="flex justify-center items-center gap-3 py-3">
-        <div className="w-11 h-11 flex justify-center items-center rounded-xl bg-red-500">
+    <article className="flex justify-between items-center gap-10">
+      <section className="flex justify-center items-center gap-3 py-3">
+        <div className="w-11 h-11 flex flex-shrink-0 justify-center items-center rounded-xl bg-red-500">
           <WalletWithCards />
         </div>
         <div>
-          <p className="font-semibold text-body-md">Creative Cloud</p>
-          <p className="font-semibold text-body-xs text-primary-50">Work</p>
+          <p className="font-semibold text-body-md">{title}</p>
+          <p className="font-semibold text-body-xs text-primary-50 capitalize">{category}</p>
         </div>
-      </div>
-      <div className="flex flex-col justify-end items-center">
-        <p className="font-semibold text-body-xs text-primary-55">10 July 2024</p>
-        {history ? (
-          <p className="font-semibold text-body-md text-primary-80">-Rp 20.000</p>
+      </section>
+
+      <section className="flex flex-col flex-shrink-0 justify-end items-center">
+        <p className="font-semibold text-body-xs text-primary-55">{format(paymentDate as string, 'dd MMM yyyy')}</p>
+        {isHistory ? (
+          <p className="font-semibold text-body-md text-primary-80">-{formatIDR(price as number)}</p>
         ) : (
-          <Badge className="bg-destructive text-destructive-foreground hover:bg-destructive-hover">7 Days Left</Badge>
+          <Badge className="bg-destructive text-destructive-foreground hover:bg-destructive-hover flex-initial">
+            {differenceInDays(paymentDate as string, new Date())} Days Left
+          </Badge>
         )}
-      </div>
-    </div>
+      </section>
+    </article>
   );
 };
 
