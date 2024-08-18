@@ -10,8 +10,10 @@ import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { dashboardColumns } from '@/components/parts/SubscriptionTable/columns';
 import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
 import { useAllSubscriptions } from '@/queries/subscriptions';
+// import { useUserIdContext } from '@/context/UserIdContext';
 
 const Dashboard = () => {
+  // const { userId } = useUserIdContext();
   const allSubscripitonsQuery = useAllSubscriptions();
 
   const getStatusCount = (subs: Subscription[], status: SubStatus) => {

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Flag, FlagOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
@@ -16,17 +17,20 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { useUserIdContext } from '@/context/UserIdContext';
 import { profileSchema } from '@/lib/validations/profile';
 import { useGetProfileById } from '@/queries/profiles';
 import { editProfile } from '@/repositories/profiles';
 
 const PersonalInfo = () => {
+  const router = useRouter();
   const [countryCode, setCountryCode] = useState('');
+  const { userId } = useUserIdContext();
 
-  const { data } = useGetProfileById('2');
+  const { data } = useGetProfileById(userId);
 
   const profileMutation = useMutation({
-    mutationFn: (data: z.infer<typeof profileSchema>) => editProfile('2', data),
+    mutationFn: (data: z.infer<typeof profileSchema>) => editProfile(userId, data),
     onSuccess: () => {
       toast.success('Profile updated successfully');
     }
@@ -50,16 +54,19 @@ const PersonalInfo = () => {
     console.log(values);
 
     profileMutation.mutate(values);
+
+    router.refresh();
   }
 
   useEffect(() => {
+    console.log(userId, 'USERIDIDDIIDIDIDD');
     console.log(data, 'dataaaaaaaaaaaaaa');
     profileForm.reset({
       email: data?.email,
       name: data?.name,
       phoneNumber: data?.phoneNumber
     });
-  }, [data, profileForm]);
+  }, [data, profileForm, userId]);
 
   return (
     <main className="p-3 lg:col-span-9">
