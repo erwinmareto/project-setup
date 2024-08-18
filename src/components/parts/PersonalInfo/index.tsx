@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Flag, FlagOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -17,22 +17,25 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { useUserIdContext } from '@/context/UserIdContext';
+import { useUserId } from '@/context/UserIdGlobal';
+import { PROFILE_BY_ID } from '@/lib/constants/queryKeys';
 import { profileSchema } from '@/lib/validations/profile';
 import { useGetProfileById } from '@/queries/profiles';
 import { editProfile } from '@/repositories/profiles';
 
 const PersonalInfo = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [countryCode, setCountryCode] = useState('');
-  const { userId } = useUserIdContext();
+  const userId = useUserId((state: any) => state.userId);
 
   const { data } = useGetProfileById(userId);
 
   const profileMutation = useMutation({
     mutationFn: (data: z.infer<typeof profileSchema>) => editProfile(userId, data),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success('Profile updated successfully');
+      queryClient.setQueryData([PROFILE_BY_ID, userId], data);
     }
   });
 
@@ -59,14 +62,12 @@ const PersonalInfo = () => {
   }
 
   useEffect(() => {
-    console.log(userId, 'USERIDIDDIIDIDIDD');
-    console.log(data, 'dataaaaaaaaaaaaaa');
     profileForm.reset({
       email: data?.email,
       name: data?.name,
       phoneNumber: data?.phoneNumber
     });
-  }, [data, profileForm, userId]);
+  }, [data, profileForm]);
 
   return (
     <main className="p-3 lg:col-span-9">
@@ -78,7 +79,7 @@ const PersonalInfo = () => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div>
-              <h6 className="font-semibold text-primary-80 text-heading-6">Username</h6>
+              <h6 className="font-semibold text-primary-80 text-heading-6">{data?.name}</h6>
               <p className="font-medium text-primary-50 text-body-md">something</p>
             </div>
           </div>
