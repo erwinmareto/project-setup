@@ -17,14 +17,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { useUserIdContext } from '@/context/UserIdContext';
+import { useUserId } from '@/context/UserIdGlobal';
 import { setAccessToken } from '@/lib/cookies';
 import { loginSchema } from '@/lib/validations/auth';
 import { login } from '@/repositories/auth';
 
 const LoginForm = () => {
   const router = useRouter();
-  const { setUserId } = useUserIdContext();
+  const setUserId = useUserId((state: any) => state.setUserId);
   const [reveal, setReveal] = useState(false);
   const [remember, setRemember] = useState(false);
 
