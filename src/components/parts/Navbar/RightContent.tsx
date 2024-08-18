@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 
+import { deleteCookie } from 'cookies-next';
 import { ArrowUpRightIcon, Bell, ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import NotificationCard from '@/components/parts/Navbar/NotificationCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,11 +18,19 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { ACCESS_TOKEN_KEY } from '@/lib/constants/storageKeys';
 
 const RightContent = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleIsOpen = () => setIsOpen(!isOpen);
+
+  const logout = () => {
+    deleteCookie(ACCESS_TOKEN_KEY as string);
+
+    router.replace('/login');
+  };
 
   return (
     <div className="flex justify-center items-center gap-5">
@@ -81,6 +91,7 @@ const RightContent = () => {
           <DropdownMenuItem
             className="bg-destructive text-destructive-foreground 
           focus:bg-destructive/80 focus:text-destructive-foreground/80"
+            onClick={logout}
           >
             Sign out
           </DropdownMenuItem>
