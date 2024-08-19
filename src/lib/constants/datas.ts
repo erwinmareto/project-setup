@@ -16,3 +16,27 @@ export const SUBSCRIPTION_PRICE_RANGES: SubscriptionPriceRanges = {
 export const SUBSCRIPTION_STATUS = ['Inactive', 'Upcoming', 'Active', 'Overdue'];
 
 export const SUBSCRIPTION_CYCLES = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
+
+export const AVAILABLE_ICONS: Record<string, string> = {
+  'creative-cloud': 'Creative Cloud',
+  disney: 'Disney+',
+  dribbble: 'Dribbble',
+  gmail: 'Gmail',
+  'google-play': 'Google Play',
+  jira: 'Jira',
+  medium: 'Medium',
+  'ms-365': 'Microsoft 365',
+  netflix: 'Netflix',
+  notion: 'Notion',
+  playstation: 'Playstation',
+  prime: 'Amazon Prime',
+  spotify: 'Spotify',
+  xbox: ' Xbox',
+  youtube: 'YouTube',
+  zoom: 'Zoom',
+  'category-creative': 'Creative',
+  'category-education': 'Education',
+  'category-entertainment': 'Entertainment',
+  'category-games': 'Games',
+  'category-health': 'Health'
+};
