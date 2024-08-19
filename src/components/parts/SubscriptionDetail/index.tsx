@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { ArrowLeft, Check, Edit3, FilmIcon, MoreHorizontal, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
 import { Subscription } from '@/components/parts/SubscriptionTable/types';
@@ -19,9 +21,12 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
+import { editSubscription } from '@/repositories/subscriptions';
 
 const SubscriptionDetail = ({ data }: { data: Subscription }) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { id } = useParams();
   const [warningOpen, setWarningOpen] = useState(false);
@@ -33,6 +38,27 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
 
   const handleWarningOpen = () => {
     setWarningOpen(!warningOpen);
+  };
+
+  const editSubscriptionMutation = useMutation({
+    mutationFn: (data: Subscription) => editSubscription(id as string, data),
+    onSuccess: () => {
+      toast.success('Subscription updated successfully');
+      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
+      router.refresh();
+    }
+  });
+
+  // const goBack = () => {
+  //   router.back();
+  // };
+
+  const markPaid = () => {
+    editSubscriptionMutation.mutate({ ...data, status: 'active' });
+  };
+
+  const cancleSubscription = () => {
+    editSubscriptionMutation.mutate({ ...data, status: 'inactive' });
   };
 
   return (
@@ -90,11 +116,11 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               imagePath="/modal-icons/success.png"
               openState={successOpen}
               openHandler={handleSuccessOpen}
-              clickEvent={() => router.push('/dashboard')}
+              clickEvent={() => router.refresh()}
               title="Congratulations!"
               description="Your subscription has been marked as paid."
             >
-              <Button variant="secondary">
+              <Button variant="secondary" onClick={markPaid} disabled={data?.status === 'active'}>
                 <Check /> Mark as Paid
               </Button>
             </ConfirmationModal>
@@ -103,7 +129,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               imagePath="/modal-icons/warning.png"
               openState={warningOpen}
               openHandler={handleWarningOpen}
-              clickEvent={() => router.push('/dashboard')}
+              clickEvent={cancleSubscription}
               title="Are you sure?"
               description="Once cancelled, you will not be able to reactivate your subscription."
               cancleable
