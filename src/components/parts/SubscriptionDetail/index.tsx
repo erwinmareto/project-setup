@@ -21,16 +21,16 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
-import { SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
+import { ALL_SUBSCRIPTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
-import { editSubscription } from '@/repositories/subscriptions';
+import { deleteSubscription, editSubscription } from '@/repositories/subscriptions';
 
 const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { id } = useParams();
-  const [warningOpen, setWarningOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const handleSuccessOpen = () => {
     setSuccessOpen(!successOpen);
@@ -45,13 +45,20 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     onSuccess: () => {
       toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
+      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
       router.refresh();
     }
   });
 
-  // const goBack = () => {
-  //   router.back();
-  // };
+  const deleteSubscriptionMutation = useMutation({
+    mutationFn: () => deleteSubscription(id as string),
+    onSuccess: () => {
+      toast.success('Subscription deleted successfully');
+      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
+      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+      router.push('/dashboard');
+    }
+  });
 
   const markPaid = () => {
     editSubscriptionMutation.mutate({ ...data, status: 'active' });
@@ -59,6 +66,10 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
 
   const cancleSubscription = () => {
     editSubscriptionMutation.mutate({ ...data, status: 'inactive' });
+  };
+
+  const handleDeleteSubscription = () => {
+    deleteSubscriptionMutation.mutate();
   };
 
   return (
@@ -86,6 +97,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
             <DropdownMenuItem
               className="text-destructive-foreground gap-2
             focus:bg-destructive focus:text-destructive-foreground"
+              onClick={handleDeleteSubscription}
             >
               <Trash2 className="w-5 h-5" /> Delete
             </DropdownMenuItem>

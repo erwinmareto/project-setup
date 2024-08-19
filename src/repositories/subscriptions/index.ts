@@ -24,3 +24,12 @@ export const editSubscription = async (id: string, payload: Record<string, unkno
 
   return response;
 };
+
+export const deleteSubscription = async (id: string) => {
+  const response = await fetcher({
+    url: `/subscriptions/${id}`,
+    method: 'DELETE'
+  });
+
+  return response;
+};
