@@ -2,10 +2,16 @@
 
 import { useState } from 'react';
 
-import { ArrowLeft, Check, Edit3, FilmIcon, MoreHorizontal, Trash2, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { format } from 'date-fns';
+import { ArrowLeft, Check, Edit3, MoreHorizontal, Trash2, X } from 'lucide-react';
+import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import AppIcons from '@/components/parts/Icons';
+import { Subscription } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,11 +22,16 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { ALL_SUBSCRIPTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
+import { formatIDR } from '@/lib/utils';
+import { deleteSubscription, editSubscription } from '@/repositories/subscriptions';
 
-const SubscriptionDetail = () => {
+const SubscriptionDetail = ({ data }: { data: Subscription }) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const [warningOpen, setWarningOpen] = useState(false);
+  const { id } = useParams();
   const [successOpen, setSuccessOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const handleSuccessOpen = () => {
     setSuccessOpen(!successOpen);
@@ -28,6 +39,38 @@ const SubscriptionDetail = () => {
 
   const handleWarningOpen = () => {
     setWarningOpen(!warningOpen);
+  };
+
+  const editSubscriptionMutation = useMutation({
+    mutationFn: (data: Subscription) => editSubscription(id as string, data),
+    onSuccess: () => {
+      toast.success('Subscription updated successfully');
+      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
+      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+      router.refresh();
+    }
+  });
+
+  const deleteSubscriptionMutation = useMutation({
+    mutationFn: () => deleteSubscription(id as string),
+    onSuccess: () => {
+      toast.success('Subscription deleted successfully');
+      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
+      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+      router.push('/dashboard');
+    }
+  });
+
+  const markPaid = () => {
+    editSubscriptionMutation.mutate({ ...data, status: 'active' });
+  };
+
+  const cancleSubscription = () => {
+    editSubscriptionMutation.mutate({ ...data, status: 'inactive' });
+  };
+
+  const handleDeleteSubscription = () => {
+    deleteSubscriptionMutation.mutate();
   };
 
   return (
@@ -47,12 +90,15 @@ const SubscriptionDetail = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[10.75rem]">
-            <DropdownMenuItem className="text-secondary-40 gap-2 focus:text-secondary-40">
-              <Edit3 className="w-5 h-5" /> Edit
-            </DropdownMenuItem>
+            <Link href={`/edit/${id}/step-1`}>
+              <DropdownMenuItem className="text-secondary-40 gap-2 focus:text-secondary-40">
+                <Edit3 className="w-5 h-5" /> Edit
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem
               className="text-destructive-foreground gap-2
             focus:bg-destructive focus:text-destructive-foreground"
+              onClick={handleDeleteSubscription}
             >
               <Trash2 className="w-5 h-5" /> Delete
             </DropdownMenuItem>
@@ -63,18 +109,10 @@ const SubscriptionDetail = () => {
       <article className="flex flex-col gap-7 mt-7">
         <div className="flex justify-between">
           <div className="flex items-center gap-3">
-            {/* <img
-               src="https://placeimg.com/200/200/people"
-               width={52}
-               height={52}
-               className="rounded-xl"
-              /> */}
-            <div className="w-12 h-12 flex justify-center items-center bg-violet-500 rounded-xl">
-              <FilmIcon />
-            </div>
+            <AppIcons iconName={data?.icon} width={52} height={52} className="rounded-xl" />
             <div>
-              <h6 className="font-semibold text-heading-6">Creative Cloud</h6>
-              <p className="font-medium text-primary-50 text-body-sm">Work</p>
+              <h6 className="font-semibold text-heading-6">{data?.appName}</h6>
+              <p className="font-medium text-primary-50 text-body-sm capitalize">{data?.category}</p>
             </div>
           </div>
 
@@ -83,11 +121,11 @@ const SubscriptionDetail = () => {
               imagePath="/modal-icons/success.png"
               openState={successOpen}
               openHandler={handleSuccessOpen}
-              clickEvent={() => router.push('/dashboard')}
+              clickEvent={() => router.refresh()}
               title="Congratulations!"
               description="Your subscription has been marked as paid."
             >
-              <Button variant="secondary">
+              <Button variant="secondary" onClick={markPaid} disabled={data?.status === 'active'}>
                 <Check /> Mark as Paid
               </Button>
             </ConfirmationModal>
@@ -96,7 +134,7 @@ const SubscriptionDetail = () => {
               imagePath="/modal-icons/warning.png"
               openState={warningOpen}
               openHandler={handleWarningOpen}
-              clickEvent={() => router.push('/dashboard')}
+              clickEvent={cancleSubscription}
               title="Are you sure?"
               description="Once cancelled, you will not be able to reactivate your subscription."
               cancleable
@@ -111,24 +149,24 @@ const SubscriptionDetail = () => {
         <Card className="flex justify-between items-center p-4 h-20">
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Status</p>
-            <Badge variant="upcoming" status="upcoming">
-              Upcoming
+            <Badge variant={data?.status} status={data?.status}>
+              {data?.status}
             </Badge>
           </div>
           <Separator orientation="vertical" />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-lg">Dana</p>
+            <p className="font-medium text-body-lg">{data?.paymentMethod}</p>
           </div>
           <Separator orientation="vertical" />
           <div>
-            <p className="font-medium text-primary-50 text-body-sm">Status</p>
-            <p className="font-medium text-body-lg">15 July 2024</p>
+            <p className="font-medium text-primary-50 text-body-sm">Next Payment</p>
+            <p className="font-medium text-body-lg">{format(data?.nextPayment, 'dd MMM yyyy')}</p>
           </div>
           <Separator orientation="vertical" />
           <div>
-            <p className="font-medium text-primary-50 text-body-sm">Status</p>
-            <p className="font-medium text-body-lg">Rp25.000</p>
+            <p className="font-medium text-primary-50 text-body-sm">Price</p>
+            <p className="font-medium text-body-lg">{formatIDR(data?.pricing)}</p>
           </div>
         </Card>
         <Separator />
@@ -144,10 +182,10 @@ const SubscriptionDetail = () => {
             <p className="font-medium text-primary-55 text-body-md">Payment Method</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p className="font-medium text-primary-90 text-body-md">Creative Cloud</p>
-            <p className="font-medium text-primary-90 text-body-md">Work</p>
-            <p className="font-medium text-primary-90 text-body-md">Rp25.000</p>
-            <p className="font-medium text-primary-90 text-body-md">Monthly</p>
+            <p className="font-medium text-primary-90 text-body-md">{data?.appName}</p>
+            <p className="font-medium text-primary-90 text-body-md capitalize">{data?.category}</p>
+            <p className="font-medium text-primary-90 text-body-md">{formatIDR(data?.pricing)}</p>
+            <p className="font-medium text-primary-90 text-body-md capitalize">{data?.cycle}</p>
             <p className="font-medium text-primary-90 text-body-md">15 March 2024</p>
             <p className="font-medium text-primary-90 text-body-md">15 July 2024</p>
             <p className="font-medium text-primary-90 text-body-md">Dana - 08123456789</p>

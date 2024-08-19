@@ -7,3 +7,13 @@ export const getAllTransactions = async () => {
 
   return response;
 };
+
+export const addTransaction = async (payload: Record<string, unknown>) => {
+  const response = await fetcher({
+    url: '/transactions',
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+
+  return response;
+};

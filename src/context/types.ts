@@ -1,6 +1,6 @@
 import { Cycles, SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
 
-export type UserContextType = {
+export type UserIdContextType = {
   userId: string;
   setUserId: (userId: string) => void;
 };

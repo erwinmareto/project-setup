@@ -1,10 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Flag, FlagOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,23 +17,58 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { useUserId } from '@/context/UserIdGlobal';
+import { PROFILE_BY_ID } from '@/lib/constants/queryKeys';
 import { profileSchema } from '@/lib/validations/profile';
+import { useGetProfileById } from '@/queries/profiles';
+import { editProfile } from '@/repositories/profiles';
 
 const PersonalInfo = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [countryCode, setCountryCode] = useState('');
+  const userId = useUserId((state: any) => state.userId);
+
+  const { data } = useGetProfileById(userId);
+
+  const profileMutation = useMutation({
+    mutationFn: (data: z.infer<typeof profileSchema>) => editProfile(userId, data),
+    onSuccess: (data) => {
+      toast.success('Profile updated successfully');
+      queryClient.setQueryData([PROFILE_BY_ID, userId], data);
+    }
+  });
 
   const handleCountryCode = (value: string) => {
     setCountryCode(value);
   };
 
   const profileForm = useForm<z.infer<typeof profileSchema>>({
-    resolver: zodResolver(profileSchema)
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      email: data?.email,
+      name: data?.name,
+      phoneNumber: data?.phoneNumber
+    }
   });
 
   function onSubmit(values: z.infer<typeof profileSchema>) {
     values.phoneNumber = countryCode + values.phoneNumber;
     console.log(values);
+
+    profileMutation.mutate(values);
+
+    router.refresh();
   }
+
+  useEffect(() => {
+    profileForm.reset({
+      email: data?.email,
+      name: data?.name,
+      phoneNumber: data?.phoneNumber
+    });
+  }, [data, profileForm]);
+
   return (
     <main className="p-3 lg:col-span-9">
       <article className="flex flex-col gap-8">
@@ -41,7 +79,7 @@ const PersonalInfo = () => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div>
-              <h6 className="font-semibold text-primary-80 text-heading-6">Username</h6>
+              <h6 className="font-semibold text-primary-80 text-heading-6">{data?.name}</h6>
               <p className="font-medium text-primary-50 text-body-md">something</p>
             </div>
           </div>
@@ -59,7 +97,7 @@ const PersonalInfo = () => {
             <form onSubmit={profileForm.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={profileForm.control}
-                name="username"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>

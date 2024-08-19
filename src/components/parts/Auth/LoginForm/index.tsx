@@ -3,9 +3,12 @@
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { Eye, EyeOff, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -14,11 +17,32 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { useUserId } from '@/context/UserIdGlobal';
+import { setAccessToken } from '@/lib/cookies';
 import { loginSchema } from '@/lib/validations/auth';
+import { login } from '@/repositories/auth';
 
 const LoginForm = () => {
+  const router = useRouter();
+  const setUserId = useUserId((state: any) => state.setUserId);
   const [reveal, setReveal] = useState(false);
   const [remember, setRemember] = useState(false);
+
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      if (data.isVerified) {
+        console.log('verify email mutation here');
+      }
+
+      setAccessToken(data?.token);
+      setUserId(data?.user?.id);
+
+      toast.success('Login successful');
+
+      router.replace('/dashboard');
+    }
+  });
 
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema)
@@ -26,6 +50,7 @@ const LoginForm = () => {
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
     console.log(values);
+    loginMutation.mutate({ email: values.email });
   }
 
   const handleReveal = () => {
