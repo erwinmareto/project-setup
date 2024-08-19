@@ -21,6 +21,7 @@ export type Subscription = {
 
 export type Transaction = {
   id: string;
+  icon: string;
   appName: string;
   category: SubscriptionCategory;
   pricing: number;
