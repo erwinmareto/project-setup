@@ -20,12 +20,10 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
   const [selectedYear, setSelectedYear] = useState('');
 
   const allCurrentTransactions = data.filter((item) => item.appName === currentSub);
-  console.log(allCurrentTransactions, 'AAAAAAAAAAAAAaaa');
 
   const years = [...new Set(allCurrentTransactions.map((item) => getYear(new Date(item.paymentDate))))];
 
   const transactionByYear = allCurrentTransactions.filter((item) => getYear(item.paymentDate) === +selectedYear);
-  console.log(transactionByYear, 'transactionByYear');
 
   const prices = allCurrentTransactions.map((item) => item.pricing);
 
@@ -59,11 +57,23 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
           {selectedYear
             ? // eslint-disable-next-line react/jsx-indent
               transactionByYear.map((item: TransactionType) => (
-                <Transaction key={item.id} appName={item.appName} date={item.paymentDate} pricing={item.pricing} />
+                <Transaction
+                  key={item.id}
+                  icon={item.icon}
+                  appName={item.appName}
+                  date={item.paymentDate}
+                  pricing={item.pricing}
+                />
               ))
             : // eslint-disable-next-line react/jsx-indent
               allCurrentTransactions.map((item) => (
-                <Transaction key={item.id} appName={item.appName} date={item.paymentDate} pricing={item.pricing} />
+                <Transaction
+                  key={item.id}
+                  icon={item.icon}
+                  appName={item.appName}
+                  date={item.paymentDate}
+                  pricing={item.pricing}
+                />
               ))}
         </div>
       </article>

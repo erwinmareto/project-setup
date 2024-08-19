@@ -56,7 +56,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
       return (
         <Link href={`/subscriptions/${row.original.id}`}>
           <div className="flex flex-shrink items-center gap-2 hover:underline">
-            <div className="bg-red-300 rounded-sm">
+            <div className="rounded-sm">
               <AppIcons iconName={row.original.icon} width={20} height={20} />
             </div>
             <p>{row.getValue<string>('appName')}</p>

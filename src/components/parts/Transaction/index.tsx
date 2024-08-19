@@ -1,22 +1,21 @@
 import { format } from 'date-fns';
-import { FilmIcon } from 'lucide-react';
 
+import AppIcons from '@/components/parts/Icons';
 import { formatIDR } from '@/lib/utils';
 
 // date should probably be type Date and icon is either a file path(string) or a ReactNode
 export interface TransactionProps {
+  icon: string;
   appName: string;
   date: string;
   pricing: number;
 }
 
-const Transaction = ({ appName, date, pricing }: TransactionProps) => {
+const Transaction = ({ icon, appName, date, pricing }: TransactionProps) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 flex justify-center items-center bg-violet-500 rounded-xl">
-          <FilmIcon />
-        </div>
+        <AppIcons iconName={icon} width={52} height={52} className="rounded-xl" />
         <div>
           <p className="font-medium text-primary-80 text-body-lg">{appName}</p>
           <p className="font-medium text-primary-50 text-body-sm">{format(date, 'dd MMM yyyy')}</p>

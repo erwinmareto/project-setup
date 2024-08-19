@@ -12,12 +12,14 @@ export interface AppIconProps {
 }
 
 const AppIcons = ({ iconName, width, height, className }: AppIconProps) => {
-  if (iconName === 'others') return <Tag width={width} height={height} />;
-  if (iconName === 'category-health') return <HealthAppIcon width={width} height={height} />;
-  if (iconName === 'category-entertainment') return <EntertainmentAppIcon width={width} height={height} />;
-  if (iconName === 'category-education') return <EducationAppIcon width={width} height={height} />;
-  if (iconName === 'category-games') return <GamesAppIcon width={width} height={height} />;
-  if (iconName === 'category-creative') return <CreativeAppIcon width={width} height={height} />;
+  if (iconName === 'others') return <Tag width={width} height={height} className={className} />;
+  if (iconName === 'category-health') return <HealthAppIcon width={width} height={height} className={className} />;
+  if (iconName === 'category-entertainment')
+    return <EntertainmentAppIcon width={width} height={height} className={className} />;
+  if (iconName === 'category-education')
+    return <EducationAppIcon width={width} height={height} className={className} />;
+  if (iconName === 'category-games') return <GamesAppIcon width={width} height={height} className={className} />;
+  if (iconName === 'category-creative') return <CreativeAppIcon width={width} height={height} className={className} />;
 
   return (
     <Image
