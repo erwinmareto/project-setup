@@ -163,7 +163,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           <Separator orientation="vertical" />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-lg">{data?.payment}</p>
+            <p className="font-medium text-body-lg">{data?.paymentMethod}</p>
           </div>
           <Separator orientation="vertical" />
           <div>
