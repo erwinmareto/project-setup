@@ -12,6 +12,7 @@ export type Step1ContextType = {
   setIcon: (icon: string) => void;
   setAppName: (appName: string) => void;
   setCategory: (category: SubscriptionCategory) => void;
+  resetStep1Global: () => void;
 };
 
 export type Step2ContextType = {
@@ -25,6 +26,7 @@ export type Step2ContextType = {
   setPaymentEnd: (paymentEnd: Date) => void;
   setPrice: (price: number) => void;
   setPaymentMethod: (paymentMethod: string) => void;
+  resetStep2Global: () => void;
 };
 
 export type Step3ContextType = {
@@ -32,4 +34,5 @@ export type Step3ContextType = {
   email: string;
   setTime: (time: number) => void;
   setEmail: (email: string) => void;
+  resetStep3Global: () => void;
 };
