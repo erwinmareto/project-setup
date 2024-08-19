@@ -2,20 +2,15 @@
 
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { format, parseISO } from 'date-fns';
-import { ChevronsUpDown, Edit3, Mail, MoreHorizontal, Trash2 } from 'lucide-react';
+import { ChevronsUpDown, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
 import { formatIDR } from '@/lib/utils';
 
+import ActionButtons from './ActionButtons';
+import ActionDropdown from './ActionDropdown';
 import { Cycles, Subscription, SubscriptionCategory, SubStatus, Transaction } from './types';
 
 export type FilterFn<TData> = {
@@ -171,13 +166,8 @@ export const listColumns: ColumnDef<Subscription>[] = [
   {
     id: 'actions',
     header: () => <p className="font-medium text-primary-80 text-body-md">Actions</p>,
-    cell: () => {
-      return (
-        <div className="flex gap-3 justify-center items-center">
-          <Edit3 className="w-6 h-6 text-secondary-40" />
-          <Trash2 className="w-6 h-6 text-destructive-foreground" />
-        </div>
-      );
+    cell: ({ row }) => {
+      return <ActionButtons id={row.original.id} />;
     }
   }
 ];
@@ -432,28 +422,8 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
   {
     id: 'actions',
     header: () => <p className="font-medium text-primary-80 text-body-md">Actions</p>,
-    cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem className="text-secondary-40 gap-2 focus:text-secondary-40">
-              <Edit3 className="w-5 h-5" /> Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-destructive-foreground gap-2
-            focus:bg-destructive focus:text-destructive-foreground"
-            >
-              <Trash2 className="w-5 h-5" /> Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+    cell: ({ row }) => {
+      return <ActionDropdown id={row.original.id} />;
     }
   }
 ];
