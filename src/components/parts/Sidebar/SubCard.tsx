@@ -1,25 +1,24 @@
 import { differenceInDays, format } from 'date-fns';
 
-import { WalletWithCards } from '@/assets/icons';
+import AppIcons from '@/components/parts/Icons';
 import { SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { formatIDR } from '@/lib/utils';
 
 export type SubCardProps = {
   isHistory?: boolean;
+  icon: string;
   title: string;
   category: SubscriptionCategory;
   paymentDate?: string;
   price?: number;
 };
 
-const SubCard = ({ title, category, paymentDate, isHistory, price }: SubCardProps) => {
+const SubCard = ({ icon, title, category, paymentDate, isHistory, price }: SubCardProps) => {
   return (
     <article className="flex justify-between items-center gap-10">
       <section className="flex justify-center items-center gap-3 py-3">
-        <div className="w-11 h-11 flex flex-shrink-0 justify-center items-center rounded-xl bg-red-500">
-          <WalletWithCards />
-        </div>
+        <AppIcons iconName={icon} width={42} height={42} className="rounded-lg" />
         <div>
           <p className="font-semibold text-body-md">{title}</p>
           <p className="font-semibold text-body-xs text-primary-50 capitalize">{category}</p>

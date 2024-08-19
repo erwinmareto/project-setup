@@ -4,12 +4,13 @@ import { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { ArrowLeft, Check, Edit3, FilmIcon, MoreHorizontal, Trash2, X } from 'lucide-react';
+import { ArrowLeft, Check, Edit3, MoreHorizontal, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import AppIcons from '@/components/parts/Icons';
 import { Subscription } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -108,15 +109,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
       <article className="flex flex-col gap-7 mt-7">
         <div className="flex justify-between">
           <div className="flex items-center gap-3">
-            {/* <img
-               src="https://placeimg.com/200/200/people"
-               width={52}
-               height={52}
-               className="rounded-xl"
-              /> */}
-            <div className="w-12 h-12 flex justify-center items-center bg-violet-500 rounded-xl">
-              <FilmIcon />
-            </div>
+            <AppIcons iconName={data?.icon} width={52} height={52} className="rounded-xl" />
             <div>
               <h6 className="font-semibold text-heading-6">{data?.appName}</h6>
               <p className="font-medium text-primary-50 text-body-sm capitalize">{data?.category}</p>
@@ -163,7 +156,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           <Separator orientation="vertical" />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-lg">{data?.payment}</p>
+            <p className="font-medium text-body-lg">{data?.paymentMethod}</p>
           </div>
           <Separator orientation="vertical" />
           <div>

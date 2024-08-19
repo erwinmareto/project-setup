@@ -44,7 +44,13 @@ const Sidebar = () => {
                   const filtered = getExpiringSubs(data);
                   return filtered.map((sub, index) => (
                     <>
-                      <SubCard key={sub.id} title={sub.appName} category={sub.category} paymentDate={sub.nextPayment} />
+                      <SubCard
+                        key={sub.id}
+                        icon={sub.icon}
+                        title={sub.appName}
+                        category={sub.category}
+                        paymentDate={sub.nextPayment}
+                      />
                       {index < filtered.length - 1 && <Separator />}
                     </>
                   ));
@@ -66,6 +72,7 @@ const Sidebar = () => {
                     <>
                       <SubCard
                         key={transaction.id}
+                        icon={transaction.icon}
                         title={transaction.appName}
                         category={transaction.category}
                         paymentDate={transaction.paymentDate}

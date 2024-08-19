@@ -2,9 +2,10 @@
 
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { format, parseISO } from 'date-fns';
-import { ChevronsUpDown, Mail } from 'lucide-react';
+import { ChevronsUpDown } from 'lucide-react';
 import Link from 'next/link';
 
+import AppIcons from '@/components/parts/Icons';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { formatIDR } from '@/lib/utils';
@@ -54,9 +55,9 @@ export const listColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       return (
         <Link href={`/subscriptions/${row.original.id}`}>
-          <div className="flex gap-2 hover:underline">
-            <div className="bg-secondary-40 rounded-sm">
-              <Mail className="w-5 h-5" />
+          <div className="flex flex-shrink items-center gap-2 hover:underline">
+            <div className="rounded-sm">
+              <AppIcons iconName={row.original.icon} width={20} height={20} />
             </div>
             <p>{row.getValue<string>('appName')}</p>
           </div>
@@ -207,9 +208,9 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       return (
         <Link href={`/subscriptions/${row.original.id}`}>
-          <div className="flex gap-2 hover:underline">
-            <div className="bg-secondary-40 rounded-sm">
-              <Mail className="w-5 h-5" />
+          <div className="flex flex-shrink items-center gap-2 hover:underline">
+            <div className="bg-red-300 rounded-sm">
+              <AppIcons iconName={row.original.icon} width={20} height={20} />
             </div>
             <p>{row.getValue<string>('appName')}</p>
           </div>
@@ -339,9 +340,9 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     cell: ({ row }) => {
       return (
         <Link href={`/subscriptions/${row.original.id}`}>
-          <div className="flex gap-2 hover:underline">
-            <div className="bg-secondary-40 rounded-sm">
-              <Mail className="w-5 h-5" />
+          <div className="flex flex-shrink items-center gap-2 hover:underline">
+            <div className="rounded-sm">
+              <AppIcons iconName={row.original.icon} width={20} height={20} />
             </div>
             <p>{row.getValue<string>('appName')}</p>
           </div>
