@@ -1,6 +1,9 @@
 /* eslint-disable max-len */
 
+import { cn } from '@/lib/utils';
+
 export interface svgIconProps {
+  className?: string;
   width?: number;
   height?: number;
 }
@@ -291,9 +294,9 @@ export const ArrowLine = () => {
   );
 };
 
-export const HealthAppIcon = ({ width = 20, height = 20 }: svgIconProps = {}) => (
+export const HealthAppIcon = ({ width = 20, height = 20, className }: svgIconProps = {}) => (
   <svg
-    className="rounded-sm"
+    className={cn('rounded-sm', className)}
     width={width}
     height={height}
     viewBox="0 0 100 100"
@@ -333,9 +336,9 @@ export const HealthAppIcon = ({ width = 20, height = 20 }: svgIconProps = {}) =>
   </svg>
 );
 
-export const EntertainmentAppIcon = ({ width = 20, height = 20 }: svgIconProps) => (
+export const EntertainmentAppIcon = ({ width = 20, height = 20, className }: svgIconProps) => (
   <svg
-    className="rounded-sm"
+    className={cn('rounded-sm', className)}
     width={width}
     height={height}
     viewBox="0 0 100 100"
@@ -385,10 +388,10 @@ export const EntertainmentAppIcon = ({ width = 20, height = 20 }: svgIconProps) 
   </svg>
 );
 
-export const GamesAppIcon = ({ width = 20, height = 20 }: { width?: number; height?: number }) => {
+export const GamesAppIcon = ({ width = 20, height = 20, className }: svgIconProps) => {
   return (
     <svg
-      className="rounded-sm"
+      className={cn('rounded-sm', className)}
       width={width}
       height={height}
       viewBox="0 0 100 100"
@@ -468,10 +471,10 @@ export const GamesAppIcon = ({ width = 20, height = 20 }: { width?: number; heig
   );
 };
 
-export const EducationAppIcon = ({ width = 20, height = 20 }: { width?: number; height?: number }) => {
+export const EducationAppIcon = ({ width = 20, height = 20, className }: svgIconProps) => {
   return (
     <svg
-      className="rounded-sm"
+      className={cn('rounded-sm', className)}
       width={width}
       height={height}
       viewBox="0 0 100 100"
@@ -540,10 +543,10 @@ export const EducationAppIcon = ({ width = 20, height = 20 }: { width?: number; 
   );
 };
 
-export const CreativeAppIcon = ({ width, height }: svgIconProps) => {
+export const CreativeAppIcon = ({ width, height, className }: svgIconProps) => {
   return (
     <svg
-      className="rounded-sm"
+      className={cn('rounded-sm', className)}
       width={width}
       height={height}
       viewBox="0 0 100 100"
