@@ -9,8 +9,8 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+import AppIcons from '@/components/parts/AppIcons';
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
-import AppIcons from '@/components/parts/Icons';
 import { Subscription } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
