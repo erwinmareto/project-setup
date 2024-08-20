@@ -38,5 +38,6 @@ export const AVAILABLE_ICONS: Record<string, string> = {
   'category-education': 'Education',
   'category-entertainment': 'Entertainment',
   'category-games': 'Games',
-  'category-health': 'Health'
+  'category-health': 'Health',
+  others: 'Others'
 };
