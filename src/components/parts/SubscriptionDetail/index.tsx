@@ -186,9 +186,9 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
             <p className="font-medium text-primary-90 text-body-md capitalize">{data?.category}</p>
             <p className="font-medium text-primary-90 text-body-md">{formatIDR(data?.pricing)}</p>
             <p className="font-medium text-primary-90 text-body-md capitalize">{data?.cycle}</p>
-            <p className="font-medium text-primary-90 text-body-md">15 March 2024</p>
-            <p className="font-medium text-primary-90 text-body-md">15 July 2024</p>
-            <p className="font-medium text-primary-90 text-body-md">Dana - 08123456789</p>
+            <p className="font-medium text-primary-90 text-body-md">{format(data?.startPayment, 'dd MMM yyyy')}</p>
+            <p className="font-medium text-primary-90 text-body-md">{format(data?.nextPayment, 'dd MMM yyyy')}</p>
+            <p className="font-medium text-primary-90 text-body-md">{data?.paymentMethod}</p>
           </div>
         </div>
       </article>
