@@ -1,8 +1,16 @@
-export type SubscriptionCategory = 'entertainment' | 'work' | 'home' | 'games' | 'education' | 'health' | 'others';
+export type SubscriptionCategory =
+  | 'entertainment'
+  | 'work'
+  | 'home'
+  | 'games'
+  | 'education'
+  | 'health'
+  | 'others'
+  | undefined;
 
 export type SubStatus = 'inactive' | 'upcoming' | 'active' | 'overdue';
 
-export type Cycles = 'daily' | 'weekly' | 'monthly' | 'yearly';
+export type Cycles = 'daily' | 'weekly' | 'monthly' | 'yearly' | undefined;
 
 export type Subscription = {
   id: string;

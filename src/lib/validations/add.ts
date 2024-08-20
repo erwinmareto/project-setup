@@ -5,12 +5,16 @@ import { Cycles, SubscriptionCategory } from '@/components/parts/SubscriptionTab
 export const step1Schema = z.object({
   icon: z.string().min(2).max(50),
   appName: z.string().min(2).max(50),
-  category: z.custom<SubscriptionCategory>()
+  category: z.custom<SubscriptionCategory>().refine((val) => val !== undefined, {
+    message: 'Category is required'
+  })
 });
 
 export const step2Schema = z
   .object({
-    cycle: z.custom<Cycles>(),
+    cycle: z.custom<Cycles>().refine((val) => val !== undefined, {
+      message: 'Cycle is required'
+    }),
     paymentStart: z.date(),
     paymentEnd: z.date(),
     price: z.preprocess((val) => Number(val), z.number().min(1, 'Number must be greater than 0')),
@@ -26,6 +30,6 @@ export const step2Schema = z
   });
 
 export const step3Schema = z.object({
-  time: z.string(),
+  time: z.preprocess((val) => Number(val), z.number().min(1, 'Number must be greater than 0')),
   email: z.string().min(2).max(50)
 });
