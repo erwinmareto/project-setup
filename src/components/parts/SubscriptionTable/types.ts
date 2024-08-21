@@ -10,7 +10,7 @@ export type SubscriptionCategory =
 
 export type SubStatus = 'inactive' | 'upcoming' | 'active' | 'overdue';
 
-export type Cycles = 'daily' | 'weekly' | 'monthly' | 'yearly' | undefined;
+export type Cycles = 'daily' | 'weekly' | 'monthly' | '3 months' | '6 months' | 'yearly' | undefined;
 
 export type Subscription = {
   id: string;
