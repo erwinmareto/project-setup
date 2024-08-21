@@ -20,7 +20,7 @@ import { ALL_SUBSCRIPTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/query
 import { formatIDR } from '@/lib/utils';
 import { addSubscription, editSubscription } from '@/repositories/subscriptions';
 
-const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus: SubStatus; currentId?: string }) => {
+const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; currentId?: string }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
