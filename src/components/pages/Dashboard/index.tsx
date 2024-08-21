@@ -46,7 +46,7 @@ const Dashboard = () => {
               <OverviewCard
                 status="warning"
                 icon={<CalendarClock />}
-                totalSubscriptions={getStatusCount(data, 'upcoming')}
+                totalSubscriptions={getStatusCount(data, 'upcoming') + getStatusCount(data, 'overdue')}
                 title="Upcoming Subscriptions"
                 description="Manage all your upcoming subscriptions efficiently"
                 link="?status=upcoming"
