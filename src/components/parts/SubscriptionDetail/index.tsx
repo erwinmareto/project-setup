@@ -125,7 +125,11 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               title="Congratulations!"
               description="Your subscription has been marked as paid."
             >
-              <Button variant="secondary" onClick={markPaid} disabled={data?.status === 'active'}>
+              <Button
+                variant="secondary"
+                onClick={markPaid}
+                disabled={data?.status === 'active' || data?.status === 'inactive'}
+              >
                 <Check /> Mark as Paid
               </Button>
             </ConfirmationModal>
@@ -139,7 +143,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               description="Once cancelled, you will not be able to reactivate your subscription."
               cancleable
             >
-              <Button variant="destructive">
+              <Button variant="destructive" disabled={data?.status === 'inactive'}>
                 <X /> Cancel Subscription
               </Button>
             </ConfirmationModal>

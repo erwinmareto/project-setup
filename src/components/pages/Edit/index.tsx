@@ -122,7 +122,9 @@ const Edit = () => {
             pathname === `/edit/${id}/step-3` && <Step3Form prevData={step3Data} currentId={id as string} />
           )}
 
-          {pathname === `/edit/${id}/confirm` && <ConfirmFormSteps currentId={id as string} />}
+          {pathname === `/edit/${id}/confirm` && (
+            <ConfirmFormSteps prevStatus={data?.status} currentId={id as string} />
+          )}
         </section>
       </main>
     </section>

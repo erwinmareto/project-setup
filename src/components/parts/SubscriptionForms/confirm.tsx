@@ -20,7 +20,7 @@ import { ALL_SUBSCRIPTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/query
 import { formatIDR } from '@/lib/utils';
 import { addSubscription, editSubscription } from '@/repositories/subscriptions';
 
-const CofirmFormSteps = ({ currentId }: { currentId?: string }) => {
+const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus: SubStatus; currentId?: string }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -83,11 +83,13 @@ const CofirmFormSteps = ({ currentId }: { currentId?: string }) => {
   });
 
   const status: SubStatus =
-    differenceInDays(paymentStartGlobal as Date, new Date()) < 0
-      ? 'overdue'
-      : differenceInDays(paymentStartGlobal as Date, new Date()) < 7
-        ? 'upcoming'
-        : 'active';
+    prevStatus === 'inactive'
+      ? 'inactive'
+      : differenceInDays(paymentStartGlobal as Date, new Date()) < 0
+        ? 'overdue'
+        : differenceInDays(paymentStartGlobal as Date, new Date()) < 7
+          ? 'upcoming'
+          : 'active';
 
   // If you reload the dates will turn into strings
   const checkedPaymentStart =
