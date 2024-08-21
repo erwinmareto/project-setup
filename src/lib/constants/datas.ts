@@ -15,7 +15,7 @@ export const SUBSCRIPTION_PRICE_RANGES: SubscriptionPriceRanges = {
 
 export const SUBSCRIPTION_STATUS = ['Inactive', 'Upcoming', 'Active', 'Overdue'];
 
-export const SUBSCRIPTION_CYCLES = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
+export const SUBSCRIPTION_CYCLES = ['Daily', 'Weekly', 'Monthly', '3 Months', '6 Months', 'Yearly'];
 
 export const AVAILABLE_ICONS: Record<string, string> = {
   'creative-cloud': 'Creative Cloud',

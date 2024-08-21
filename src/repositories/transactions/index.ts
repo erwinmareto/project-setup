@@ -17,3 +17,12 @@ export const addTransaction = async (payload: Record<string, unknown>) => {
 
   return response;
 };
+
+export const deleteTransaction = async (id: string) => {
+  const response = await fetcher({
+    url: `/transactions/${id}`,
+    method: 'DELETE'
+  });
+
+  return response;
+};

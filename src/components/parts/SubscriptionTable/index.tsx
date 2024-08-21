@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -16,6 +17,7 @@ import {
 import { ChevronLeft, ChevronRight, Filter, Plus, Search, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import { NoSearchResult } from '@/assets/icons';
 import FilterDropdown from '@/components/parts/FilterDropdown';
@@ -28,6 +30,9 @@ import {
   SUBSCRIPTION_PRICE_RANGES,
   SUBSCRIPTION_STATUS
 } from '@/lib/constants/datas';
+import { ALL_SUBSCRIPTIONS_KEY, ALL_TRANSACTIONS_KEY } from '@/lib/constants/queryKeys';
+import { deleteSubscription } from '@/repositories/subscriptions';
+import { deleteTransaction } from '@/repositories/transactions';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,6 +41,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard' }: DataTableProps<TData, TValue>) => {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get('status');
 
@@ -66,6 +72,22 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
     }
   });
 
+  const deleteSubscriptionMutation = useMutation({
+    mutationFn: (id: string) => deleteSubscription(id),
+    onSuccess: () => {
+      toast.success('Subscription deleted successfully');
+      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+    }
+  });
+
+  const deleteTransactionMutation = useMutation({
+    mutationFn: (id: string) => deleteTransaction(id),
+    onSuccess: () => {
+      toast.success('Subscription deleted successfully');
+      queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+    }
+  });
+
   const handleOpenFilters = () => {
     setOpenFilters(!openFilters);
   };
@@ -79,18 +101,33 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
     return table.getColumn(title)?.setFilterValue(selectedValue);
   };
 
+  const handleDeleteSelection = () => {
+    const selectedRows = table.getSelectedRowModel().rows; // There are rows, flat rows and rows by Id
+    const originalDatas = selectedRows.map((row) => row.original);
+    if (variant === 'transactions') {
+      originalDatas.forEach((sub: any) => {
+        deleteTransactionMutation.mutate(sub.id);
+      });
+    } else {
+      originalDatas.forEach((sub: any) => {
+        deleteSubscriptionMutation.mutate(sub.id);
+      });
+    }
+    table.toggleAllRowsSelected(false);
+  };
+
   useEffect(() => {
     console.log(currentStatus, '!!><><><><><>!');
     table.getColumn('status')?.setFilterValue(currentStatus);
 
     // This is how to get the original datas
-    console.log(rowSelection, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log(!!rowSelection, '<>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+    // console.log(rowSelection, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    // console.log(!!rowSelection, '<>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 
     const selectedRows = table.getSelectedRowModel().rows; // There are rows, flat rows and rows by Id
     const originalDatas = selectedRows.map((row) => row.original);
-    console.log(originalDatas, '<<<<<<<<<<<<<<<<<<');
-  }, [currentStatus, rowSelection, table]);
+    console.log(originalDatas, 'tttttttt');
+  }, [currentStatus, table]);
 
   return (
     <>
@@ -117,7 +154,7 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
           </div>
           <div className="flex gap-2">
             {!!Object.keys(rowSelection).length && (
-              <Button variant="destructive" className="gap-2">
+              <Button variant="destructive" className="gap-2" onClick={handleDeleteSelection}>
                 <Trash2 />
                 Delete Selection
               </Button>
