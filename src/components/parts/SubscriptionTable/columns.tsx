@@ -5,7 +5,7 @@ import { format, parseISO } from 'date-fns';
 import { ChevronsUpDown } from 'lucide-react';
 import Link from 'next/link';
 
-import AppIcons from '@/components/parts/Icons';
+import AppIcons from '@/components/parts/AppIcons';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { formatIDR } from '@/lib/utils';

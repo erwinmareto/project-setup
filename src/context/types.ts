@@ -1,3 +1,5 @@
+import { Cycles, SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
+
 export type UserIdContextType = {
   userId: string;
   setUserId: (userId: string) => void;
@@ -6,23 +8,25 @@ export type UserIdContextType = {
 export type Step1ContextType = {
   icon: string;
   appName: string;
-  category: string;
+  category: SubscriptionCategory;
   setIcon: (icon: string) => void;
   setAppName: (appName: string) => void;
-  setCategory: (category: string) => void;
+  setCategory: (category: SubscriptionCategory) => void;
+  resetStep1Global: () => void;
 };
 
 export type Step2ContextType = {
-  cycle: string;
+  cycle: Cycles;
   paymentStart: Date;
   paymentEnd: Date;
-  price: string;
+  price: number;
   paymentMethod: string;
-  setCycle: (cycle: string) => void;
+  setCycle: (cycle: Cycles) => void;
   setPaymentStart: (paymentStart: Date) => void;
   setPaymentEnd: (paymentEnd: Date) => void;
-  setPrice: (price: string) => void;
+  setPrice: (price: number) => void;
   setPaymentMethod: (paymentMethod: string) => void;
+  resetStep2Global: () => void;
 };
 
 export type Step3ContextType = {
@@ -30,4 +34,5 @@ export type Step3ContextType = {
   email: string;
   setTime: (time: number) => void;
   setEmail: (email: string) => void;
+  resetStep3Global: () => void;
 };

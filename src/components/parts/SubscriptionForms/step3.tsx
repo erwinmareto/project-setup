@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft, ChevronRight, Mail } from 'lucide-react';
 import Link from 'next/link';
@@ -13,29 +15,43 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { useStep3Context } from '@/context/Step3Context';
+import { useStep2Form } from '@/context/step2Global';
+import { useStep3Form } from '@/context/step3Global';
 import { step3Schema } from '@/lib/validations/add';
 
 const Step3Form = () => {
   const router = useRouter();
-  const { email, time, setEmail, setTime } = useStep3Context();
+  const priceGlobal = useStep2Form((state) => state.price);
+  const emailGlobal = useStep3Form((state) => state.email);
+  const timeGlobal = useStep3Form((state) => state.time);
+  const setEmailGlobal = useStep3Form((state) => state.setEmail);
+  const setTimeGlobal = useStep3Form((state) => state.setTime);
 
   const step3Form = useForm<z.infer<typeof step3Schema>>({
     resolver: zodResolver(step3Schema),
     defaultValues: {
-      time: time.toString(),
-      email: email
+      time: timeGlobal.toString(),
+      email: emailGlobal
     }
   });
 
   function onSubmit(values: z.infer<typeof step3Schema>) {
-    console.log(values);
-
-    setEmail(values.email);
-    setTime(parseInt(values.time)); // don't know if it's going to be string or number
+    setEmailGlobal(values.email);
+    setTimeGlobal(parseInt(values.time));
 
     router.push('/add/confirm');
   }
+
+  useEffect(() => {
+    if (!priceGlobal) {
+      router.replace('/dashboard');
+    }
+
+    step3Form.reset({
+      time: timeGlobal.toString(),
+      email: emailGlobal
+    });
+  }, [router, step3Form, timeGlobal, emailGlobal, priceGlobal]);
 
   return (
     <Card className="px-6 py-8">

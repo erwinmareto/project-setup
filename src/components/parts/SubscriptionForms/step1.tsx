@@ -8,24 +8,31 @@ import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
+import AppIcons from '@/components/parts/AppIcons';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useStep1Context } from '@/context/Step1Context';
+import { useStep1Form } from '@/context/step1Global';
+import { AVAILABLE_ICONS } from '@/lib/constants/datas';
 import { step1Schema } from '@/lib/validations/add';
 
 const Step1Form = () => {
   const router = useRouter();
-  const { icon, appName, category, setIcon, setAppName, setCategory } = useStep1Context();
+  const iconGlobal = useStep1Form((state) => state.icon);
+  const appNameGlobal = useStep1Form((state) => state.appName);
+  const categoryGlobal = useStep1Form((state) => state.category);
+  const setIconGlobal = useStep1Form((state) => state.setIcon);
+  const setAppNameGlobal = useStep1Form((state) => state.setAppName);
+  const setCategoryGlobal = useStep1Form((state) => state.setCategory);
 
   const step1Form = useForm<z.infer<typeof step1Schema>>({
     resolver: zodResolver(step1Schema),
     defaultValues: {
-      icon: icon,
-      appName: appName,
-      category: category
+      icon: iconGlobal,
+      appName: appNameGlobal,
+      category: categoryGlobal
     }
   });
 
@@ -35,19 +42,38 @@ const Step1Form = () => {
   });
 
   function onSubmit(values: z.infer<typeof step1Schema>) {
-    console.log(values);
-    setIcon(values.icon);
-    setAppName(values.appName);
-    setCategory(values.category);
+    setIconGlobal(values.icon);
+    setAppNameGlobal(values.appName);
+    setCategoryGlobal(values.category);
 
     router.push('/add/step-2');
   }
 
   useEffect(() => {
-    // if (appName) return; // IF YOU GO BACK TO STEP 1 IT WILL RESET THE APP NAME TO THE VALUE OF ICON
-    step1Form.setValue('appName', selectedIcon);
-    console.log(icon, appName, category, '<<<<<<<<<<<<<<<<');
-  }, [selectedIcon, step1Form, icon, appName, category]);
+    step1Form.reset({
+      icon: iconGlobal,
+      appName: appNameGlobal,
+      category: categoryGlobal
+    });
+    // mark that the data is already put into the form
+    // formIsDone.current = true;
+  }, [iconGlobal, appNameGlobal, categoryGlobal, step1Form]);
+
+  useEffect(() => {
+    /**  this is supposed to check if the data is already put into the form 
+     because i want this to run only when the data is already put into the form
+     but doesn't work probably because of some rendering bullshit with react
+     if (formIsDone.current) {
+       step1Form.setValue('appName', AVAILABLE_ICONS[selectedIcon]);
+     }
+    */
+
+    // the icon selection will no longer update the app name but the data will persist
+    // * WITHOUT THE CHECK THIS WILL OVERRIDE THE GLOBAL STATE DATA WHENEVER YOU GO BACk TO THIS PAGE
+    if (!iconGlobal) {
+      step1Form.setValue('appName', AVAILABLE_ICONS[selectedIcon]);
+    }
+  }, [selectedIcon, step1Form, iconGlobal]);
 
   return (
     <Card className="px-6 py-8">
@@ -59,9 +85,13 @@ const Step1Form = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex items-center gap-4 ">
-                  <div className="flex justify-center items-center text-primary-50 bg-primary-20 p-6 rounded-xl">
-                    <ImagePlus />
-                  </div>
+                  {!field.value ? (
+                    <div className="flex justify-center items-center text-primary-50 bg-primary-20 p-6 rounded-xl">
+                      <ImagePlus />
+                    </div>
+                  ) : (
+                    <AppIcons iconName={field.value} width={52} height={52} className="rounded-xl" />
+                  )}
 
                   <div className="flex-1">
                     <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>
@@ -70,13 +100,15 @@ const Step1Form = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="bg-primary-0 mt-2">
-                          <SelectValue placeholder={icon} />
+                          <SelectValue placeholder={'Select an icon'} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="netflix">Netflix</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                        <SelectItem value="jira">Jira</SelectItem>
+                        {Object.keys(AVAILABLE_ICONS).map((icon) => (
+                          <SelectItem key={icon} value={icon}>
+                            {AVAILABLE_ICONS[icon]}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -93,7 +125,7 @@ const Step1Form = () => {
               <FormItem>
                 <FormLabel>Subscription Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g. Netflix" {...field} defaultValue={appName} />
+                  <Input placeholder="e.g. Netflix" {...field} />
                 </FormControl>
                 <FormDescription className="text-primary-60">
                   Subscription name will automatically fill based on your chosen popular apps
@@ -112,7 +144,7 @@ const Step1Form = () => {
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger className="bg-primary-0 mt-2">
-                      <SelectValue placeholder={category} />
+                      <SelectValue placeholder={'Select a category'} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -131,12 +163,10 @@ const Step1Form = () => {
           />
 
           <div className="flex justify-end">
-            {/* <Link href="/add/step-2"> */}
             <Button type="submit">
               Next
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
-            {/* </Link> */}
           </div>
         </form>
       </Form>

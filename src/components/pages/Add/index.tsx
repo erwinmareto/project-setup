@@ -15,18 +15,18 @@ import {
   BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
-import { useStep1Context } from '@/context/Step1Context';
-import { useStep2Context } from '@/context/Step2Context';
-import { useStep3Context } from '@/context/Step3Context';
+import { useStep1Form } from '@/context/step1Global';
+import { useStep2Form } from '@/context/step2Global';
+import { useStep3Form } from '@/context/step3Global';
 
 const Add = () => {
   const router = useRouter();
   const pathname = usePathname();
 
   const [warningOpen, setWarningOpen] = useState(false);
-  const { appName } = useStep1Context();
-  const { cycle } = useStep2Context();
-  const { email } = useStep3Context();
+  const appNameGlobal = useStep1Form((state) => state.appName);
+  const priceGlobal = useStep2Form((state) => state.price);
+  const emailGlobal = useStep3Form((state) => state.email);
 
   const handleWarningOpen = () => {
     setWarningOpen(!warningOpen);
@@ -57,50 +57,65 @@ const Add = () => {
             <BreadcrumbList>
               <BreadcrumbItem>
                 {/* {pathname === '/add/step-1' ? (
-                  <BreadcrumbPage order={1} className="text-primary-80">
+                  <BreadcrumbPage
+                    order={1}
+                    className="text-primary-80"
+                    isCurrent={pathname === '/add/step-1'}
+                    isFilled={!!appNameGlobal}
+                  >
                     Subscription Info
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink order={1} href="/add/step-1" isFilled={!!appName}>
+                  <BreadcrumbLink order={1} href="/add/step-1" isFilled={!!appNameGlobal}>
                     Subscription Info
                   </BreadcrumbLink>
                 )} */}
 
-                <BreadcrumbPage order={1} isFilled={!!appName} isCurrent={pathname === '/add/step-1'}>
+                <BreadcrumbPage order={1} isFilled={!!appNameGlobal} isCurrent={pathname === '/add/step-1'}>
                   Subscription Info
                 </BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 {/* {pathname === '/add/step-2' ? (
-                  <BreadcrumbPage order={2} className="text-primary-80">
+                  <BreadcrumbPage
+                    order={2}
+                    className="text-primary-80"
+                    isCurrent={pathname === '/add/step-2'}
+                    isFilled={!!priceGlobal}
+                  >
                     Payment Detail
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink order={2} href="/add/step-2" isFilled={!!cycle}>
+                  <BreadcrumbLink order={2} href="/add/step-2" isFilled={!!priceGlobal}>
                     Payment Detail
                   </BreadcrumbLink>
                 )} */}
 
-                <BreadcrumbPage order={2} isFilled={!!cycle} isCurrent={pathname === '/add/step-2'}>
+                <BreadcrumbPage order={2} isFilled={!!priceGlobal} isCurrent={pathname === '/add/step-2'}>
                   Payment Detail
                 </BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 {/* {pathname === '/add/step-3' ? (
-                  <BreadcrumbPage order={3} className="text-primary-80">
+                  <BreadcrumbPage
+                    order={3}
+                    className="text-primary-80"
+                    isCurrent={pathname === '/add/step-3'}
+                    isFilled={!!emailGlobal}
+                  >
                     Reminder Settings
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink order={3} href="/add/step-3" isFilled={!!email}>
+                  <BreadcrumbLink order={3} href="/add/step-3" isFilled={!!emailGlobal}>
                     Reminder Settings
                   </BreadcrumbLink>
                 )} */}
 
                 <BreadcrumbPage
                   order={3}
-                  isFilled={!!email}
+                  isFilled={!!emailGlobal}
                   isCurrent={pathname === '/add/step-3'}
                   // className={`${pathname === '/add/step-3' && 'text-primary-80'}`}
                 >

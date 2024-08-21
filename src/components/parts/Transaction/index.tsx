@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-import AppIcons from '@/components/parts/Icons';
+import AppIcons from '@/components/parts/AppIcons';
 import { formatIDR } from '@/lib/utils';
 
 // date should probably be type Date and icon is either a file path(string) or a ReactNode

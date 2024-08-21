@@ -3,15 +3,18 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 import { SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
 
+import { Step1ContextType } from './types';
+
 export const useStep1Form = create(
-  persist(
+  persist<Step1ContextType>(
     (set) => ({
       icon: '',
       appName: '',
-      category: '',
+      category: 'others',
       setIcon: (icon: string) => set({ icon }),
       setAppName: (appName: string) => set({ appName }),
-      setCategory: (category: SubscriptionCategory) => set({ category })
+      setCategory: (category: SubscriptionCategory) => set({ category }),
+      resetStep1Global: () => set({ icon: '', appName: '', category: 'others' })
     }),
     {
       name: 'step-1-data',

@@ -1,6 +1,6 @@
 import { differenceInDays, format } from 'date-fns';
 
-import AppIcons from '@/components/parts/Icons';
+import AppIcons from '@/components/parts/AppIcons';
 import { SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { formatIDR } from '@/lib/utils';

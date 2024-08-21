@@ -15,6 +15,16 @@ export const getSubscriptionById = async (id: string) => {
   return response;
 };
 
+export const addSubscription = async (payload: Record<string, unknown>) => {
+  const response = await fetcher({
+    url: '/subscriptions',
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+
+  return response;
+};
+
 export const editSubscription = async (id: string, payload: Record<string, unknown>) => {
   const response = await fetcher({
     url: `/subscriptions/${id}`,

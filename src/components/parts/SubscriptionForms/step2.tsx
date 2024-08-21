@@ -19,58 +19,70 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { useStep1Context } from '@/context/Step1Context';
-import { useStep2Context } from '@/context/Step2Context';
+import { useStep1Form } from '@/context/step1Global';
+import { useStep2Form } from '@/context/step2Global';
 import { cn } from '@/lib/utils';
 import { step2Schema } from '@/lib/validations/add';
 
 const Step2Form = () => {
   const router = useRouter();
-  const { icon, appName, category } = useStep1Context();
-
-  const {
-    cycle,
-    paymentStart,
-    paymentEnd,
-    price,
-    paymentMethod,
-    setCycle,
-    setPaymentStart,
-    setPaymentEnd,
-    setPrice,
-    setPaymentMethod
-  } = useStep2Context();
+  const appNameGlobal = useStep1Form((state) => state.appName);
+  const cycleGlobal = useStep2Form((state) => state.cycle);
+  const paymentStartGlobal = useStep2Form((state) => state.paymentStart);
+  const paymentEndGlobal = useStep2Form((state) => state.paymentEnd);
+  const priceGlobal = useStep2Form((state) => state.price);
+  const paymentMethodGlobal = useStep2Form((state) => state.paymentMethod);
+  const setCycleGlobal = useStep2Form((state) => state.setCycle);
+  const setPaymentStartGlobal = useStep2Form((state) => state.setPaymentStart);
+  const setPaymentEndGlobal = useStep2Form((state) => state.setPaymentEnd);
+  const setPriceGlobal = useStep2Form((state) => state.setPrice);
+  const setPaymentMethodGlobal = useStep2Form((state) => state.setPaymentMethod);
 
   const step2Form = useForm<z.infer<typeof step2Schema>>({
     resolver: zodResolver(step2Schema),
     defaultValues: {
-      cycle: cycle,
-      paymentStart: paymentStart,
-      paymentEnd: paymentEnd,
-      price: price,
-      paymentMethod: paymentMethod
+      cycle: cycleGlobal,
+      paymentStart: paymentStartGlobal,
+      paymentEnd: paymentEndGlobal,
+      price: priceGlobal,
+      paymentMethod: paymentMethodGlobal
     }
   });
 
   function onSubmit(values: z.infer<typeof step2Schema>) {
     console.log(values);
 
-    setCycle(values.cycle);
-    setPaymentStart(values.paymentStart);
-    setPaymentEnd(values.paymentEnd);
-    setPrice(values.price);
-    setPaymentMethod(values.paymentMethod);
+    setCycleGlobal(values.cycle);
+    setPaymentStartGlobal(values.paymentStart);
+    setPaymentEndGlobal(values.paymentEnd);
+    setPriceGlobal(values.price);
+    setPaymentMethodGlobal(values.paymentMethod);
 
     router.push('/add/step-3');
   }
 
   useEffect(() => {
-    console.log(icon, appName, category);
+    step2Form.reset({
+      cycle: cycleGlobal,
+      paymentStart: new Date(paymentStartGlobal),
+      paymentEnd: new Date(paymentEndGlobal),
+      price: priceGlobal,
+      paymentMethod: paymentMethodGlobal
+    });
 
-    if (!icon && !appName && !category) {
-      router.back();
+    if (!appNameGlobal) {
+      router.replace('/dashboard');
     }
-  });
+  }, [
+    cycleGlobal,
+    paymentStartGlobal,
+    paymentEndGlobal,
+    priceGlobal,
+    paymentMethodGlobal,
+    step2Form,
+    appNameGlobal,
+    router
+  ]);
 
   return (
     <Card className="px-6 py-8">
@@ -169,7 +181,7 @@ const Step2Form = () => {
                       <Separator orientation="vertical" />
                     </div>
 
-                    <Input placeholder="0" {...field} className="rounded-l-none" />
+                    <Input type="string" placeholder="0" {...field} className="rounded-l-none" />
                   </div>
                 </FormControl>
                 <FormMessage />
