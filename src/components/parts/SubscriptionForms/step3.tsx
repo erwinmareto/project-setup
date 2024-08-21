@@ -19,7 +19,9 @@ import { useStep2Form } from '@/context/step2Global';
 import { useStep3Form } from '@/context/step3Global';
 import { step3Schema } from '@/lib/validations/add';
 
-const Step3Form = () => {
+import { StepFormProps } from './types';
+
+const Step3Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step3Schema>>) => {
   const router = useRouter();
   const priceGlobal = useStep2Form((state) => state.price);
   const emailGlobal = useStep3Form((state) => state.email);
@@ -28,30 +30,35 @@ const Step3Form = () => {
   const setTimeGlobal = useStep3Form((state) => state.setTime);
 
   const step3Form = useForm<z.infer<typeof step3Schema>>({
-    resolver: zodResolver(step3Schema),
-    defaultValues: {
-      time: timeGlobal.toString(),
-      email: emailGlobal
-    }
+    resolver: zodResolver(step3Schema)
   });
 
   function onSubmit(values: z.infer<typeof step3Schema>) {
-    setEmailGlobal(values.email);
-    setTimeGlobal(parseInt(values.time));
+    console.log(values, '333333333333333333');
 
-    router.push('/add/confirm');
+    setEmailGlobal(values.email);
+    setTimeGlobal(values.time);
+
+    if (currentId) {
+      return router.push(`/edit/${currentId}/confirm`);
+    }
+
+    return router.push('/add/confirm');
   }
 
   useEffect(() => {
+    console.log(priceGlobal, 'PPPPPPPPPPPPPPPPPPP');
+    console.log(timeGlobal, 'TTTTTTTTTTTTTTTT');
+    step3Form.reset({
+      time: timeGlobal ? timeGlobal : prevData?.time,
+      email: emailGlobal || prevData?.email
+    });
+
+    // if you reload this will trigger because for some reason global state isn't there in the very beginning
     if (!priceGlobal) {
       router.replace('/dashboard');
     }
-
-    step3Form.reset({
-      time: timeGlobal.toString(),
-      email: emailGlobal
-    });
-  }, [router, step3Form, timeGlobal, emailGlobal, priceGlobal]);
+  }, [router, step3Form, timeGlobal, emailGlobal, priceGlobal, prevData?.time, prevData?.email]);
 
   return (
     <Card className="px-6 py-8">
@@ -63,10 +70,10 @@ const Step3Form = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Remind me</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger className="bg-primary-0 mt-2">
-                      <SelectValue placeholder="Select reminder" />
+                      <SelectValue placeholder={field.value ? `${field.value} days before` : 'Select reminder'} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -104,7 +111,11 @@ const Step3Form = () => {
           />
 
           <div className="flex justify-end gap-2">
-            <Link href="/add/step-2">
+            {/* {!currentId ? (
+              <Loader2 className="text-secondary-40 animate-spin" />
+            ) : (
+              <> */}
+            <Link href={currentId ? `/edit/${currentId}/step-2` : '/add/step-2'}>
               <Button type="button" variant="secondary">
                 <ChevronLeft className="w-4 h-4 mr-2" />
                 Prev
@@ -114,6 +125,8 @@ const Step3Form = () => {
               Next
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
+            {/* </>
+            )} */}
           </div>
         </form>
       </Form>

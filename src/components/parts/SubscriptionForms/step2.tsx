@@ -24,7 +24,9 @@ import { useStep2Form } from '@/context/step2Global';
 import { cn } from '@/lib/utils';
 import { step2Schema } from '@/lib/validations/add';
 
-const Step2Form = () => {
+import { StepFormProps } from './types';
+
+const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Schema>>) => {
   const router = useRouter();
   const appNameGlobal = useStep1Form((state) => state.appName);
   const cycleGlobal = useStep2Form((state) => state.cycle);
@@ -39,49 +41,66 @@ const Step2Form = () => {
   const setPaymentMethodGlobal = useStep2Form((state) => state.setPaymentMethod);
 
   const step2Form = useForm<z.infer<typeof step2Schema>>({
-    resolver: zodResolver(step2Schema),
-    defaultValues: {
-      cycle: cycleGlobal,
-      paymentStart: paymentStartGlobal,
-      paymentEnd: paymentEndGlobal,
-      price: priceGlobal,
-      paymentMethod: paymentMethodGlobal
-    }
+    resolver: zodResolver(step2Schema)
   });
 
   function onSubmit(values: z.infer<typeof step2Schema>) {
-    console.log(values);
-
     setCycleGlobal(values.cycle);
     setPaymentStartGlobal(values.paymentStart);
     setPaymentEndGlobal(values.paymentEnd);
     setPriceGlobal(values.price);
     setPaymentMethodGlobal(values.paymentMethod);
 
-    router.push('/add/step-3');
+    if (currentId) {
+      return router.push(`/edit/${currentId}/step-3`);
+    }
+    return router.push('/add/step-3');
   }
 
   useEffect(() => {
-    step2Form.reset({
-      cycle: cycleGlobal,
-      paymentStart: new Date(paymentStartGlobal),
-      paymentEnd: new Date(paymentEndGlobal),
-      price: priceGlobal,
-      paymentMethod: paymentMethodGlobal
-    });
+    // If you reload the dates will turn into strings
+    let typedStartDate: Date | undefined = undefined;
+    let typedEndDate: Date | undefined = undefined;
+    if (typeof paymentStartGlobal === 'string' || paymentStartGlobal !== undefined) {
+      typedStartDate = new Date(paymentStartGlobal);
+    }
+    if (typeof paymentEndGlobal === 'string' || paymentEndGlobal !== undefined) {
+      typedEndDate = new Date(paymentEndGlobal);
+    }
 
+    if (currentId) {
+      step2Form.reset({
+        cycle: cycleGlobal || prevData?.cycle,
+        paymentStart: typedStartDate || new Date(prevData?.paymentStart as Date),
+        paymentEnd: typedEndDate || new Date(prevData?.paymentEnd as Date),
+        price: priceGlobal || prevData?.price,
+        paymentMethod: paymentMethodGlobal || prevData?.paymentMethod
+      });
+    } else {
+      step2Form.reset({
+        cycle: cycleGlobal || prevData?.cycle,
+        paymentStart: typedStartDate || new Date(),
+        paymentEnd: typedEndDate || new Date(),
+        price: priceGlobal || prevData?.price,
+        paymentMethod: paymentMethodGlobal || prevData?.paymentMethod
+      });
+    }
+
+    // if you reload this will trigger because for some reason global state isn't there in the very beginning
     if (!appNameGlobal) {
       router.replace('/dashboard');
     }
   }, [
+    router,
+    prevData,
+    currentId,
     cycleGlobal,
     paymentStartGlobal,
     paymentEndGlobal,
     priceGlobal,
     paymentMethodGlobal,
     step2Form,
-    appNameGlobal,
-    router
+    appNameGlobal
   ]);
 
   return (
@@ -96,8 +115,8 @@ const Step2Form = () => {
                 <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Payment Cycle</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger className="bg-primary-0 mt-2">
-                      <SelectValue placeholder="Select cycle" />
+                    <SelectTrigger className="bg-primary-0 mt-2 capitalize">
+                      <SelectValue placeholder={field.value || 'Select cycle'} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -271,12 +290,19 @@ const Step2Form = () => {
           />
 
           <div className="flex justify-end gap-2">
-            <Link href="/add/step-1">
+            {/* {!currentId ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <> */}
+            <Link href={currentId ? `/edit/${currentId}/step-1` : '/add/step-1'}>
               <Button type="button" variant="secondary">
                 <ChevronLeft className="w-4 h-4 mr-2" />
                 Prev
               </Button>
             </Link>
+            {/* </>
+            )} */}
+
             <Button type="submit">
               Next
               <ChevronRight className="w-4 h-4 ml-2" />

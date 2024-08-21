@@ -8,9 +8,9 @@ import { Step2ContextType } from './types';
 export const useStep2Form = create(
   persist<Step2ContextType>(
     (set) => ({
-      cycle: 'monthly',
-      paymentStart: new Date(),
-      paymentEnd: new Date(),
+      cycle: undefined,
+      paymentStart: undefined,
+      paymentEnd: undefined,
       price: 0,
       paymentMethod: '',
       setCycle: (cycle: Cycles) => set({ cycle }),
@@ -19,7 +19,7 @@ export const useStep2Form = create(
       setPrice: (price: number) => set({ price }),
       setPaymentMethod: (paymentMethod: string) => set({ paymentMethod }),
       resetStep2Global: () =>
-        set({ cycle: 'monthly', paymentStart: new Date(), paymentEnd: new Date(), price: 0, paymentMethod: '' })
+        set({ cycle: undefined, paymentStart: undefined, paymentEnd: undefined, price: 0, paymentMethod: '' })
     }),
     {
       name: 'step-2-data',

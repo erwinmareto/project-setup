@@ -18,7 +18,9 @@ import { useStep1Form } from '@/context/step1Global';
 import { AVAILABLE_ICONS } from '@/lib/constants/datas';
 import { step1Schema } from '@/lib/validations/add';
 
-const Step1Form = () => {
+import { StepFormProps } from './types';
+
+const Step1Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step1Schema>>) => {
   const router = useRouter();
   const iconGlobal = useStep1Form((state) => state.icon);
   const appNameGlobal = useStep1Form((state) => state.appName);
@@ -28,12 +30,7 @@ const Step1Form = () => {
   const setCategoryGlobal = useStep1Form((state) => state.setCategory);
 
   const step1Form = useForm<z.infer<typeof step1Schema>>({
-    resolver: zodResolver(step1Schema),
-    defaultValues: {
-      icon: iconGlobal,
-      appName: appNameGlobal,
-      category: categoryGlobal
-    }
+    resolver: zodResolver(step1Schema)
   });
 
   const selectedIcon = useWatch({
@@ -46,18 +43,25 @@ const Step1Form = () => {
     setAppNameGlobal(values.appName);
     setCategoryGlobal(values.category);
 
-    router.push('/add/step-2');
+    if (currentId) {
+      return router.push(`/edit/${currentId}/step-2`);
+    }
+    return router.push('/add/step-2');
   }
 
   useEffect(() => {
     step1Form.reset({
-      icon: iconGlobal,
-      appName: appNameGlobal,
-      category: categoryGlobal
+      icon: iconGlobal || prevData?.icon,
+      appName: appNameGlobal || prevData?.appName,
+      category: categoryGlobal || prevData?.category
     });
+
+    console.log(categoryGlobal, 'CGGGGGG');
+    console.log(prevData?.category, 'PPPPPPPP');
+
     // mark that the data is already put into the form
     // formIsDone.current = true;
-  }, [iconGlobal, appNameGlobal, categoryGlobal, step1Form]);
+  }, [iconGlobal, appNameGlobal, categoryGlobal, step1Form, prevData]);
 
   useEffect(() => {
     /**  this is supposed to check if the data is already put into the form 
@@ -67,13 +71,14 @@ const Step1Form = () => {
        step1Form.setValue('appName', AVAILABLE_ICONS[selectedIcon]);
      }
     */
+    if (prevData) return;
 
     // the icon selection will no longer update the app name but the data will persist
     // * WITHOUT THE CHECK THIS WILL OVERRIDE THE GLOBAL STATE DATA WHENEVER YOU GO BACk TO THIS PAGE
     if (!iconGlobal) {
       step1Form.setValue('appName', AVAILABLE_ICONS[selectedIcon]);
     }
-  }, [selectedIcon, step1Form, iconGlobal]);
+  }, [selectedIcon, step1Form, iconGlobal, prevData]);
 
   return (
     <Card className="px-6 py-8">
@@ -100,7 +105,7 @@ const Step1Form = () => {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="bg-primary-0 mt-2">
-                          <SelectValue placeholder={'Select an icon'} />
+                          <SelectValue placeholder={AVAILABLE_ICONS[field.value] || 'Select an icon'} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -143,8 +148,8 @@ const Step1Form = () => {
                 <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Category</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger className="bg-primary-0 mt-2">
-                      <SelectValue placeholder={'Select a category'} />
+                    <SelectTrigger className="bg-primary-0 mt-2 capitalize">
+                      <SelectValue placeholder={field.value || 'Select a category'} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>

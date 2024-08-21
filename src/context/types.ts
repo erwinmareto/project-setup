@@ -17,8 +17,8 @@ export type Step1ContextType = {
 
 export type Step2ContextType = {
   cycle: Cycles;
-  paymentStart: Date;
-  paymentEnd: Date;
+  paymentStart: Date | undefined;
+  paymentEnd: Date | undefined;
   price: number;
   paymentMethod: string;
   setCycle: (cycle: Cycles) => void;

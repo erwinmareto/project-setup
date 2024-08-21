@@ -10,11 +10,11 @@ export const useStep1Form = create(
     (set) => ({
       icon: '',
       appName: '',
-      category: 'others',
+      category: undefined,
       setIcon: (icon: string) => set({ icon }),
       setAppName: (appName: string) => set({ appName }),
       setCategory: (category: SubscriptionCategory) => set({ category }),
-      resetStep1Global: () => set({ icon: '', appName: '', category: 'others' })
+      resetStep1Global: () => set({ icon: '', appName: '', category: undefined })
     }),
     {
       name: 'step-1-data',

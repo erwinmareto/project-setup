@@ -12,7 +12,7 @@ export interface AppIconProps {
 }
 
 const AppIcons = ({ iconName, width, height, className }: AppIconProps) => {
-  if (iconName === 'default' || !iconName) return <Tag width={width} height={height} className={className} />;
+  if (iconName === 'others' || !iconName) return <Tag width={width} height={height} className={className} />;
   if (iconName === 'category-health') return <HealthAppIcon width={width} height={height} className={className} />;
   if (iconName === 'category-entertainment')
     return <EntertainmentAppIcon width={width} height={height} className={className} />;
