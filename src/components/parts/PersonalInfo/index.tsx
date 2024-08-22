@@ -32,10 +32,12 @@ const PersonalInfo = () => {
   const { data } = useGetProfileById(userId);
 
   const profileMutation = useMutation({
-    mutationFn: (data: z.infer<typeof profileSchema>) => editProfile(userId, data),
-    onSuccess: (data) => {
+    mutationFn: editProfile,
+    onSuccess: () => {
       toast.success('Profile updated successfully');
-      queryClient.setQueryData([PROFILE_BY_ID, userId], data);
+      queryClient.invalidateQueries({
+        queryKey: [PROFILE_BY_ID, userId]
+      });
     }
   });
 
