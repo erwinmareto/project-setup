@@ -1,4 +1,6 @@
-import { ReactNode } from 'react';
+'use client';
+
+import { cloneElement, ReactElement, useState } from 'react';
 
 import { TrendingUp } from 'lucide-react';
 
@@ -8,24 +10,34 @@ import { Separator } from '@/components/ui/separator';
 
 // will probably need prop for the date range select
 export interface ChartInfoProps {
-  children?: ReactNode;
+  children: ReactElement;
+  transactionYears: number[];
   total: 'spendings' | 'cost';
 }
 
-const ChartInfo = ({ children, total }: ChartInfoProps) => {
+const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+  const handleSelectedYear = (year: string) => {
+    setSelectedYear(+year);
+  };
+
   return (
     <div className="bg-primary-0 p-5 mt-4">
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col gap-2">
           <p className="font-medium text-primary-80 text-body-xs md:text-body-lg">Time Frame</p>
-          <Select>
+          <Select value={selectedYear.toString()} onValueChange={handleSelectedYear}>
             <SelectTrigger className="bg-muted">
               <SelectValue placeholder="This year" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="apple">2023-2024</SelectItem>
-                <SelectItem value="banana">20222-2023</SelectItem>
+                {transactionYears.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {`${year - 1}-${year}`}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -60,7 +72,7 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
 
       <Separator className="my-4" />
 
-      {children}
+      {cloneElement(children, { selectedYear: selectedYear })}
     </div>
   );
 };

@@ -1,7 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
+import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import {
   ChartConfig,
   ChartContainer,
@@ -11,7 +14,24 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 
-const SpendingsChart = () => {
+export interface SpendingsChartProps {
+  data?: Transaction[];
+  selectedYear?: number;
+}
+
+const SpendingsChart = ({ data, selectedYear }: SpendingsChartProps) => {
+  const selectedYearData = data?.filter(
+    (transaction) => new Date(transaction.paymentDate).getFullYear() === selectedYear
+  );
+
+  const prevYearData = data?.filter(
+    (transaction) => new Date(transaction.paymentDate).getFullYear() === (selectedYear as number) - 1
+  );
+  useEffect(() => {
+    console.log(selectedYearData, 'yearrrrrrrrr');
+    console.log(prevYearData, 'prevYearData');
+  }, [selectedYearData, prevYearData]);
+
   const chartData = [
     { month: 'January', 2024: 145, 2023: 282 },
     { month: 'February', 2024: 312, 2023: 197 },
