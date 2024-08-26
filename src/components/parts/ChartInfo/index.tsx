@@ -19,8 +19,8 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
         <div className="flex flex-col gap-2">
           <p className="font-medium text-primary-80 text-body-xs md:text-body-lg">Time Frame</p>
           <Select>
-            <SelectTrigger className="bg-muted">
-              <SelectValue placeholder="This year" />
+            <SelectTrigger className="bg-muted max-sm:max-w-[4.75rem]">
+              <SelectValue placeholder="This year" className="text-[0.65rem]" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -32,18 +32,22 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
         </div>
 
         {total === 'spendings' ? (
-          <div className="flex gap-7">
+          <div className="flex gap-3 md:gap-7">
             <div>
-              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">Spent Last Year</p>
-              <h4 className="font-semibold text-heading-6 md:text-heading-4">Rp 575.000</h4>
+              <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent Last Year</p>
+              <h4 className="font-semibold text-body-sm md:text-heading-4">Rp 575.000</h4>
             </div>
             <div>
-              <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">Spent This Year</p>
+              <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent This Year</p>
               <div className="flex justify-center items-center gap-2">
-                <h4 className="font-semibold text-heading-6 md:text-heading-4">Rp 825.000</h4>
+                <h4 className="font-semibold text-body-sm md:text-heading-4">Rp 825.000</h4>
 
-                <Badge variant="active" className="text-[0.5rem] h-5 border-success-foreground">
-                  <TrendingUp className="w-3 h-3" /> + 20
+                <Badge
+                  variant="active"
+                  className="text-[0.25rem] h-2.5 border border-success-foreground 
+                  md:h-5 sm:text-[0.5rem] max-sm:px-0.5"
+                >
+                  <TrendingUp className="w-1.5 h-1.5 md:w-3 md:h-3" /> + 20
                 </Badge>
               </div>
             </div>
