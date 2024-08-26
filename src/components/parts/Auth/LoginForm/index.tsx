@@ -68,7 +68,7 @@ const LoginForm = () => {
 
   return (
     <Form {...loginForm}>
-      <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col space-y-8">
+      <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col gap-8">
         <FormField
           control={loginForm.control}
           name="email"
@@ -111,8 +111,8 @@ const LoginForm = () => {
           )}
         />
 
-        <div className="flex flex-col justify-center gap-4 overflow-hidden">
-          <Button type="submit">Submit</Button>
+        <div className="flex flex-col justify-center gap-4 overflow-hidden max-md:mt-[8.5rem]">
+          <Button type="submit">Sign In</Button>
           <div className="flex justify-center items-center gap-3">
             <Separator className="w-1/2" />
             <p className="font-medium text-primary-35 text-body-md">or</p>

@@ -28,15 +28,15 @@ const CheckEmail = () => {
     }
   }, [timer]);
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center px-10 py-20">
+    <main className="min-h-screen flex flex-col justify-center items-center px-4 py-20 lg:px-10">
       <section>
-        <article className="flex flex-col gap-9">
-          <div className="flex flex-col items-start gap-2 max-w-[32rem]">
+        <article className="flex flex-col text-center gap-9">
+          <div className="max-w-[32rem] flex flex-col items-center gap-2 lg:items-start">
             <div className="bg-secondary-0 p-3 rounded-full">
               <Lock className="w-7 h-7 text-secondary-40" />
             </div>
-            <h3 className="font-semibold text-primary-70 text-heading-3">Check your email</h3>
-            <p className="text-primary-45">
+            <h3 className="font-semibold text-primary-70 text-heading-4 md:text-heading-3">Check your email</h3>
+            <p className="text-primary-45 text-body-sm md:text-body-md">
               We have sent a password reset link to{' '}
               <span className="font-semibold text-primary-70">yourmail@mail.com</span>
             </p>
@@ -55,12 +55,6 @@ const CheckEmail = () => {
                 'Resend email'
               )}
             </Button>
-            <p className="font-medium text-primary-45 text-center">
-              Didn&apos;t receive an email?{' '}
-              <Link href="/register" className="text-secondary-40 hover:underline">
-                Click to resend
-              </Link>
-            </p>
             <Link href="/login">
               <Button variant="link" type="button" className="w-full text-primary-55">
                 <ArrowLeft className="w-4 h-4 mr-2" />
