@@ -27,7 +27,7 @@ const SideAuth = () => {
   }, [api]);
 
   return (
-    <section className="relative hidden lg:grid lg:col-span-6 bg-secondary-40 rounded-lg px-5 py-6 overflow-hidden">
+    <section className="relative hidden bg-secondary-40 rounded-lg px-5 py-6 overflow-hidden lg:grid lg:col-span-6">
       <BackgroundSquares />
       <div className="flex flex-col gap-[8.3rem]">
         <div className="flex gap-3">
