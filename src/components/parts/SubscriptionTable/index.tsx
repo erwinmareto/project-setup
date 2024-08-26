@@ -31,6 +31,7 @@ import {
   SUBSCRIPTION_STATUS
 } from '@/lib/constants/datas';
 import { ALL_SUBSCRIPTIONS_KEY, ALL_TRANSACTIONS_KEY } from '@/lib/constants/queryKeys';
+import { cn } from '@/lib/utils';
 import { deleteSubscription } from '@/repositories/subscriptions';
 import { deleteTransaction } from '@/repositories/transactions';
 
@@ -132,10 +133,15 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
   return (
     <>
       <div className="flex flex-col gap-4 mb-8">
-        <div className="flex justify-between">
-          <div className="flex items-center gap-2 w-1/3">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2 lg:w-1/3 max-md:max-w-[11.25rem]">
             {variant !== 'transactions' && (
-              <Button size="icon" variant="secondary" onClick={handleOpenFilters} className="p-3">
+              <Button
+                size="icon"
+                variant="secondary"
+                onClick={handleOpenFilters}
+                className={cn('p-3', openFilters && 'ring-secondary-40 ring-2')}
+              >
                 <Filter />
               </Button>
             )}
@@ -152,7 +158,8 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
+
+          <div className="hidden gap-2 lg:flex">
             {!!Object.keys(rowSelection).length && (
               <Button variant="destructive" className="gap-2" onClick={handleDeleteSelection}>
                 <Trash2 />
@@ -175,16 +182,44 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
             )}
 
             {variant === 'transactions' && (
-              <Button variant="secondary" onClick={handleOpenFilters} className="gap-1">
+              <Button
+                variant="secondary"
+                onClick={handleOpenFilters}
+                className={cn('gap-1', openFilters && 'ring-secondary-40 ring-2')}
+              >
                 <Filter className="w-4 h-4" />
                 Filter
               </Button>
             )}
           </div>
+
+          <div className="flex gap-2 lg:hidden">
+            {!!Object.keys(rowSelection).length && (
+              <Button variant="destructive" size="icon" className="gap-2" onClick={handleDeleteSelection}>
+                <Trash2 />
+              </Button>
+            )}
+            {variant === 'transactions' ? (
+              <Button
+                variant="secondary"
+                onClick={handleOpenFilters}
+                className={cn('gap-1 lg:hidden', openFilters && 'ring-secondary-40 ring-2')}
+              >
+                <Filter className="w-4 h-4" />
+                Filter
+              </Button>
+            ) : (
+              <Link href="/add/step-1">
+                <Button className="gap-2" size="icon">
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
 
         {openFilters && (
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4 lg:flex-row">
             <FilterDropdown filterFn={handleFilterValue} title="category" data={SUBSCRIPTION_CATEGORIES} />
             <FilterDropdown filterFn={handleFilterValue} title="status" data={SUBSCRIPTION_STATUS} />
             {variant === 'list' && (
@@ -236,7 +271,7 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
       </section>
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="flex justify-center items-center gap-6">
-          <p>Rows per page </p>
+          <p className="max-sm:text-sm">Rows per page </p>
           <Input
             type="number"
             defaultValue={5}
@@ -245,7 +280,7 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
           />
         </div>
         <div className="flex items-center justify-end gap-8">
-          <p>{`Page ${pagination.pageIndex + 1} of ${table.getPageCount()}`}</p>
+          <p className="max-md:hidden">{`Page ${pagination.pageIndex + 1} of ${table.getPageCount()}`}</p>
           <div className="flex items-center justify-end gap-2">
             <Button
               variant="secondary"
