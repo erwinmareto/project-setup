@@ -33,7 +33,7 @@ const RightContent = () => {
   };
 
   return (
-    <div className="flex justify-center items-center gap-5">
+    <div className="hidden justify-center items-center gap-5 lg:flex">
       <DropdownMenu open={isOpen} onOpenChange={handleIsOpen}>
         <DropdownMenuTrigger>
           <Bell />
