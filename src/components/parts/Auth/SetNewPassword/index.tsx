@@ -45,6 +45,7 @@ const SetNewPasswordForm = () => {
       imagePath="/modal-icons/success.png"
       title="Congratulations!"
       description="Your password has been reset, you can login with your new password"
+      buttonText="Back to Login"
       openState={openModal}
       openHandler={handleOpenModal}
       clickEvent={() => router.push('/dashboard')}
