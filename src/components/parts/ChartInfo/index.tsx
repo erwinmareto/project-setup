@@ -19,8 +19,11 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
         <div className="flex flex-col gap-2">
           <p className="font-medium text-primary-80 text-body-xs md:text-body-lg">Time Frame</p>
           <Select>
-            <SelectTrigger className="bg-muted max-sm:max-w-[4.75rem]">
-              <SelectValue placeholder="This year" className="text-[0.65rem]" />
+            <SelectTrigger
+              className="bg-muted max-sm:max-w-[4.75rem] 
+            max-sm:max-h-[1.75rem] max-sm:text-[0.65rem] max-sm:px-[0.4rem] max-sm:py-[0.3rem]"
+            >
+              <SelectValue placeholder="This year" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

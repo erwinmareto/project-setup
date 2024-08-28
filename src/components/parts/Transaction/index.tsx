@@ -15,13 +15,18 @@ const Transaction = ({ icon, appName, date, pricing }: TransactionProps) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-4">
-        <AppIcons iconName={icon} width={52} height={52} className="rounded-xl" />
+        <AppIcons
+          iconName={icon}
+          width={52}
+          height={52}
+          className="w-[2.5rem] h-[2.5rem] rounded-xl md:w-[3.25rem] md:h-[3.25rem]"
+        />
         <div>
-          <p className="font-medium text-primary-80 text-body-lg">{appName}</p>
-          <p className="font-medium text-primary-50 text-body-sm">{format(date, 'dd MMM yyyy')}</p>
+          <p className="font-medium text-primary-80 text-body-sm md:text-body-lg">{appName}</p>
+          <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">{format(date, 'dd MMM yyyy')}</p>
         </div>
       </div>
-      <h6 className="font-semibold text-primary-80 text-heading-6">- {formatIDR(pricing)}</h6>
+      <h6 className="font-semibold text-primary-80 text-body-md md:text-heading-6">- {formatIDR(pricing)}</h6>
     </div>
   );
 };

@@ -40,7 +40,7 @@ const chartConfig = {
 const CostChart = () => {
   return (
     <div className="flex flex-col gap-4">
-      <ChartContainer config={chartConfig} className="h-[22.8rem]">
+      <ChartContainer config={chartConfig} className="h-[13rem] md:h-[22.8rem]">
         <BarChart
           accessibilityLayer
           data={chartData}
@@ -62,22 +62,27 @@ const CostChart = () => {
           <XAxis dataKey="cost" type="number" hide />
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent indicator="line" nameKey="app" color="#4336F3" />}
+            content={<ChartTooltipContent indicator="line" nameKey="app" color="#4336F3" className="rounded-md" />}
           />
-          <Bar dataKey="cost" layout="vertical" className="fill-secondary-40" radius={10}>
+          <Bar
+            dataKey="cost"
+            layout="vertical"
+            className="fill-secondary-40 rounded-md md:rounded-lg max-sm:max-h-[2.25rem]"
+            radius={10}
+          >
             <LabelList
               dataKey="app"
               position="insideLeft"
               offset={8}
-              className="fill-[--color-label] font-medium p-4"
-              fontSize={18}
+              className="fill-[--color-label] font-medium text-body-lg 
+              md:p-4 max-sm:text-[0.65rem]"
             />
           </Bar>
         </BarChart>
       </ChartContainer>
       <div className="flex flex-col items-start gap-2 text-sm">
-        <h5 className="font-medium text-primary-80 text-heading-5">Total Subscription Cost</h5>
-        <p className="font-medium text-primary-50 text-body-md">
+        <h5 className="font-medium text-primary-80 text-body-md md:text-heading-5">Total Subscription Cost</h5>
+        <p className="font-medium text-primary-50 text-[0.65rem] md:text-body-md">
           Showing total subscription costsfor the 5 highest spending
         </p>
       </div>
