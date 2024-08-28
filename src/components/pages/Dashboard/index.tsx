@@ -1,6 +1,7 @@
 'use client';
 
 import { CalendarCheck, CalendarClock, CalendarX } from 'lucide-react';
+import Link from 'next/link';
 
 import ChartInfo from '@/components/parts/ChartInfo';
 import OverviewCard from '@/components/parts/OverviewCard';
@@ -10,10 +11,8 @@ import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { dashboardColumns } from '@/components/parts/SubscriptionTable/columns';
 import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
 import { useAllSubscriptions } from '@/queries/subscriptions';
-// import { useUserIdContext } from '@/context/UserIdContext';
 
 const Dashboard = () => {
-  // const { userId } = useUserIdContext();
   const allSubscripitonsQuery = useAllSubscriptions();
 
   const getStatusCount = (subs: Subscription[], status: SubStatus) => {
@@ -24,8 +23,8 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col gap-6">
       <section>
-        <h6 className="font-semibold text-primary-80 text-heading-6">Overview</h6>
-        <div className="flex gap-4 mt-4 overflow-x-auto">
+        <h6 className="font-semibold text-primary-80 text-body-lg md:text-heading-6">Overview</h6>
+        <div className="flex flex-col flex-1 gap-4 mt-4 lg:flex-row">
           <ReactQuery
             queryResult={allSubscripitonsQuery}
             render={(data) => (
@@ -71,7 +70,15 @@ const Dashboard = () => {
       </section>
 
       <section>
-        <h6 className="font-semibold text-primary-80 text-heading-6">My Subscriptions</h6>
+        <div className="flex justify-between items-center">
+          <h6 className="font-semibold text-primary-80 text-body-lg md:text-heading-6">My Subscriptions</h6>
+          <Link
+            href="/my-subscriptions"
+            className="font-medium text-body-xs text-secondary-40 focus:underline lg:hidden"
+          >
+            See all subscriptions
+          </Link>
+        </div>
         <div className="bg-primary-0 p-5 mt-4">
           <ReactQuery
             queryResult={allSubscripitonsQuery}
@@ -81,7 +88,7 @@ const Dashboard = () => {
       </section>
 
       <section>
-        <h6 className="font-semibold text-primary-80 lg:text-heading-6">Payment History</h6>
+        <h6 className="font-semibold text-primary-80 text-body-lg md:text-heading-6">Payment History</h6>
         <ChartInfo total="spendings">
           <SpendingsChart />
         </ChartInfo>
