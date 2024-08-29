@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { ArrowLeft, Check, Edit3, MoreHorizontal, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { CYCLE_DAYS } from '@/lib/constants/datas';
 import { ALL_SUBSCRIPTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
 import { deleteSubscription, editSubscription } from '@/repositories/subscriptions';
@@ -49,7 +50,6 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
       toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
       queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
-      router.refresh();
     }
   });
 
@@ -63,8 +63,12 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     }
   });
 
+  //TODO: update status
+  //TODO: check cycle and update the next payment based on cycle
+  //TODO: add new transaction
   const markPaid = () => {
-    editSubscriptionMutation.mutate({ ...data, status: 'active' });
+    const newNextPaymentDate = addDays(data?.nextPayment, CYCLE_DAYS[data?.cycle as string] ?? 'monthly');
+    editSubscriptionMutation.mutate({ ...data, status: 'active', nextPayment: newNextPaymentDate.toISOString() });
   };
 
   const cancleSubscription = () => {
