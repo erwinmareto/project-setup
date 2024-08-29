@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useMediaQuery } from 'react-responsive';
 
+import { ArrowLine } from '@/assets/icons';
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
 import { ConfirmFormSteps, Step1Form, Step2Form, Step3Form } from '@/components/parts/SubscriptionForms';
 import {
@@ -20,6 +22,7 @@ import { useStep2Form } from '@/context/step2Global';
 import { useStep3Form } from '@/context/step3Global';
 
 const Add = () => {
+  const isMobileScreen = useMediaQuery({ query: '(max-width: 760px)' });
   const router = useRouter();
   const pathname = usePathname();
 
@@ -75,7 +78,9 @@ const Add = () => {
                   Subscription Info
                 </BreadcrumbPage>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
+
+              <BreadcrumbSeparator>{isMobileScreen ? <ChevronDown /> : <ArrowLine />}</BreadcrumbSeparator>
+
               <BreadcrumbItem>
                 {/* {pathname === '/add/step-2' ? (
                   <BreadcrumbPage
@@ -96,7 +101,7 @@ const Add = () => {
                   Payment Detail
                 </BreadcrumbPage>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
+              <BreadcrumbSeparator>{isMobileScreen ? <ChevronDown /> : <ArrowLine />}</BreadcrumbSeparator>
               <BreadcrumbItem>
                 {/* {pathname === '/add/step-3' ? (
                   <BreadcrumbPage
