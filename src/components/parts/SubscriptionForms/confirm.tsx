@@ -6,7 +6,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { differenceInDays, format } from 'date-fns';
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
@@ -16,12 +15,12 @@ import { Card } from '@/components/ui/card';
 import { useStep1Form } from '@/context/step1Global';
 import { useStep2Form } from '@/context/step2Global';
 import { useStep3Form } from '@/context/step3Global';
+import { useClearGlobals } from '@/hooks/useClearGlobals';
 import { ALL_SUBSCRIPTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
 import { addSubscription, editSubscription } from '@/repositories/subscriptions';
 
 const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; currentId?: string }) => {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const [successOpen, setSuccessOpen] = useState(false);
@@ -37,16 +36,14 @@ const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; cu
   const emailGlobal = useStep3Form((state) => state.email);
   const timeGlobal = useStep3Form((state) => state.time);
 
-  const resetStep1Global = useStep1Form((state) => state.resetStep1Global);
-  const resetStep2Global = useStep2Form((state) => state.resetStep2Global);
-  const resetStep3Global = useStep3Form((state) => state.resetStep3Global);
+  const clearGlobals = useClearGlobals();
 
-  const clearGlobal = () => {
-    router.replace('/dashboard');
-    resetStep1Global();
-    resetStep2Global();
-    resetStep3Global();
-  };
+  // const clearGlobal = () => {
+  //   router.replace('/dashboard');
+  //   resetStep1Global();
+  //   resetStep2Global();
+  //   resetStep3Global();
+  // };
 
   const handleSuccessOpen = () => {
     setSuccessOpen(!successOpen);
@@ -54,7 +51,7 @@ const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; cu
 
   const closeModal = () => {
     setSuccessOpen(false);
-    clearGlobal();
+    clearGlobals();
   };
 
   const addSubscriptionMutation = useMutation({
@@ -174,7 +171,7 @@ const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; cu
           openHandler={handleSuccessOpen}
           title="Success!"
           description="Your subscription has saved."
-          clickEvent={clearGlobal}
+          clickEvent={clearGlobals}
         >
           <Button type="submit" onClick={handleSubmitSubscripiton}>
             Save and confirm

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronRight, ImagePlus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -22,6 +22,7 @@ import { StepFormProps } from './types';
 
 const Step1Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step1Schema>>) => {
   const router = useRouter();
+  const pathname = usePathname();
   const iconGlobal = useStep1Form((state) => state.icon);
   const appNameGlobal = useStep1Form((state) => state.appName);
   const categoryGlobal = useStep1Form((state) => state.category);
@@ -61,7 +62,14 @@ const Step1Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step1Sc
 
     // mark that the data is already put into the form
     // formIsDone.current = true;
-  }, [iconGlobal, appNameGlobal, categoryGlobal, step1Form, prevData]);
+
+    console.log('Current pathname:', pathname);
+
+    // if (!SUB_FORM_PATHS.some((path) => pathname === path)) {
+    //   console.log('SOME pathname:', pathname);
+    //   clearGlobals();
+    // }
+  }, [iconGlobal, appNameGlobal, categoryGlobal, step1Form, prevData, pathname]);
 
   useEffect(() => {
     /**  this is supposed to check if the data is already put into the form 
