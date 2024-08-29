@@ -17,6 +17,15 @@ export const SUBSCRIPTION_STATUS = ['Inactive', 'Upcoming', 'Active', 'Overdue']
 
 export const SUBSCRIPTION_CYCLES = ['Daily', 'Weekly', 'Monthly', '3 Months', '6 Months', 'Yearly'];
 
+export const CYCLE_DAYS: Record<string, number> = {
+  daily: 1,
+  weekly: 7,
+  monthly: 30,
+  '3 months': 90,
+  '6 months': 180,
+  yearly: 365
+};
+
 export const AVAILABLE_ICONS: Record<string, string> = {
   'creative-cloud': 'Creative Cloud',
   disney: 'Disney+',

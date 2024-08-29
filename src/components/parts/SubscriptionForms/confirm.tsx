@@ -85,9 +85,9 @@ const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; cu
   const status: SubStatus =
     prevStatus === 'inactive'
       ? 'inactive'
-      : differenceInDays(paymentStartGlobal as Date, new Date()) < 0
+      : differenceInDays(paymentEndGlobal as Date, new Date()) < 0
         ? 'overdue'
-        : differenceInDays(paymentStartGlobal as Date, new Date()) < 7
+        : differenceInDays(paymentEndGlobal as Date, new Date()) < 7
           ? 'upcoming'
           : 'active';
 

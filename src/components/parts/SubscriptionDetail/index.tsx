@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { ArrowLeft, Check, Edit3, MoreHorizontal, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -23,9 +23,11 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
-import { ALL_SUBSCRIPTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
+import { CYCLE_DAYS } from '@/lib/constants/datas';
+import { ALL_SUBSCRIPTIONS_KEY, ALL_TRANSACTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
 import { deleteSubscription, editSubscription } from '@/repositories/subscriptions';
+import { addTransaction } from '@/repositories/transactions';
 
 const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const isMobileScreen = useMediaQuery({ query: '(max-width: 760px)' });
@@ -49,7 +51,6 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
       toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
       queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
-      router.refresh();
     }
   });
 
@@ -63,8 +64,28 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     }
   });
 
+  const addTransactionMutation = useMutation({
+    mutationFn: addTransaction,
+    onSuccess: () => {
+      toast.success('Transaction added successfully');
+      queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+    }
+  });
+
   const markPaid = () => {
-    editSubscriptionMutation.mutate({ ...data, status: 'active' });
+    const newNextPaymentDate = addDays(data?.nextPayment, CYCLE_DAYS[data?.cycle as string] ?? 'monthly');
+    editSubscriptionMutation.mutate({ ...data, status: 'active', nextPayment: newNextPaymentDate.toISOString() });
+
+    const transactionPayload = {
+      appName: data?.appName,
+      icon: data?.icon,
+      category: data?.category,
+      pricing: data?.pricing,
+      status: 'active',
+      payment: data?.paymentMethod,
+      paymentDate: new Date().toISOString()
+    };
+    addTransactionMutation.mutate(transactionPayload);
   };
 
   const cancleSubscription = () => {
