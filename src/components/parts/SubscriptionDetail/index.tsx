@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { CYCLE_DAYS } from '@/lib/constants/datas';
-import { ALL_SUBSCRIPTIONS_KEY, ALL_TRANSACTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
+import { ALL_TRANSACTIONS_KEY, SUBSCRIPTION_BY_ID, TRANSACTION_BY_SUB_ID_KEY } from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
 import { deleteSubscription, editSubscription } from '@/repositories/subscriptions';
 import { addTransaction } from '@/repositories/transactions';
@@ -50,7 +50,6 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     onSuccess: () => {
       toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
-      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
     }
   });
 
@@ -59,7 +58,8 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     onSuccess: () => {
       toast.success('Subscription deleted successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
-      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
+      queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
       router.push('/dashboard');
     }
   });
@@ -69,21 +69,38 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     onSuccess: () => {
       toast.success('Transaction added successfully');
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
+      queryClient.refetchQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
     }
   });
 
+  // this is here because the data is in snake_case but it accepts camelCase so i am converting
+  const subPayload = {
+    appName: data?.app_name,
+    icon: data?.icon,
+    category: data?.category,
+    pricing: data?.pricing,
+    status: 'active',
+    startPayment: format(data?.start_payment, 'yyyy-MM-dd'),
+    paymentMethod: data?.payment_method,
+    cycle: data?.cycle,
+    intervalDays: data?.interval_days,
+    email: data?.email
+  };
+
   const markPaid = () => {
     const newNextPaymentDate = addDays(data?.next_payment, CYCLE_DAYS[data?.cycle as string] ?? 'monthly');
-    editSubscriptionMutation.mutate({ ...data, status: 'active', nextPayment: newNextPaymentDate.toISOString() });
+    editSubscriptionMutation.mutate({ ...subPayload, nextPayment: format(newNextPaymentDate, 'yyyy-MM-dd') });
 
     const transactionPayload = {
+      subscriptionId: data?.id,
       appName: data?.app_name,
       icon: data?.icon,
       category: data?.category,
       pricing: data?.pricing,
-      status: 'active',
-      payment: data?.payment_method,
-      paymentDate: new Date().toISOString()
+      status: 'completed',
+      paymentMethod: data?.payment_method,
+      paymentDate: format(new Date(), 'yyyy-MM-dd')
     };
     addTransactionMutation.mutate(transactionPayload);
   };

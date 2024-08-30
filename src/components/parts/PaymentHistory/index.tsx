@@ -13,19 +13,16 @@ import { formatIDR } from '@/lib/utils';
 
 export interface PaymentHistoryProps {
   data: TransactionType[];
-  currentSub: string;
 }
 
-const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
+const PaymentHistory = ({ data }: PaymentHistoryProps) => {
   const [selectedYear, setSelectedYear] = useState('');
 
-  const allCurrentTransactions = data.filter((item) => item.appName === currentSub);
+  const years = [...new Set(data.map((item) => getYear(new Date(item.payment_date))))];
 
-  const years = [...new Set(allCurrentTransactions.map((item) => getYear(new Date(item.payment_date))))];
+  const transactionByYear = data.filter((item) => getYear(item.payment_date) === +selectedYear);
 
-  const transactionByYear = allCurrentTransactions.filter((item) => getYear(item.payment_date) === +selectedYear);
-
-  const prices = allCurrentTransactions.map((item) => item.pricing);
+  const prices = data.map((item) => +item.pricing);
 
   const totalPrice = prices.reduce((acc, current) => acc + current, 0);
 
@@ -66,7 +63,7 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
                 />
               ))
             : // eslint-disable-next-line react/jsx-indent
-              allCurrentTransactions.map((item) => (
+              data.map((item) => (
                 <Transaction
                   key={item.id}
                   icon={item.icon}
