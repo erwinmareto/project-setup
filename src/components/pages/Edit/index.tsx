@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 
 import ConfirmationModal from '@/components/parts/ConfirmationModal';
 import { ConfirmFormSteps, Step1Form, Step2Form, Step3Form } from '@/components/parts/SubscriptionForms';
@@ -18,12 +18,15 @@ import { Button } from '@/components/ui/button';
 import { useStep1Form } from '@/context/step1Global';
 import { useStep2Form } from '@/context/step2Global';
 import { useStep3Form } from '@/context/step3Global';
+import { useClearGlobals } from '@/hooks/useClearGlobals';
 import { useSubscriptionById } from '@/queries/subscriptions';
 
 const Edit = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname();
   const { id } = useParams();
+
+  const clearGlobals = useClearGlobals();
 
   const [warningOpen, setWarningOpen] = useState(false);
   const appNameGlobal = useStep1Form((state) => state.appName);
@@ -65,7 +68,7 @@ const Edit = () => {
             imagePath="/modal-icons/warning.png"
             openState={warningOpen}
             openHandler={handleWarningOpen}
-            clickEvent={() => router.push('/dashboard')}
+            clickEvent={clearGlobals}
             title="Are you sure?"
             description="Once canceled, you will not be able to recover this subscription!"
             cancleable
