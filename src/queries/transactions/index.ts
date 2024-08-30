@@ -12,10 +12,10 @@ export const useAllTransactions = () => {
   return result;
 };
 
-export const useGetTransactionsById = (id: string) => {
+export const useGetTransactionsBySubId = (subId: string) => {
   const result = useQuery({
-    queryKey: [TRANSACTION_BY_SUB_ID_KEY, id],
-    queryFn: () => getTransactionBySubId(id)
+    queryKey: [TRANSACTION_BY_SUB_ID_KEY, subId],
+    queryFn: () => getTransactionBySubId(subId)
   });
 
   return result;

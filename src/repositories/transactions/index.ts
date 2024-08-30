@@ -8,9 +8,9 @@ export const getAllTransactions = async () => {
   return response;
 };
 
-export const getTransactionBySubId = async (id: string) => {
+export const getTransactionBySubId = async (subId: string) => {
   const response = await fetcher({
-    url: `/subscriptions/${id}/transactions`
+    url: `/transactions/${subId}/transactions`
   });
 
   return response;
