@@ -111,7 +111,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           <div className="flex items-center gap-3">
             <AppIcons iconName={data?.icon} width={52} height={52} className="rounded-xl" />
             <div>
-              <h6 className="font-semibold text-heading-6">{data?.appName}</h6>
+              <h6 className="font-semibold text-heading-6">{data?.app_name}</h6>
               <p className="font-medium text-primary-50 text-body-sm capitalize">{data?.category}</p>
             </div>
           </div>
@@ -160,12 +160,12 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           <Separator orientation="vertical" />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-lg">{data?.paymentMethod}</p>
+            <p className="font-medium text-body-lg">{data?.payment_method}</p>
           </div>
           <Separator orientation="vertical" />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Next Payment</p>
-            <p className="font-medium text-body-lg">{format(data?.nextPayment, 'dd MMM yyyy')}</p>
+            <p className="font-medium text-body-lg">{format(data?.next_payment, 'dd MMM yyyy')}</p>
           </div>
           <Separator orientation="vertical" />
           <div>
@@ -186,13 +186,13 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
             <p className="font-medium text-primary-55 text-body-md">Payment Method</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p className="font-medium text-primary-90 text-body-md">{data?.appName}</p>
+            <p className="font-medium text-primary-90 text-body-md">{data?.app_name}</p>
             <p className="font-medium text-primary-90 text-body-md capitalize">{data?.category}</p>
             <p className="font-medium text-primary-90 text-body-md">{formatIDR(data?.pricing)}</p>
             <p className="font-medium text-primary-90 text-body-md capitalize">{data?.cycle}</p>
-            <p className="font-medium text-primary-90 text-body-md">{format(data?.startPayment, 'dd MMM yyyy')}</p>
-            <p className="font-medium text-primary-90 text-body-md">{format(data?.nextPayment, 'dd MMM yyyy')}</p>
-            <p className="font-medium text-primary-90 text-body-md">{data?.paymentMethod}</p>
+            <p className="font-medium text-primary-90 text-body-md">{format(data?.start_payment, 'dd MMM yyyy')}</p>
+            <p className="font-medium text-primary-90 text-body-md">{format(data?.next_payment, 'dd MMM yyyy')}</p>
+            <p className="font-medium text-primary-90 text-body-md">{data?.payment_method}</p>
           </div>
         </div>
       </article>

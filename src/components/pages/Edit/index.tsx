@@ -32,23 +32,25 @@ const Edit = () => {
 
   const { data, isLoading } = useSubscriptionById(id as string);
 
+  if (isLoading) return <Loader2 className="animate-spin" />;
+
   const step1Data = {
     icon: data?.icon,
-    appName: data?.appName,
+    appName: data?.app_name,
     category: data?.category
   };
 
   const step2Data = {
     cycle: data?.cycle,
-    paymentStart: data?.startPayment,
-    paymentEnd: data?.nextPayment,
+    paymentStart: data?.start_payment,
+    paymentEnd: data?.next_payment,
     price: data?.pricing,
-    paymentMethod: data?.paymentMethod
+    paymentMethod: data?.payment_method
   };
 
   const step3Data = {
     email: data?.email,
-    time: data?.interval
+    time: data?.interval_days
   };
 
   const handleWarningOpen = () => {

@@ -14,16 +14,17 @@ export type Cycles = 'daily' | 'weekly' | 'monthly' | '3 months' | '6 months' | 
 
 export type Subscription = {
   id: string;
+  uer_id: string;
   icon: string;
-  appName: string;
+  app_name: string;
   category: SubscriptionCategory;
   pricing: number;
-  startPayment: string;
-  nextPayment: string;
+  start_payment: string;
+  next_payment: string;
   status: SubStatus;
   cycle: Cycles;
-  paymentMethod: string;
-  interval: number;
+  payment_method: string;
+  interval_days: number;
   email: string;
 };
 
@@ -34,6 +35,6 @@ export type Transaction = {
   category: SubscriptionCategory;
   pricing: number;
   status: SubStatus;
-  payment: string;
-  paymentDate: string;
+  payment_method: string;
+  payment_date: string;
 };

@@ -21,9 +21,9 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
 
   const allCurrentTransactions = data.filter((item) => item.appName === currentSub);
 
-  const years = [...new Set(allCurrentTransactions.map((item) => getYear(new Date(item.paymentDate))))];
+  const years = [...new Set(allCurrentTransactions.map((item) => getYear(new Date(item.payment_date))))];
 
-  const transactionByYear = allCurrentTransactions.filter((item) => getYear(item.paymentDate) === +selectedYear);
+  const transactionByYear = allCurrentTransactions.filter((item) => getYear(item.payment_date) === +selectedYear);
 
   const prices = allCurrentTransactions.map((item) => item.pricing);
 
@@ -61,7 +61,7 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
                   key={item.id}
                   icon={item.icon}
                   appName={item.appName}
-                  date={item.paymentDate}
+                  date={item.payment_date}
                   pricing={item.pricing}
                 />
               ))
@@ -71,7 +71,7 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
                   key={item.id}
                   icon={item.icon}
                   appName={item.appName}
-                  date={item.paymentDate}
+                  date={item.payment_date}
                   pricing={item.pricing}
                 />
               ))}
