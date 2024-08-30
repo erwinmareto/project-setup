@@ -8,6 +8,14 @@ export const getAllTransactions = async () => {
   return response;
 };
 
+export const getTransactionBySubId = async (id: string) => {
+  const response = await fetcher({
+    url: `/subscriptions/${id}/transactions`
+  });
+
+  return response;
+};
+
 export const addTransaction = async (payload: Record<string, unknown>) => {
   const response = await fetcher({
     url: '/transactions',
