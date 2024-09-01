@@ -53,7 +53,7 @@ const MySubscriptions = () => {
             <div className="flex flex-col mb-9 lg:grid lg:grid-cols-12">
               <section className="lg:col-span-7">
                 <ChartInfo transactionYears={filteredYears} total="spendings">
-                  <ReactQuery queryResult={transactionsQuery} render={(data) => <SpendingsChart data={data} />} />
+                  <SpendingsChart data={transactionsQuery?.data} />
                 </ChartInfo>
               </section>
               <section className="lg:col-span-5">

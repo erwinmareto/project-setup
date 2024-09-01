@@ -7,6 +7,7 @@ import { TrendingUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { formatIDR } from '@/lib/utils';
 
 // will probably need prop for the date range select
 export interface ChartInfoProps {
@@ -17,9 +18,19 @@ export interface ChartInfoProps {
 
 const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedYearTotal, setSelectedYearTotal] = useState(0);
+  const [prevYearTotal, setPrevYearTotal] = useState(0);
 
   const handleSelectedYear = (year: string) => {
     setSelectedYear(+year);
+  };
+
+  const handleSelectedYearTotal = (total: number) => {
+    setSelectedYearTotal(total);
+  };
+
+  const handlePrevYearTotal = (total: number) => {
+    setPrevYearTotal(total);
   };
 
   return (
@@ -47,12 +58,12 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
           <div className="flex gap-3 md:gap-7">
             <div>
               <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent Last Year</p>
-              <h4 className="font-semibold text-body-sm md:text-heading-4">Rp 575.000</h4>
+              <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(prevYearTotal)}</h4>
             </div>
             <div>
               <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent This Year</p>
               <div className="flex justify-center items-center gap-2">
-                <h4 className="font-semibold text-body-sm md:text-heading-4">Rp 825.000</h4>
+                <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(selectedYearTotal)}</h4>
 
                 <Badge
                   variant="active"
@@ -76,7 +87,11 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
 
       <Separator className="my-4" />
 
-      {cloneElement(children, { selectedYear: selectedYear })}
+      {cloneElement(children, {
+        selectedYear: selectedYear,
+        selectedYearTotalHandler: handleSelectedYearTotal,
+        prevYearTotalHandler: handlePrevYearTotal
+      })}
     </div>
   );
 };

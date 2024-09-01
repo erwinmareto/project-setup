@@ -17,20 +17,59 @@ import {
 export interface SpendingsChartProps {
   data?: Transaction[];
   selectedYear?: number;
+  // eslint-disable-next-line no-unused-vars
+  selectedYearTotalHandler?: (total: number) => void;
+  // eslint-disable-next-line no-unused-vars
+  prevYearTotalHandler?: (total: number) => void;
 }
 
-const SpendingsChart = ({ data, selectedYear }: SpendingsChartProps) => {
+const SpendingsChart = ({
+  data,
+  selectedYear,
+  selectedYearTotalHandler,
+  prevYearTotalHandler
+}: SpendingsChartProps) => {
   const selectedYearData = data?.filter(
     (transaction) => new Date(transaction.paymentDate).getFullYear() === selectedYear
   );
 
+  const selectedYearTotal = data?.reduce((total, transactions) => {
+    const year = new Date(transactions.paymentDate).getFullYear();
+    if (selectedYear === year) {
+      return total + transactions.pricing;
+    }
+    return total;
+  }, 0);
+
   const prevYearData = data?.filter(
     (transaction) => new Date(transaction.paymentDate).getFullYear() === (selectedYear as number) - 1
   );
+
+  const prevYearTotal = data?.reduce((total, transactions) => {
+    const year = new Date(transactions.paymentDate).getFullYear();
+    if ((selectedYear as number) - 1 === year) {
+      return total + transactions.pricing;
+    }
+    return total;
+  }, 0);
+
   useEffect(() => {
     console.log(selectedYearData, 'yearrrrrrrrr');
     console.log(prevYearData, 'prevYearData');
-  }, [selectedYearData, prevYearData]);
+    console.log(selectedYearTotal, 'totalllllllllll');
+    console.log(prevYearTotal, 'prevYearTotal');
+    console.log(!!selectedYearTotalHandler, '!!!');
+    console.log(!!prevYearTotalHandler);
+    selectedYearTotalHandler && selectedYearTotalHandler(selectedYearTotal ?? 2);
+    prevYearTotalHandler && prevYearTotalHandler(prevYearTotal ?? 45);
+  }, [
+    selectedYearData,
+    prevYearData,
+    selectedYearTotal,
+    prevYearTotal,
+    selectedYearTotalHandler,
+    prevYearTotalHandler
+  ]);
 
   const chartData = [
     { month: 'January', 2024: 145, 2023: 282 },
