@@ -2,42 +2,56 @@
 
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 
+import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-const chartData = [
-  { app: 'Netflix', cost: 186, category: 'Entertainment' },
-  { app: 'Creative Cloud', cost: 305, category: 'Work' },
-  { app: 'Youtube', cost: 237, category: 'Entertainment' },
-  { app: 'Spotify', cost: 73, category: 'Entertainment' },
-  { app: 'Dribbble', cost: 209, category: 'work' }
-];
 
-const chartConfig = {
-  cost: {
-    label: 'Total Cost',
-    color: '#4336F3'
-  },
+export interface CostChartProps {
+  data?: Transaction[];
+  selectedYear?: number;
+  // eslint-disable-next-line no-unused-vars
+  totalSubsHandler?: (total: number) => void;
+}
 
-  label: {
-    color: 'hsl(var(--background))'
-  },
-  netflix: {
-    label: 'Entertainment'
-  },
-  youtube: {
-    label: 'Entertainment'
-  },
-  spotify: {
-    label: 'Entertainment'
-  },
-  creativecloud: {
-    label: 'Work'
-  },
-  dribbble: {
-    label: 'Work'
-  }
-} satisfies ChartConfig;
+const CostChart = ({ data, selectedYear, totalSubsHandler }: CostChartProps) => {
+  const selectedYearData = data?.filter(
+    (transaction) => new Date(transaction.paymentDate).getFullYear() === selectedYear
+  );
 
-const CostChart = () => {
+  totalSubsHandler && totalSubsHandler(selectedYearData?.length || 0);
+
+  const chartData = [
+    { app: 'Netflix', cost: 186, category: 'Entertainment' },
+    { app: 'Creative Cloud', cost: 305, category: 'Work' },
+    { app: 'Youtube', cost: 237, category: 'Entertainment' },
+    { app: 'Spotify', cost: 73, category: 'Entertainment' },
+    { app: 'Dribbble', cost: 209, category: 'work' }
+  ];
+
+  const chartConfig = {
+    cost: {
+      label: 'Total Cost',
+      color: '#4336F3'
+    },
+
+    label: {
+      color: 'hsl(var(--background))'
+    },
+    netflix: {
+      label: 'Entertainment'
+    },
+    youtube: {
+      label: 'Entertainment'
+    },
+    spotify: {
+      label: 'Entertainment'
+    },
+    creativecloud: {
+      label: 'Work'
+    },
+    dribbble: {
+      label: 'Work'
+    }
+  } satisfies ChartConfig;
   return (
     <div className="flex flex-col gap-4">
       <ChartContainer config={chartConfig} className="h-[13rem] md:h-[22.8rem]">

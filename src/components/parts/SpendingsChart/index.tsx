@@ -53,6 +53,7 @@ const SpendingsChart = ({
     return total;
   }, 0);
 
+  // this can be deleted i just want need to use the variables for now, the functions can be called outside of useEffect
   useEffect(() => {
     console.log(selectedYearData, 'yearrrrrrrrr');
     console.log(prevYearData, 'prevYearData');

@@ -20,6 +20,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedYearTotal, setSelectedYearTotal] = useState(0);
   const [prevYearTotal, setPrevYearTotal] = useState(0);
+  const [totalSubs, setTotalSubs] = useState(0);
 
   const handleSelectedYear = (year: string) => {
     setSelectedYear(+year);
@@ -31,6 +32,10 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
 
   const handlePrevYearTotal = (total: number) => {
     setPrevYearTotal(total);
+  };
+
+  const handleTotalSubs = (total: number) => {
+    setTotalSubs(total);
   };
 
   return (
@@ -46,7 +51,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
               <SelectGroup>
                 {transactionYears.map((year) => (
                   <SelectItem key={year} value={year.toString()}>
-                    {`${year - 1}-${year}`}
+                    {total === 'cost' ? `${year}` : `${year - 1}-${year}`}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -79,7 +84,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
           <div className="flex justify-end">
             <div>
               <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">Total Subscriptions</p>
-              <h4 className="font-semibold text-heading-6 md:text-heading-4">12</h4>
+              <h4 className="font-semibold text-heading-6 md:text-heading-4">{totalSubs}</h4>
             </div>
           </div>
         )}
@@ -90,7 +95,8 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
       {cloneElement(children, {
         selectedYear: selectedYear,
         selectedYearTotalHandler: handleSelectedYearTotal,
-        prevYearTotalHandler: handlePrevYearTotal
+        prevYearTotalHandler: handlePrevYearTotal,
+        totalSubsHandler: handleTotalSubs
       })}
     </div>
   );
