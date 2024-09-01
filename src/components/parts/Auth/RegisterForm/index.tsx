@@ -125,7 +125,7 @@ const RegisterForm = () => {
         />
 
         <div className="flex flex-col justify-center gap-4 overflow-hidden">
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Sign Up</Button>
           <div className="flex justify-center items-center gap-3">
             <Separator className="w-1/2" />
             <p className="font-medium text-primary-35 text-body-md">or</p>
@@ -136,9 +136,9 @@ const RegisterForm = () => {
             Sign in With Google
           </Button>
           <p className="font-medium text-primary-45 text-center">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-secondary-40 hover:underline">
-              Register now
+            Already have an account?{' '}
+            <Link href="/login" className="text-secondary-40 hover:underline">
+              Login
             </Link>
           </p>
         </div>

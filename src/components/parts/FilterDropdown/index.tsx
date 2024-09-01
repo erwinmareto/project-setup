@@ -12,7 +12,7 @@ export type FilterDropdownType = {
 
 const FilterDropdown = ({ filterFn, title, data }: FilterDropdownType) => {
   return (
-    <div className="w-1/3 flex flex-col gap-2">
+    <div className="flex flex-col gap-2 lg:w-1/3 ">
       <p className="text-body-sm font-medium text-primary-80 capitalize">{title}</p>
       <Select onValueChange={(value) => filterFn(value, title)}>
         <SelectTrigger>

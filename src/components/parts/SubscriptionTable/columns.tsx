@@ -333,7 +333,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
         className="flex gap-2 justify-start items-center cursor-pointer"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        <p className="font-medium text-primary-80 text-body-md">Subscriptions</p>
+        <p className="font-medium text-primary-80 text-body-sm md:text-body-md">Subscriptions</p>
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
@@ -357,7 +357,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
         className="flex gap-2 justify-start items-center cursor-pointer"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        <p className="font-medium text-primary-80 text-body-md">Category</p>
+        <p className="font-medium text-primary-80 text-body-sm md:text-body-md">Category</p>
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
@@ -372,7 +372,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
         className="flex gap-2 justify-start items-center cursor-pointer"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        <p className="font-medium text-primary-80 text-body-md">Pricing</p>
+        <p className="font-medium text-primary-80 text-body-sm md:text-body-md">Pricing</p>
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
@@ -390,7 +390,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
         className="flex gap-2 justify-start items-center cursor-pointer"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        <p className="font-medium text-primary-80 text-body-md">Next Payment</p>
+        <p className="font-medium text-primary-80 text-body-sm md:text-body-md">Next Payment</p>
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
@@ -407,7 +407,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
         className="flex gap-2 justify-start items-center cursor-pointer"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        <p className="font-medium text-primary-80 text-body-md">Status</p>
+        <p className="font-medium text-primary-80 text-body-sm md:text-body-md">Status</p>
         <ChevronsUpDown className="w-3 h-3" />
       </div>
     ),
@@ -422,7 +422,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
   },
   {
     id: 'actions',
-    header: () => <p className="font-medium text-primary-80 text-body-md">Actions</p>,
+    header: () => <p className="font-medium text-primary-80 text-body-sm md:text-body-md">Actions</p>,
     cell: ({ row }) => {
       return <ActionDropdown id={row.original.id} />;
     }

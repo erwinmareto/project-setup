@@ -32,10 +32,10 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
   return (
     <section className="bg-primary-0 p-7 rounded-lg lg:col-span-4">
       <article className="flex flex-col gap-5">
-        <h6 className="font-medium text-primary-80 text-heading-6">Payment History</h6>
+        <h6 className="font-medium text-primary-80 text-body-md md:text-heading-6">Payment History</h6>
         <Card className="flex flex-col justify-center items-center text-center gap-4 py-10 px-24">
-          <h1 className="font-semibold text-primary-80 text-heading-1">{formatIDR(totalPrice)}</h1>
-          <p className="font-medium text-primary-50 text-body-md">Total subscription cost</p>
+          <h1 className="font-semibold text-primary-80 text-heading-3 md:text-heading-1">{formatIDR(totalPrice)}</h1>
+          <p className="font-medium text-primary-50 text-body-sm md:text-body-md">Total subscription cost</p>
           <Select onValueChange={setSelectedYear}>
             <SelectTrigger className="w-[6.9rem]">
               <SelectValue placeholder="This Year" />
