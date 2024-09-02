@@ -84,6 +84,10 @@ const Step1Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step1Sc
     // the icon selection will no longer update the app name but the data will persist
     // * WITHOUT THE CHECK THIS WILL OVERRIDE THE GLOBAL STATE DATA WHENEVER YOU GO BACk TO THIS PAGE
     if (!iconGlobal) {
+      // if the selected icon is one of the generics (categories) then empty the app name
+      if (selectedIcon && selectedIcon.split('-')[0] === 'category') {
+        return step1Form.setValue('appName', '');
+      }
       step1Form.setValue('appName', AVAILABLE_ICONS[selectedIcon]);
     }
   }, [selectedIcon, step1Form, iconGlobal, prevData]);
