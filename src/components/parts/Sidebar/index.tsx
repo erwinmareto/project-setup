@@ -35,7 +35,7 @@ const Sidebar = () => {
     <aside className="flex flex-col gap-6 lg:grid lg:col-span-3">
       <div className="flex flex-col items-center gap-6">
         <article className="flex flex-col gap-3">
-          <h6 className="font-semibold text-body-lg md:text-heading-6">Next Payment</h6>
+          <h6 className="font-medium text-body-lg md:text-heading-6">Next Payment</h6>
           <div className=" bg-primary-0 rounded-xl w-[21rem]">
             <div className="px-5">
               <ReactQuery
@@ -61,7 +61,7 @@ const Sidebar = () => {
         </article>
 
         <article className="flex flex-col gap-3">
-          <h6 className="font-semibold text-body-lg md:text-heading-6">Payment History</h6>
+          <h6 className="font-medium text-body-lg md:text-heading-6">Payment History</h6>
           <div className="w-[21rem] bg-primary-0 rounded-xl">
             <div className="px-5">
               <ReactQuery
