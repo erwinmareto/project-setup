@@ -122,9 +122,9 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
                   <SelectContent>
                     <SelectItem value="daily">Daily</SelectItem>
                     <SelectItem value="weekly">Weekly</SelectItem>
+                    <SelectItem value="monthly">Monthly</SelectItem>
                     <SelectItem value="3 months">3 Months</SelectItem>
                     <SelectItem value="6 months">6 Months</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
                     <SelectItem value="yearly">Yearly</SelectItem>
                   </SelectContent>
                 </Select>

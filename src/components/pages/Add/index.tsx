@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { ArrowLeft, ChevronDown } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useMediaQuery } from 'react-responsive';
 
 import { ArrowLine } from '@/assets/icons';
@@ -20,16 +20,16 @@ import { Button } from '@/components/ui/button';
 import { useStep1Form } from '@/context/step1Global';
 import { useStep2Form } from '@/context/step2Global';
 import { useStep3Form } from '@/context/step3Global';
+import { useClearGlobals } from '@/hooks/useClearGlobals';
 
 const Add = () => {
   const isMobileScreen = useMediaQuery({ query: '(max-width: 760px)' });
-  const router = useRouter();
   const pathname = usePathname();
-
   const [warningOpen, setWarningOpen] = useState(false);
   const appNameGlobal = useStep1Form((state) => state.appName);
   const priceGlobal = useStep2Form((state) => state.price);
   const emailGlobal = useStep3Form((state) => state.email);
+  const clearGlobals = useClearGlobals();
 
   const handleWarningOpen = () => {
     setWarningOpen(!warningOpen);
@@ -43,7 +43,7 @@ const Add = () => {
             imagePath="/modal-icons/warning.png"
             openState={warningOpen}
             openHandler={handleWarningOpen}
-            clickEvent={() => router.push('/dashboard')}
+            clickEvent={clearGlobals}
             title="Are you sure?"
             description="Once canceled, you will not be able to recover this subscription!"
             cancleable
