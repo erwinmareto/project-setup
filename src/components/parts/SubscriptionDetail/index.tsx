@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addDays, format } from 'date-fns';
+import { addDays, differenceInDays, format } from 'date-fns';
 import { ArrowLeft, Check, Edit3, MoreHorizontal, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -11,8 +11,9 @@ import toast from 'react-hot-toast';
 import { useMediaQuery } from 'react-responsive';
 
 import AppIcons from '@/components/parts/AppIcons';
-import ConfirmationModal from '@/components/parts/ConfirmationModal';
-import { Subscription } from '@/components/parts/SubscriptionTable/types';
+import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
+import StatusModal from '@/components/parts/Modals/StatusModal';
+import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -48,7 +49,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const editSubscriptionMutation = useMutation({
     mutationFn: (data: Subscription) => editSubscription(id as string, data),
     onSuccess: () => {
-      toast.success('Subscription updated successfully');
+      // toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
       queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
     }
@@ -67,14 +68,23 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const addTransactionMutation = useMutation({
     mutationFn: addTransaction,
     onSuccess: () => {
-      toast.success('Transaction added successfully');
+      toast.success('Subscription marked as paid');
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
     }
   });
 
+  const status: SubStatus =
+    data?.status === 'inactive'
+      ? 'inactive'
+      : differenceInDays(data?.nextPayment, new Date()) < 0
+        ? 'overdue'
+        : differenceInDays(data?.nextPayment, new Date()) < 7
+          ? 'upcoming'
+          : 'active';
+
   const markPaid = () => {
     const newNextPaymentDate = addDays(data?.nextPayment, CYCLE_DAYS[data?.cycle as string] ?? 'monthly');
-    editSubscriptionMutation.mutate({ ...data, status: 'active', nextPayment: newNextPaymentDate.toISOString() });
+    editSubscriptionMutation.mutate({ ...data, status: status, nextPayment: newNextPaymentDate.toISOString() });
 
     const transactionPayload = {
       appName: data?.appName,
@@ -145,12 +155,13 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           </div>
 
           <div className="flex gap-2 max-md:justify-between">
-            <ConfirmationModal
-              imagePath="/modal-icons/success.png"
+            <StatusModal
+              // imagePath="/modal-icons/success.png"
               openState={successOpen}
               openHandler={handleSuccessOpen}
               clickEvent={() => router.refresh()}
-              title="Congratulations!"
+              // title="Congratulations!"
+              status={editSubscriptionMutation.status}
               description="Your subscription has been marked as paid."
             >
               <Button
@@ -161,7 +172,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               >
                 <Check className="max-md:w-4 max-md:h-4" /> Mark as Paid
               </Button>
-            </ConfirmationModal>
+            </StatusModal>
 
             <ConfirmationModal
               imagePath="/modal-icons/warning.png"

@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
-import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import StatusModal from '@/components/parts/Modals/StatusModal';
 import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -164,20 +164,19 @@ const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; cu
           </Button>
         </Link>
 
-        <ConfirmationModal
-          imagePath="/modal-icons/success.png"
+        <StatusModal
           openState={successOpen}
           closeHandler={closeModal}
           openHandler={handleSuccessOpen}
-          title="Success!"
-          description="Your subscription has saved."
+          status={currentId ? editSubscriptionMutation.status : addSubscriptionMutation.status}
+          description="Your subscription has been saved."
           clickEvent={clearGlobals}
         >
           <Button type="submit" onClick={handleSubmitSubscripiton}>
             Save and confirm
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
-        </ConfirmationModal>
+        </StatusModal>
         {/* </>
         )} */}
       </div>
