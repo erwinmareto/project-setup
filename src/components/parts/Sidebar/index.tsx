@@ -24,11 +24,12 @@ const Sidebar = () => {
     return filteredSubs;
   };
 
-  const getLast5Transactions = (subs: Transaction[]) => {
-    const totalSubs = subs.length;
-    const last5 = subs.slice(totalSubs - 5);
+  const getWeekOldTransactions = (transactions: Transaction[]) => {
+    const weekOld = transactions.filter(
+      (transaction: Transaction) => differenceInDays(new Date(), transaction.paymentDate) <= 7
+    );
 
-    return last5;
+    return weekOld;
   };
 
   return (
@@ -67,8 +68,8 @@ const Sidebar = () => {
               <ReactQuery
                 queryResult={allTransactionsQuery}
                 render={(data) => {
-                  const last5 = getLast5Transactions(data);
-                  return last5.map((transaction) => (
+                  const weekOldTransactions = getWeekOldTransactions(data);
+                  return weekOldTransactions.map((transaction) => (
                     <>
                       <SubCard
                         key={transaction.id}
