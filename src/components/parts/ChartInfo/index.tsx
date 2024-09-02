@@ -2,12 +2,11 @@
 
 import { cloneElement, ReactElement, useState } from 'react';
 
-import { TrendingUp } from 'lucide-react';
-
-import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { formatIDR } from '@/lib/utils';
+
+import PercentBadge from './percentBadge';
 
 // will probably need prop for the date range select
 export interface ChartInfoProps {
@@ -70,13 +69,15 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
               <div className="flex justify-center items-center gap-2">
                 <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(selectedYearTotal)}</h4>
 
-                <Badge
+                {/* <Badge
                   variant="active"
                   className="text-[0.25rem] h-2.5 border border-success-foreground 
                   md:h-5 sm:text-[0.5rem] max-sm:px-0.5"
                 >
-                  <TrendingUp className="w-1.5 h-1.5 md:w-3 md:h-3" /> + 20
-                </Badge>
+                  <TrendingUp className="w-1.5 h-1.5 md:w-3 md:h-3" /> {calculatePercent()}
+                </Badge> */}
+                {/* {calculatePercent()} */}
+                <PercentBadge selectedYearTotal={selectedYearTotal} prevYearTotal={prevYearTotal} />
               </div>
             </div>
           </div>
