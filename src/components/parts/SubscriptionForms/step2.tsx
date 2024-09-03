@@ -89,9 +89,9 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
     }
 
     // if you reload this will trigger because for some reason global state isn't there in the very beginning
-    if (!appNameGlobal) {
-      router.replace('/dashboard');
-    }
+    // if (!appNameGlobal) {
+    //   router.replace('/dashboard');
+    // }
   }, [
     router,
     prevData,
@@ -196,7 +196,7 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Amount</FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Price</FormLabel>
                 <FormControl>
                   <div className="flex">
                     <div className="flex items-center text-primary-55 text-body-md gap-4 pl-4 border rounded-l">
