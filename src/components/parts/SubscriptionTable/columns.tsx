@@ -130,7 +130,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
     }
   },
   {
-    accessorKey: 'payment',
+    accessorKey: 'paymentMethod',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -141,7 +141,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      return <p className="capitalize">{row.getValue<string>('payment')}</p>;
+      return <p className="capitalize">{row.getValue<string>('paymentMethod')}</p>;
     }
   },
   {
