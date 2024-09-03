@@ -149,7 +149,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               className="w-[2.65rem] h-[2.65rem] rounded-xl md:w-[3.25rem] md:h-[3.25rem]"
             />
             <div>
-              <h6 className="font-semibold text-body-md md:text-heading-6">{data?.appName}</h6>
+              <h6 className="font-semibold text-body-md capitalize md:text-heading-6">{data?.appName}</h6>
               <p className="font-medium text-primary-50 text-body-sm capitalize">{data?.category}</p>
             </div>
           </div>
@@ -204,7 +204,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           <Separator orientation={isMobileScreen ? 'horizontal' : 'vertical'} />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-sm md:text-body-lg">{data?.paymentMethod}</p>
+            <p className="font-medium text-body-sm capitalize md:text-body-lg">{data?.paymentMethod}</p>
           </div>
           <Separator orientation={isMobileScreen ? 'horizontal' : 'vertical'} />
           <div>
@@ -231,17 +231,19 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
             <p className="font-medium text-primary-55 text-body-sm md:text-body-md">Payment Method</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p className="font-medium text-primary-90 text-body-sm md:text-body-md">{data?.appName}</p>
-            <p className="font-medium text-primary-90 text-body-sm md:text-body-md capitalize">{data?.category}</p>
-            <p className="font-medium text-primary-90 text-body-sm md:text-body-md">{formatIDR(data?.pricing)}</p>
-            <p className="font-medium text-primary-90 text-body-sm md:text-body-md capitalize">{data?.cycle}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.appName}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.category}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">
+              {formatIDR(data?.pricing)}
+            </p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.cycle}</p>
             <p className="font-medium text-primary-90 text-body-sm md:text-body-md">
               {format(data?.startPayment, 'dd MMM yyyy')}
             </p>
             <p className="font-medium text-primary-90 text-body-sm md:text-body-md">
               {format(data?.nextPayment, 'dd MMM yyyy')}
             </p>
-            <p className="font-medium text-primary-90 text-body-sm md:text-body-md">{data?.paymentMethod}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.paymentMethod}</p>
           </div>
         </div>
       </article>
