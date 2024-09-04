@@ -30,7 +30,7 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
   );
 
   const transactionByCurrentMonth = allCurrentTransactions.filter(
-    (item) => getMonth(item.paymentDate) === getMonth(new Date())
+    (item) => getMonth(item.paymentDate) === getMonth(new Date()) && getYear(item.paymentDate) === getYear(new Date())
   );
 
   const prices = allCurrentTransactions.map((item) => item.pricing);
