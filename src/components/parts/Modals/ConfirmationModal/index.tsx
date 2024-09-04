@@ -27,7 +27,6 @@ export interface ConfirmationModalProps {
   cancleable?: boolean;
   buttonText?: string;
   clickEvent: () => void;
-  closeHandler?: () => void;
 }
 
 const ConfirmationModal = ({
@@ -39,14 +38,13 @@ const ConfirmationModal = ({
   cancleable,
   buttonText,
   clickEvent,
-  closeHandler,
   children
 }: ConfirmationModalProps) => {
   return (
     <AlertDialog open={openState} onOpenChange={openHandler}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent className="max-md:max-w-[20.5rem] max-md:max-h-[19.5rem] rounded-xl p-4">
-        <X onClick={closeHandler || openHandler} className="w-6 h-6 self-end cursor-pointer" />
+        <X onClick={openHandler} className="w-6 h-6 self-end cursor-pointer" />
         <AlertDialogHeader>
           <AlertDialogTitle>
             <div className="flex justify-center items-center mb-4">

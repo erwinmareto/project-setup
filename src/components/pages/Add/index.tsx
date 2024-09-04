@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useMediaQuery } from 'react-responsive';
 
 import { ArrowLine } from '@/assets/icons';
-import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
 import { ConfirmFormSteps, Step1Form, Step2Form, Step3Form } from '@/components/parts/SubscriptionForms';
 import {
   Breadcrumb,
