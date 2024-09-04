@@ -1,5 +1,6 @@
 'use client';
 
+import { getMonth, getYear } from 'date-fns';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 
 import { Transaction } from '@/components/parts/SubscriptionTable/types';
@@ -7,17 +8,31 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '
 
 export interface CostChartProps {
   data?: Transaction[];
-  selectedYear?: number;
+  costTimeframe?: 'month' | 'year';
   // eslint-disable-next-line no-unused-vars
   totalSubsHandler?: (total: number) => void;
 }
 
-const CostChart = ({ data, selectedYear, totalSubsHandler }: CostChartProps) => {
-  const selectedYearData = data?.filter(
-    (transaction) => new Date(transaction.paymentDate).getFullYear() === selectedYear
-  );
+const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) => {
+  const getFilteredData = (timeFrame: 'month' | 'year' = 'month') => {
+    switch (timeFrame) {
+      case 'month':
+        return data?.filter(
+          (transaction) =>
+            getMonth(transaction.paymentDate) === getMonth(new Date()) &&
+            getYear(transaction.paymentDate) === getYear(new Date())
+        );
+      case 'year':
+        return data?.filter((transaction) => getYear(transaction.paymentDate) === getYear(new Date()));
 
-  totalSubsHandler && totalSubsHandler(selectedYearData?.length || 0);
+      default:
+        return [];
+    }
+  };
+
+  const filteredData = getFilteredData(costTimeframe);
+
+  totalSubsHandler && totalSubsHandler(filteredData?.length || 0);
 
   const chartData = [
     { app: 'Netflix', cost: 186, category: 'Entertainment' },

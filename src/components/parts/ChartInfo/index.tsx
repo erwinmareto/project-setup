@@ -20,6 +20,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
   const [selectedYearTotal, setSelectedYearTotal] = useState(0);
   const [prevYearTotal, setPrevYearTotal] = useState(0);
   const [totalSubs, setTotalSubs] = useState(0);
+  const [costTimeframe, setCostTimeframe] = useState('month');
 
   const handleSelectedYear = (year: string) => {
     setSelectedYear(+year);
@@ -37,25 +38,43 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
     setTotalSubs(total);
   };
 
+  const handleCostTimeframe = (timeframe: string) => {
+    setCostTimeframe(timeframe);
+  };
+
   return (
     <div className="bg-primary-0 p-5 mt-4">
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col gap-2">
           <p className="font-medium text-primary-80 text-body-xs md:text-body-lg">Time Frame</p>
-          <Select value={selectedYear.toString()} onValueChange={handleSelectedYear}>
-            <SelectTrigger className="bg-muted">
-              <SelectValue placeholder="This year" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {transactionYears.map((year) => (
-                  <SelectItem key={year} value={year.toString()}>
-                    {total === 'cost' ? `${year}` : `${year - 1}-${year}`}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {total === 'spendings' ? (
+            <Select value={selectedYear.toString()} onValueChange={handleSelectedYear}>
+              <SelectTrigger className="bg-muted">
+                <SelectValue placeholder="This year" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {transactionYears.map((year) => (
+                    <SelectItem key={year} value={year.toString()}>
+                      {`${year - 1}-${year}`}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ) : (
+            <Select value={costTimeframe} onValueChange={handleCostTimeframe}>
+              <SelectTrigger className="bg-muted">
+                <SelectValue placeholder="This year" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="month">This month</SelectItem>
+                  <SelectItem value="year">This year</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         </div>
 
         {total === 'spendings' ? (
@@ -97,7 +116,8 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
         selectedYear: selectedYear,
         selectedYearTotalHandler: handleSelectedYearTotal,
         prevYearTotalHandler: handlePrevYearTotal,
-        totalSubsHandler: handleTotalSubs
+        totalSubsHandler: handleTotalSubs,
+        costTimeframe: costTimeframe
       })}
     </div>
   );
