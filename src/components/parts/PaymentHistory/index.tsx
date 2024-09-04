@@ -49,7 +49,7 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
           <h1 className="font-semibold text-primary-80 text-heading-3 md:text-heading-1">{formatIDR(totalPrice)}</h1>
           <p className="font-medium text-primary-50 text-body-sm md:text-body-md">Total subscription cost</p>
           <Select onValueChange={setTimeframe}>
-            <SelectTrigger className="w-[6.9rem]">
+            <SelectTrigger className="max-w-[7.2rem]">
               <SelectValue placeholder="This Year" />
             </SelectTrigger>
             <SelectContent>
