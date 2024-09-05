@@ -207,14 +207,12 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <Link href={`/subscriptions/${row.original.id}`}>
-          <div className="flex flex-shrink items-center gap-2 hover:underline">
-            <div className="bg-red-300 rounded-sm">
-              <AppIcons iconName={row.original.icon} width={20} height={20} />
-            </div>
-            <p>{row.getValue<string>('appName')}</p>
+        <div className="flex flex-shrink items-center gap-2">
+          <div className="bg-red-300 rounded-sm">
+            <AppIcons iconName={row.original.icon} width={20} height={20} />
           </div>
-        </Link>
+          <p>{row.getValue<string>('appName')}</p>
+        </div>
       );
     }
   },
