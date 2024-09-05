@@ -2,6 +2,7 @@
 
 import { cloneElement, ReactElement, useState } from 'react';
 
+import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { formatIDR } from '@/lib/utils';
@@ -43,13 +44,13 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
   };
 
   return (
-    <div className="bg-primary-0 p-5 mt-4">
-      <div className="flex justify-between items-center mb-4">
+    <Card className="bg-primary-0 p-3 md:p-5 mt-4">
+      <div className="flex justify-between mb-4 items-center">
         <div className="flex flex-col gap-2">
           <p className="font-medium text-primary-80 text-body-xs md:text-body-lg">Time Frame</p>
           {total === 'spendings' ? (
             <Select value={selectedYear.toString()} onValueChange={handleSelectedYear}>
-              <SelectTrigger className="bg-muted">
+              <SelectTrigger className="max-sm:max-w-[5.35rem] max-sm:max-h-7 max-sm:text-[0.65rem]">
                 <SelectValue placeholder="This year" />
               </SelectTrigger>
               <SelectContent>
@@ -64,7 +65,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
             </Select>
           ) : (
             <Select value={costTimeframe} onValueChange={handleCostTimeframe}>
-              <SelectTrigger className="bg-muted">
+              <SelectTrigger className="max-sm:max-w-[6.35rem] max-sm:max-h-7 max-sm:text-[0.65rem]">
                 <SelectValue placeholder="This year" />
               </SelectTrigger>
               <SelectContent>
@@ -78,7 +79,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
         </div>
 
         {total === 'spendings' ? (
-          <div className="flex gap-3 md:gap-7">
+          <div className="flex items-start gap-3 md:gap-7">
             <div>
               <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent Last Year</p>
               <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(prevYearTotal)}</h4>
@@ -119,7 +120,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
         totalSubsHandler: handleTotalSubs,
         costTimeframe: costTimeframe
       })}
-    </div>
+    </Card>
   );
 };
 

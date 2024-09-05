@@ -50,7 +50,7 @@ const MySubscriptions = () => {
             />
           </TabsContent>
           <TabsContent value="history">
-            <div className="flex flex-col mb-9 lg:grid lg:grid-cols-12">
+            <div className="flex flex-col gap-6 mb-9 lg:grid lg:grid-cols-12">
               <section className="lg:col-span-7">
                 <ChartInfo transactionYears={filteredYears} total="spendings">
                   <SpendingsChart data={transactionsQuery?.data} />
