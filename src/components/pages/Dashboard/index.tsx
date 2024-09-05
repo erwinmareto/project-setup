@@ -33,7 +33,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col gap-6">
       <section>
-        <h6 className="font-semibold text-primary-80 text-body-lg md:text-heading-6">Overview</h6>
+        <h6 className="font-medium text-primary-80 text-body-lg md:text-heading-6">Overview</h6>
         <div className="flex flex-col flex-1 gap-4 mt-4 lg:flex-row">
           <ReactQuery
             queryResult={allSubscripitonsQuery}
@@ -81,7 +81,7 @@ const Dashboard = () => {
 
       <section>
         <div className="flex justify-between items-center">
-          <h6 className="font-semibold text-primary-80 text-body-lg md:text-heading-6">My Subscriptions</h6>
+          <h6 className="font-medium text-primary-80 text-body-lg md:text-heading-6">My Subscriptions</h6>
           <Link
             href="/my-subscriptions"
             className="font-medium text-body-xs text-secondary-40 focus:underline lg:hidden"

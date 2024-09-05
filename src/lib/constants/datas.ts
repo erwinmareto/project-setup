@@ -65,3 +65,5 @@ export const AVAILABLE_ICONS: Record<string, string> = {
   'category-health': 'Health',
   others: 'Others'
 };
+
+export const PAYMENT_METHODS = ['credit card', 'debit card', 'paypal', 'gopay', 'OVO', 'shopee pay', 'dana'];

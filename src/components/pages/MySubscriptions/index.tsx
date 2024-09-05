@@ -30,7 +30,7 @@ const MySubscriptions = () => {
 
   return (
     <section className="col-span-12 rounded-lg">
-      <h6 className="font-semibold text-primary-80 text-body-lg mb-4 md:text-heading-6">My Subscription</h6>
+      <h6 className="font-medium text-primary-80 text-body-lg mb-4 md:text-heading-6">My Subscription</h6>
       <article className="bg-primary-0 px-5 py-2">
         <Tabs defaultValue={selectedTab === 'history' ? selectedTab : 'list'}>
           <TabsList className="mb-6">
