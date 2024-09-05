@@ -25,13 +25,15 @@ const PaymentHistory = ({ data, currentSub }: PaymentHistoryProps) => {
 
   // const years = [...new Set(allCurrentTransactions.map((item) => getYear(new Date(item.paymentDate))))];
 
-  const transactionByCurrentYear = allCurrentTransactions.filter(
-    (item) => getYear(item.paymentDate) === getYear(new Date())
-  );
+  const transactionByCurrentYear = allCurrentTransactions
+    .filter((item) => getYear(item.paymentDate) === getYear(new Date()))
+    .sort((a, b) => new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime());
 
-  const transactionByCurrentMonth = allCurrentTransactions.filter(
-    (item) => getMonth(item.paymentDate) === getMonth(new Date()) && getYear(item.paymentDate) === getYear(new Date())
-  );
+  const transactionByCurrentMonth = allCurrentTransactions
+    .filter(
+      (item) => getMonth(item.paymentDate) === getMonth(new Date()) && getYear(item.paymentDate) === getYear(new Date())
+    )
+    .sort((a, b) => new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime());
 
   const prices = allCurrentTransactions.map((item) => item.pricing);
 

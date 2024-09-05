@@ -21,15 +21,18 @@ const Sidebar = () => {
       (sub: Subscription) =>
         differenceInDays(sub.nextPayment, new Date()) > 0 && differenceInDays(sub.nextPayment, new Date()) <= 7
     );
-    return filteredSubs;
+
+    const sorted = filteredSubs.sort((a, b) => new Date(a.nextPayment).getTime() - new Date(b.nextPayment).getTime());
+    return sorted;
   };
 
   const getWeekOldTransactions = (transactions: Transaction[]) => {
     const weekOld = transactions.filter(
       (transaction: Transaction) => differenceInDays(new Date(), transaction.paymentDate) <= 7
     );
+    const sorted = weekOld.sort((a, b) => new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime());
 
-    return weekOld;
+    return sorted;
   };
 
   return (
