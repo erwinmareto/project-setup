@@ -137,7 +137,7 @@ const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; cu
               <Loader2 className="w-10 h-10 text-secondary-40 animate-spin" />
             </div>
           ) : (
-            <div className="flex flex-col gap-3 font-medium text-primary-90 text-body-md capitalize">
+            <div className="flex flex-col gap-3 font-medium text-primary-90 text-body-md">
               <p>{appNameGlobal}</p>
               <p>{categoryGlobal}</p>
               <p>{formatIDR(priceGlobal)}</p>

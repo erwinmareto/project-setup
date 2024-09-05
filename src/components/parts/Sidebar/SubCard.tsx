@@ -19,7 +19,7 @@ export type SubCardProps = {
 const SubCard = ({ id, icon, title, category, paymentDate, isHistory, price }: SubCardProps) => {
   return (
     <article className="flex justify-between items-center gap-10">
-      <section className="flex justify-center items-center gap-3 py-3">
+      <section className="flex justify-center items-center gap-3 py-3 group">
         {id ? (
           <>
             <Link href={`/subscriptions/${id}`}>
@@ -27,7 +27,7 @@ const SubCard = ({ id, icon, title, category, paymentDate, isHistory, price }: S
             </Link>
             <div>
               <Link href={`/subscriptions/${id}`}>
-                <p className="font-medium text-body-sm md:text-body-md hover:underline">{title}</p>
+                <p className="font-medium text-body-sm md:text-body-md group-hover:underline">{title}</p>
               </Link>
               <p className="font-semibold text-body-xs text-primary-50 capitalize">{category}</p>
             </div>
