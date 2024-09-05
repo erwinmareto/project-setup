@@ -1,4 +1,5 @@
 import { differenceInDays, format } from 'date-fns';
+import Link from 'next/link';
 
 import AppIcons from '@/components/parts/AppIcons';
 import { SubscriptionCategory } from '@/components/parts/SubscriptionTable/types';
@@ -7,6 +8,7 @@ import { formatIDR } from '@/lib/utils';
 
 export type SubCardProps = {
   isHistory?: boolean;
+  id?: string;
   icon: string;
   title: string;
   category: SubscriptionCategory;
@@ -14,15 +16,32 @@ export type SubCardProps = {
   price?: number;
 };
 
-const SubCard = ({ icon, title, category, paymentDate, isHistory, price }: SubCardProps) => {
+const SubCard = ({ id, icon, title, category, paymentDate, isHistory, price }: SubCardProps) => {
   return (
     <article className="flex justify-between items-center gap-10">
       <section className="flex justify-center items-center gap-3 py-3">
-        <AppIcons iconName={icon} width={42} height={42} className="rounded-lg" />
-        <div>
-          <p className="font-medium text-body-sm md:text-body-md">{title}</p>
-          <p className="font-semibold text-body-xs text-primary-50 capitalize">{category}</p>
-        </div>
+        {id ? (
+          <>
+            <Link href={`/subscriptions/${id}`} className="flex justify-center items-center gap-3">
+              <AppIcons iconName={icon} width={42} height={42} className="rounded-lg" />
+            </Link>
+            <div>
+              <Link href={`/subscriptions/${id}`} className="flex justify-center items-center gap-3">
+                <p className="font-medium text-body-sm md:text-body-md hover:underline">{title}</p>
+              </Link>
+              <p className="font-semibold text-body-xs text-primary-50 capitalize">{category}</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <AppIcons iconName={icon} width={42} height={42} className="rounded-lg" />
+
+            <div>
+              <p className="font-medium text-body-sm md:text-body-md">{title}</p>
+              <p className="font-semibold text-body-xs text-primary-50 capitalize">{category}</p>
+            </div>
+          </>
+        )}
       </section>
 
       <section className="flex flex-col flex-shrink-0 justify-end items-center">
