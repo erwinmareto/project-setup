@@ -263,7 +263,7 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
                             ) : (
                               <Image src={`/payment-icons/${method}.svg`} alt={method} width={24} height={24} />
                             )}
-                            <p className="font-medium text-heading-6">{method}</p>
+                            <p className="font-medium text-heading-6 capitalize">{method}</p>
                           </FormLabel>
                         </FormItem>
                       </Card>

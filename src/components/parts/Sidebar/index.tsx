@@ -47,6 +47,7 @@ const Sidebar = () => {
                     <>
                       <SubCard
                         key={sub.id}
+                        id={sub.id}
                         icon={sub.icon}
                         title={sub.appName}
                         category={sub.category}
