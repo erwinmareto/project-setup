@@ -34,13 +34,28 @@ const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) =>
 
   totalSubsHandler && totalSubsHandler(filteredData?.length || 0);
 
-  const chartData = [
-    { app: 'Netflix', cost: 186, category: 'Entertainment' },
-    { app: 'Creative Cloud', cost: 305, category: 'Work' },
-    { app: 'Youtube', cost: 237, category: 'Entertainment' },
-    { app: 'Spotify', cost: 73, category: 'Entertainment' },
-    { app: 'Dribbble', cost: 209, category: 'work' }
-  ];
+  const appNames = [...new Set(filteredData?.map((transaction) => transaction.appName))];
+
+  const charts = appNames.map((app) => {
+    const totalCost = filteredData?.reduce((total, transaction) => {
+      if (transaction.appName === app) {
+        return total + transaction.pricing;
+      }
+      return total;
+    }, 0);
+
+    return { app, cost: totalCost };
+  });
+
+  const top5Apps = charts.sort((a, b) => (b?.cost ?? 0) - (a?.cost ?? 0)).slice(0, 5);
+
+  // const chartData = [
+  //   { app: 'Netflix', cost: 186, category: 'Entertainment' },
+  //   { app: 'Creative Cloud', cost: 305, category: 'Work' },
+  //   { app: 'Youtube', cost: 237, category: 'Entertainment' },
+  //   { app: 'Spotify', cost: 73, category: 'Entertainment' },
+  //   { app: 'Dribbble', cost: 209, category: 'work' }
+  // ];
 
   const chartConfig = {
     cost: {
@@ -67,12 +82,13 @@ const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) =>
       label: 'Work'
     }
   } satisfies ChartConfig;
+
   return (
     <div className="flex flex-col gap-4">
       <ChartContainer config={chartConfig} className="h-[13rem] md:h-[22.8rem]">
         <BarChart
           accessibilityLayer
-          data={chartData}
+          data={top5Apps}
           layout="vertical"
           margin={{
             right: 16
