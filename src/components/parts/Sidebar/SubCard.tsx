@@ -22,11 +22,11 @@ const SubCard = ({ id, icon, title, category, paymentDate, isHistory, price }: S
       <section className="flex justify-center items-center gap-3 py-3">
         {id ? (
           <>
-            <Link href={`/subscriptions/${id}`} className="flex justify-center items-center gap-3">
+            <Link href={`/subscriptions/${id}`}>
               <AppIcons iconName={icon} width={42} height={42} className="rounded-lg" />
             </Link>
             <div>
-              <Link href={`/subscriptions/${id}`} className="flex justify-center items-center gap-3">
+              <Link href={`/subscriptions/${id}`}>
                 <p className="font-medium text-body-sm md:text-body-md hover:underline">{title}</p>
               </Link>
               <p className="font-semibold text-body-xs text-primary-50 capitalize">{category}</p>
