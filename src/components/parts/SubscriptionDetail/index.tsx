@@ -82,6 +82,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     pricing: data?.pricing,
     status: 'active',
     startPayment: format(data?.start_payment, 'yyyy-MM-dd'),
+    nextPayment: format(data?.next_payment, 'yyyy-MM-dd'),
     paymentMethod: data?.payment_method,
     cycle: data?.cycle,
     intervalDays: data?.interval_days,
@@ -106,7 +107,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   };
 
   const cancleSubscription = () => {
-    editSubscriptionMutation.mutate({ ...data, status: 'inactive' });
+    editSubscriptionMutation.mutate({ ...subPayload, status: 'inactive' });
   };
 
   const handleDeleteSubscription = () => {
