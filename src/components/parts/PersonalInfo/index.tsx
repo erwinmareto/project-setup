@@ -74,7 +74,7 @@ const PersonalInfo = () => {
   return (
     <main className="p-3 lg:col-span-9">
       <article className="flex flex-col gap-8">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center gap-8">
           <div className="flex items-center gap-4">
             <Avatar className="w-16 h-16">
               <AvatarImage src="https://github.com/shadcn.png" />
@@ -82,7 +82,7 @@ const PersonalInfo = () => {
             </Avatar>
             <div>
               <h6 className="font-semibold text-primary-80 text-heading-6">{data?.name}</h6>
-              <p className="font-medium text-primary-50 text-body-md">something</p>
+              <p className="font-medium text-primary-50 text-body-md">{data?.email}</p>
             </div>
           </div>
           <div className="flex gap-3">

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useParams, usePathname } from 'next/navigation';
 
-import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
 import { ConfirmFormSteps, Step1Form, Step2Form, Step3Form } from '@/components/parts/SubscriptionForms';
 import {
   Breadcrumb,

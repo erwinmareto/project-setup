@@ -136,7 +136,7 @@ const Step1Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step1Sc
             name="appName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Subscription Name</FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Subscription Name</FormLabel>
                 <FormControl>
                   <Input placeholder="e.g. Netflix" {...field} />
                 </FormControl>

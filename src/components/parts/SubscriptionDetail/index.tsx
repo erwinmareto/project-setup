@@ -11,7 +11,8 @@ import toast from 'react-hot-toast';
 import { useMediaQuery } from 'react-responsive';
 
 import AppIcons from '@/components/parts/AppIcons';
-import ConfirmationModal from '@/components/parts/ConfirmationModal';
+import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
+import StatusModal from '@/components/parts/Modals/StatusModal';
 import { Subscription } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -48,7 +49,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const editSubscriptionMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => editSubscription(id as string, data),
     onSuccess: () => {
-      toast.success('Subscription updated successfully');
+      // toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
     }
   });
@@ -67,7 +68,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const addTransactionMutation = useMutation({
     mutationFn: addTransaction,
     onSuccess: () => {
-      toast.success('Transaction added successfully');
+      toast.success('Subscription marked as paid');
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
       queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
       queryClient.refetchQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
@@ -157,18 +158,19 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               className="w-[2.65rem] h-[2.65rem] rounded-xl md:w-[3.25rem] md:h-[3.25rem]"
             />
             <div>
-              <h6 className="font-semibold text-heading-6">{data?.app_name}</h6>
+              <h6 className="font-semibold text-body-md capitalize md:text-heading-6">{data?.app_name}</h6>
               <p className="font-medium text-primary-50 text-body-sm capitalize">{data?.category}</p>
             </div>
           </div>
 
           <div className="flex gap-2 max-md:justify-between">
-            <ConfirmationModal
-              imagePath="/modal-icons/success.png"
+            <StatusModal
+              // imagePath="/modal-icons/success.png"
               openState={successOpen}
               openHandler={handleSuccessOpen}
               clickEvent={() => router.refresh()}
-              title="Congratulations!"
+              // title="Congratulations!"
+              status={editSubscriptionMutation.status}
               description="Your subscription has been marked as paid."
             >
               <Button
@@ -179,7 +181,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               >
                 <Check className="max-md:w-4 max-md:h-4" /> Mark as Paid
               </Button>
-            </ConfirmationModal>
+            </StatusModal>
 
             <ConfirmationModal
               imagePath="/modal-icons/warning.png"
@@ -211,7 +213,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           <Separator orientation={isMobileScreen ? 'horizontal' : 'vertical'} />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-lg">{data?.payment_method}</p>
+            <p className="font-medium text-body-sm capitalize md:text-body-lg">{data?.payment_method}</p>
           </div>
           <Separator orientation={isMobileScreen ? 'horizontal' : 'vertical'} />
           <div>
@@ -238,13 +240,21 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
             <p className="font-medium text-primary-55 text-body-sm md:text-body-md">Payment Method</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p className="font-medium text-primary-90 text-body-md">{data?.app_name}</p>
-            <p className="font-medium text-primary-90 text-body-md capitalize">{data?.category}</p>
-            <p className="font-medium text-primary-90 text-body-md">{formatIDR(data?.pricing)}</p>
-            <p className="font-medium text-primary-90 text-body-md capitalize">{data?.cycle}</p>
-            <p className="font-medium text-primary-90 text-body-md">{format(data?.start_payment, 'dd MMM yyyy')}</p>
-            <p className="font-medium text-primary-90 text-body-md">{format(data?.next_payment, 'dd MMM yyyy')}</p>
-            <p className="font-medium text-primary-90 text-body-md">{data?.payment_method}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.app_name}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.category}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">
+              {formatIDR(data?.pricing)}
+            </p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.cycle}</p>
+            <p className="font-medium text-primary-90 text-body-sm md:text-body-md">
+              {format(data?.start_payment, 'dd MMM yyyy')}
+            </p>
+            <p className="font-medium text-primary-90 text-body-sm md:text-body-md">
+              {format(data?.next_payment, 'dd MMM yyyy')}
+            </p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">
+              {data?.payment_method}
+            </p>
           </div>
         </div>
       </article>

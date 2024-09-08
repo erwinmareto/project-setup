@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { CalendarDays, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, CreditCardIcon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -21,6 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { useStep1Form } from '@/context/step1Global';
 import { useStep2Form } from '@/context/step2Global';
+import { PAYMENT_METHODS } from '@/lib/constants/datas';
 import { cn } from '@/lib/utils';
 import { step2Schema } from '@/lib/validations/add';
 
@@ -93,9 +95,9 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
     }
 
     // if you reload this will trigger because for some reason global state isn't there in the very beginning
-    if (!appNameGlobal) {
-      router.replace('/dashboard');
-    }
+    // if (!appNameGlobal) {
+    //   router.replace('/dashboard');
+    // }
   }, [
     router,
     prevData,
@@ -200,7 +202,7 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Amount</FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Price</FormLabel>
                 <FormControl>
                   <div className="flex">
                     <div className="flex items-center text-primary-55 text-body-md gap-4 pl-4 border rounded-l">
@@ -233,7 +235,7 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
             )}
           /> */}
 
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <p className="font-medium text-body-md after:content-['*'] after:ml-0.5 after:text-red-500 ">
               Payment Method
             </p>
@@ -241,55 +243,37 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
               <Plus className="mr-2 h-4 w-4" />
               Add Payment
             </Button>
-          </div>
+          </div> */}
 
           <FormField
             control={step2Form.control}
             name="paymentMethod"
             render={({ field }) => (
               <FormItem className="space-y-3">
-                <FormLabel>List of saved accounts</FormLabel>
+                <FormLabel className='after:content-["*"] after:ml-0.5 after:text-red-500'>Payment Method</FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     className="flex flex-col lg:grid lg:grid-cols-2 gap-4"
                   >
-                    <Card className="col-span-1 px-4 py-3">
-                      <FormItem className="flex items-start gap-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="dana" className="mt-2" />
-                        </FormControl>
-                        <FormLabel className="leading-normal">
-                          <p className="font-medium text-heading-6 ">Dana</p>
-                          <p className="font-normal text-body-md text-primary-45">0812345678910</p>
-                        </FormLabel>
-                      </FormItem>
-                    </Card>
-
-                    <Card className="col-span-1 px-4 py-3">
-                      <FormItem className="flex items-start gap-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="gopay" className="mt-2" />
-                        </FormControl>
-                        <FormLabel className="leading-normal">
-                          <p className="font-medium text-heading-6 ">gopay</p>
-                          <p className="font-normal text-body-md text-primary-45">0812345678910</p>
-                        </FormLabel>
-                      </FormItem>
-                    </Card>
-
-                    <Card className="col-span-1 px-4 py-3">
-                      <FormItem className="flex items-start gap-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="ovo" className="mt-2" />
-                        </FormControl>
-                        <FormLabel className="leading-normal">
-                          <p className="font-medium text-heading-6">OVO</p>
-                          <p className="font-normal text-body-md text-primary-45">0812345678910</p>
-                        </FormLabel>
-                      </FormItem>
-                    </Card>
+                    {PAYMENT_METHODS.map((method) => (
+                      <Card key={method} className="col-span-1 px-4 py-3">
+                        <FormItem className="flex items-start gap-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value={method} className="mt-2" />
+                          </FormControl>
+                          <FormLabel className="leading-normal flex items-center gap-2">
+                            {method.split(' ')[1] === 'card' ? (
+                              <CreditCardIcon />
+                            ) : (
+                              <Image src={`/payment-icons/${method}.svg`} alt={method} width={24} height={24} />
+                            )}
+                            <p className="font-medium text-heading-6 capitalize">{method}</p>
+                          </FormLabel>
+                        </FormItem>
+                      </Card>
+                    ))}
                   </RadioGroup>
                 </FormControl>
                 <FormMessage />
