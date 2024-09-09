@@ -1,16 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Eye, EyeOff, Mail } from 'lucide-react';
+import { deleteCookie } from 'cookies-next';
+import { jwtDecode } from 'jwt-decode';
+import { AlertCircle, Eye, EyeOff, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -18,7 +21,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useUserId } from '@/context/UserIdGlobal';
-import { setAccessToken } from '@/lib/cookies';
+import { ACCESS_TOKEN_KEY } from '@/lib/constants/storageKeys';
+import { getCookie, setAccessToken } from '@/lib/cookies';
 import { loginSchema } from '@/lib/validations/auth';
 import { login } from '@/repositories/auth';
 
@@ -27,6 +31,9 @@ const LoginForm = () => {
   const setUserId = useUserId((state: any) => state.setUserId);
   const [reveal, setReveal] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [expiredToken, setExpiredToken] = useState(false);
+
+  const accessToken = getCookie(ACCESS_TOKEN_KEY as string);
 
   const loginMutation = useMutation({
     mutationFn: login,
@@ -66,8 +73,30 @@ const LoginForm = () => {
     console.log('google sign in');
   };
 
+  useEffect(() => {
+    if (accessToken) {
+      try {
+        const decoded = jwtDecode(accessToken);
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        if (decoded.exp && decoded.exp < currentTime) {
+          setExpiredToken(true);
+          deleteCookie(ACCESS_TOKEN_KEY as string);
+        }
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+  }, [accessToken]);
+
   return (
     <Form {...loginForm}>
+      {expiredToken && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
+        </Alert>
+      )}
       <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col gap-8">
         <FormField
           control={loginForm.control}
