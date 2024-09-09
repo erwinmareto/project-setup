@@ -50,7 +50,7 @@ const LoginForm = () => {
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
     console.log(values);
-    loginMutation.mutate({ email: values.email, password: values.password });
+    loginMutation.mutate(values);
   }
 
   const handleReveal = () => {

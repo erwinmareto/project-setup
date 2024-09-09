@@ -63,18 +63,24 @@ const Step2Form = ({ prevData, currentId }: StepFormProps<z.infer<typeof step2Sc
     // If you reload the dates will turn into strings
     let typedStartDate: Date | undefined = undefined;
     let typedEndDate: Date | undefined = undefined;
+
     if (typeof paymentStartGlobal === 'string' || paymentStartGlobal !== undefined) {
       typedStartDate = new Date(paymentStartGlobal);
+    } else if (typeof prevData?.paymentStart === 'string') {
+      typedStartDate = new Date(prevData?.paymentStart);
     }
+
     if (typeof paymentEndGlobal === 'string' || paymentEndGlobal !== undefined) {
       typedEndDate = new Date(paymentEndGlobal);
+    } else if (typeof prevData?.paymentEnd === 'string') {
+      typedEndDate = new Date(prevData?.paymentEnd);
     }
 
     if (currentId) {
       step2Form.reset({
         cycle: cycleGlobal || prevData?.cycle,
-        paymentStart: typedStartDate || new Date(prevData?.paymentStart as Date),
-        paymentEnd: typedEndDate || new Date(prevData?.paymentEnd as Date),
+        paymentStart: typedStartDate || prevData?.paymentStart,
+        paymentEnd: typedEndDate || prevData?.paymentEnd,
         price: priceGlobal || prevData?.price,
         paymentMethod: paymentMethodGlobal || prevData?.paymentMethod
       });

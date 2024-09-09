@@ -19,7 +19,7 @@ const Sidebar = () => {
   const getExpiringSubs = (subs: Subscription[]) => {
     const filteredSubs = subs.filter(
       (sub: Subscription) =>
-        differenceInDays(sub.nextPayment, new Date()) > 0 && differenceInDays(sub.nextPayment, new Date()) <= 7
+        differenceInDays(sub.next_payment, new Date()) > 0 && differenceInDays(sub.next_payment, new Date()) <= 7
     );
     return filteredSubs;
   };
@@ -48,9 +48,9 @@ const Sidebar = () => {
                         key={sub.id}
                         id={sub.id}
                         icon={sub.icon}
-                        title={sub.appName}
+                        title={sub.app_name}
                         category={sub.category}
-                        paymentDate={sub.nextPayment}
+                        paymentDate={sub.next_payment}
                       />
                       {index < filtered.length - 1 && <Separator />}
                     </>
@@ -76,7 +76,7 @@ const Sidebar = () => {
                         icon={transaction.icon}
                         title={transaction.appName}
                         category={transaction.category}
-                        paymentDate={transaction.paymentDate}
+                        paymentDate={transaction.payment_date}
                         price={transaction.pricing}
                         isHistory
                       />

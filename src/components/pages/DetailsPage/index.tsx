@@ -6,21 +6,18 @@ import PaymentHistory from '@/components/parts/PaymentHistory';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SubscriptionDetail from '@/components/parts/SubscriptionDetail';
 import { useSubscriptionById } from '@/queries/subscriptions';
-import { useAllTransactions } from '@/queries/transactions';
+import { useGetTransactionsBySubId } from '@/queries/transactions';
 
 const DetailsPage = () => {
   const { id } = useParams();
   const subscriptionByIdQuery = useSubscriptionById(id as string);
-  const transactionQuery = useAllTransactions();
-  const currentSub = subscriptionByIdQuery.data?.appName;
+  const currentSubId = subscriptionByIdQuery.data?.id;
+  const transactionQuery = useGetTransactionsBySubId(currentSubId?.toString());
 
   return (
     <>
       <ReactQuery queryResult={subscriptionByIdQuery} render={(data) => <SubscriptionDetail data={data} />} />
-      <ReactQuery
-        queryResult={transactionQuery}
-        render={(data) => <PaymentHistory data={data} currentSub={currentSub} />}
-      />
+      <ReactQuery queryResult={transactionQuery} render={(data) => <PaymentHistory data={data} />} />
     </>
   );
 };

@@ -42,7 +42,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
     }
   },
   {
-    accessorKey: 'appName',
+    accessorKey: 'app_name',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -113,7 +113,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
     }
   },
   {
-    accessorKey: 'nextPayment',
+    accessorKey: 'next_payment',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -124,13 +124,13 @@ export const listColumns: ColumnDef<Subscription>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const parsedDate = parseISO(row.getValue<string>('nextPayment'));
+      const parsedDate = parseISO(row.getValue<string>('next_payment'));
       const formattedDate = format(parsedDate, 'MMMM d, yyyy');
       return <p>{formattedDate}</p>;
     }
   },
   {
-    accessorKey: 'paymentMethod',
+    accessorKey: 'payment_method',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -141,7 +141,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      return <p className="capitalize">{row.getValue<string>('paymentMethod')}</p>;
+      return <p className="capitalize">{row.getValue<string>('payment_method')}</p>;
     }
   },
   {
@@ -250,7 +250,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     filterFn: 'inNumberRange'
   },
   {
-    accessorKey: 'paymentDate',
+    accessorKey: 'payment_date',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -261,13 +261,13 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const parsedDate = parseISO(row.getValue<string>('paymentDate'));
+      const parsedDate = parseISO(row.getValue<string>('payment_date'));
       const formattedDate = format(parsedDate, 'MMMM d, yyyy');
       return <p>{formattedDate}</p>;
     }
   },
   {
-    accessorKey: 'payment',
+    accessorKey: 'payment_method',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -278,7 +278,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      return <p className="capitalize">{row.getValue<string>('payment')}</p>;
+      return <p className="capitalize">{row.getValue<string>('payment_method')}</p>;
     }
   },
   {
@@ -325,7 +325,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     }
   },
   {
-    accessorKey: 'appName',
+    accessorKey: 'app_name',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -342,7 +342,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
             <div className="rounded-sm">
               <AppIcons iconName={row.original.icon} width={20} height={20} />
             </div>
-            <p>{row.getValue<string>('appName')}</p>
+            <p>{row.getValue<string>('app_name')}</p>
           </div>
         </Link>
       );
@@ -382,7 +382,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
     filterFn: 'inNumberRange'
   },
   {
-    accessorKey: 'nextPayment',
+    accessorKey: 'next_payment',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -393,7 +393,7 @@ export const dashboardColumns: ColumnDef<Subscription>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const parsedDate = parseISO(row.getValue<string>('nextPayment'));
+      const parsedDate = parseISO(row.getValue<string>('next_payment'));
       const formattedDate = format(parsedDate, 'MMMM d, yyyy');
       return <p>{formattedDate}</p>;
     }
