@@ -35,7 +35,7 @@ const LoginForm = () => {
         console.log('verify email mutation here');
       }
 
-      setAccessToken(data?.token);
+      setAccessToken(data?.accessToken);
       setUserId(data?.user?.id);
 
       toast.success('Login successful');
@@ -50,7 +50,7 @@ const LoginForm = () => {
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
     console.log(values);
-    loginMutation.mutate({ email: values.email });
+    loginMutation.mutate({ email: values.email, password: values.password });
   }
 
   const handleReveal = () => {
