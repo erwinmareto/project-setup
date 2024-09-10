@@ -25,7 +25,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { CYCLE_DAYS } from '@/lib/constants/datas';
-import { ALL_TRANSACTIONS_KEY, SUBSCRIPTION_BY_ID, TRANSACTION_BY_SUB_ID_KEY } from '@/lib/constants/queryKeys';
+import {
+  ALL_SUBSCRIPTIONS_KEY,
+  ALL_TRANSACTIONS_KEY,
+  SUBSCRIPTION_BY_ID,
+  TRANSACTION_BY_SUB_ID_KEY
+} from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
 import { deleteSubscription, editSubscription } from '@/repositories/subscriptions';
 import { addTransaction } from '@/repositories/transactions';
@@ -51,6 +56,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     onSuccess: () => {
       // toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
+      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
     }
   });
 
