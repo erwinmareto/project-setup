@@ -82,12 +82,12 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
           <div className="flex items-start gap-3 md:gap-7">
             <div>
               <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent Last Year</p>
-              <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(prevYearTotal)}</h4>
+              <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(+prevYearTotal)}</h4>
             </div>
             <div>
               <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent This Year</p>
               <div className="flex justify-center items-center gap-2">
-                <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(selectedYearTotal)}</h4>
+                <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(+selectedYearTotal)}</h4>
 
                 {/* <Badge
                   variant="active"

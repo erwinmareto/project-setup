@@ -1,9 +1,9 @@
 'use client';
 
-import { getMonth } from 'date-fns';
+import { getYear } from 'date-fns';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { Transaction } from '@/components/parts/SubscriptionTable/types';
+import { SpendingsChartData } from '@/components/parts/ChartInfo/types';
 import {
   ChartConfig,
   ChartContainer,
@@ -12,11 +12,11 @@ import {
   ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart';
-import { MONTHS } from '@/lib/constants/datas';
 
 export interface SpendingsChartProps {
-  data?: Transaction[];
+  data?: SpendingsChartData;
   selectedYear?: number;
+  // testData?: SpendingsChartData;
   // eslint-disable-next-line no-unused-vars
   selectedYearTotalHandler?: (total: number) => void;
   // eslint-disable-next-line no-unused-vars
@@ -29,68 +29,86 @@ const SpendingsChart = ({
   selectedYearTotalHandler,
   prevYearTotalHandler
 }: SpendingsChartProps) => {
-  const selectedYearData = data?.filter(
-    (transaction) => new Date(transaction.paymentDate).getFullYear() === selectedYear
-  );
+  // const selectedYearData = data?.filter(
+  //   (transaction) => new Date(transaction.payment_date).getFullYear() === selectedYear
+  // );
 
-  const selectedYearTotal = data?.reduce((total, transactions) => {
-    const year = new Date(transactions.paymentDate).getFullYear();
-    if (selectedYear === year) {
-      return total + transactions.pricing;
-    }
-    return total;
-  }, 0);
+  // const selectedYearTotal = data?.reduce((total, transactions) => {
+  //   const year = new Date(transactions.payment_date).getFullYear();
+  //   if (selectedYear === year) {
+  //     return total + transactions.pricing;
+  //   }
+  //   return total;
+  // }, 0);
 
-  const prevYearData = data?.filter(
-    (transaction) => new Date(transaction.paymentDate).getFullYear() === (selectedYear as number) - 1
-  );
+  // const prevYearData = data?.filter(
+  //   (transaction) => new Date(transaction.payment_date).getFullYear() === (selectedYear as number) - 1
+  // );
 
-  const prevYearTotal = data?.reduce((total, transactions) => {
-    const year = new Date(transactions.paymentDate).getFullYear();
-    if ((selectedYear as number) - 1 === year) {
-      return total + transactions.pricing;
-    }
-    return total;
-  }, 0);
+  // const prevYearTotal = data?.reduce((total, transactions) => {
+  //   const year = new Date(transactions.payment_date).getFullYear();
+  //   if ((selectedYear as number) - 1 === year) {
+  //     return total + transactions.pricing;
+  //   }
+  //   return total;
+  // }, 0);
 
-  const chartData = MONTHS.map((month, monthIndex) => {
-    const year1 = selectedYearData?.reduce((total, transaction) => {
-      if (getMonth(transaction.paymentDate) === monthIndex) {
-        return total + transaction.pricing;
-      }
-      return total;
-    }, 0);
-    const year2 = prevYearData?.reduce((total, transaction) => {
-      if (getMonth(transaction.paymentDate) === monthIndex) {
-        return total + transaction.pricing;
-      }
-      return total;
-    }, 0);
+  // const chartData = MONTHS.map((month, monthIndex) => {
+  //   const year1 = selectedYearData?.reduce((total, transaction) => {
+  //     if (getMonth(transaction.payment_date) === monthIndex) {
+  //       return total + transaction.pricing;
+  //     }
+  //     return total;
+  //   }, 0);
+  //   const year2 = prevYearData?.reduce((total, transaction) => {
+  //     if (getMonth(transaction.payment_date) === monthIndex) {
+  //       return total + transaction.pricing;
+  //     }
+  //     return total;
+  //   }, 0);
 
+  //   return {
+  //     month,
+  //     year1,
+  //     year2
+  //   };
+  // });
+
+  const testChart = data?.chartData.map((data) => {
     return {
-      month,
-      year1,
-      year2
+      month: data.month,
+      year1: +data[(selectedYear || getYear(new Date())) - 1] ?? getYear(new Date()) - 1,
+      year2: +data[selectedYear || getYear(new Date())]
     };
   });
 
+  console.log(testChart, 'testchartintegartetetetete');
+
   const chartConfig = {
     year1: {
-      label: selectedYear,
-      color: '#4336f3'
-    },
-    year2: {
       label: (selectedYear as number) - 1,
       color: '#ecebff'
+    },
+    year2: {
+      label: selectedYear,
+      color: '#4336f3'
     }
   } satisfies ChartConfig;
 
-  selectedYearTotalHandler && selectedYearTotalHandler(selectedYearTotal ?? 2);
-  prevYearTotalHandler && prevYearTotalHandler(prevYearTotal ?? 45);
+  selectedYearTotalHandler &&
+    selectedYearTotalHandler(
+      data?.totals.find((item) => item.year === selectedYear ?? getYear(new Date()))?.total ?? 2
+    );
+  prevYearTotalHandler &&
+    prevYearTotalHandler(
+      data?.totals.find((item) => item.year === (selectedYear || getYear(new Date())) - 1 ?? getYear(new Date()) - 1)
+        ?.total ?? 45
+    );
 
+  console.log(data, 'testincharttttttttttttt');
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-      <AreaChart accessibilityLayer data={chartData}>
+      <AreaChart accessibilityLayer data={testChart}>
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="month"

@@ -11,6 +11,7 @@ import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
 import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useCostChart, useSpendingsChart } from '@/queries/charts';
 import { useAllSubscriptions } from '@/queries/subscriptions';
 import { useAllTransactions } from '@/queries/transactions';
 
@@ -20,9 +21,11 @@ const MySubscriptions = () => {
 
   const subscriptionsQuery = useAllSubscriptions();
   const transactionsQuery = useAllTransactions();
+  const { data: spendingsChartData } = useSpendingsChart();
+  const { data: costChartData } = useCostChart();
 
   const transactionYears = [
-    ...new Set(transactionsQuery?.data?.map((item: Transaction): number => getYear(item.paymentDate)))
+    ...new Set(transactionsQuery?.data?.map((item: Transaction): number => getYear(item.payment_date)))
   ];
 
   const lowestYear = Math.min(...transactionYears);
@@ -53,12 +56,12 @@ const MySubscriptions = () => {
             <div className="flex flex-col gap-6 mb-9 lg:grid lg:grid-cols-12">
               <section className="lg:col-span-7">
                 <ChartInfo transactionYears={filteredYears} total="spendings">
-                  <SpendingsChart data={transactionsQuery?.data} />
+                  <SpendingsChart data={spendingsChartData} />
                 </ChartInfo>
               </section>
               <section className="lg:col-span-5">
                 <ChartInfo transactionYears={filteredYears} total="cost">
-                  <CostChart data={transactionsQuery?.data} />
+                  <CostChart data={transactionsQuery?.data} testData={costChartData} />
                 </ChartInfo>
               </section>
             </div>

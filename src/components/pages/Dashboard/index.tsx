@@ -1,27 +1,36 @@
 'use client';
 
-import { getYear } from 'date-fns';
 import { CalendarCheck, CalendarClock, CalendarX } from 'lucide-react';
 import Link from 'next/link';
 
 import ChartInfo from '@/components/parts/ChartInfo';
+import { MonthlySpending } from '@/components/parts/ChartInfo/types';
 import OverviewCard from '@/components/parts/OverviewCard';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { dashboardColumns } from '@/components/parts/SubscriptionTable/columns';
-import { Subscription, SubStatus, Transaction } from '@/components/parts/SubscriptionTable/types';
+import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
+import { useSpendingsChart } from '@/queries/charts';
 import { useAllSubscriptions } from '@/queries/subscriptions';
-import { useAllTransactions } from '@/queries/transactions';
 
 const Dashboard = () => {
   const allSubscripitonsQuery = useAllSubscriptions();
-  const { data: transactionsData } = useAllTransactions();
+  const { data: spendingsChartData } = useSpendingsChart();
 
-  const transactionYears = [
-    ...new Set(transactionsData?.map((item: Transaction): number => getYear(item.payment_date)))
+  const transactionYears: number[] = [
+    ...new Set(
+      spendingsChartData?.chartData?.flatMap((item: MonthlySpending) =>
+        Object.keys(item)
+          .filter((key) => key !== 'month')
+          .map((key) => +key)
+      )
+    )
   ];
-
+  // console.log(testYears, 'testYearsexpepepepepep');
+  // const transactionYears = [
+  //   ...new Set(transactionsData?.map((item: Transaction): number => getYear(item.payment_date)))
+  // ];
   const lowestYear = Math.min(...transactionYears);
   const filteredYears = transactionYears.filter((year) => year > lowestYear);
 
@@ -100,7 +109,7 @@ const Dashboard = () => {
       <section>
         <h6 className="font-semibold text-primary-80 lg:text-heading-6">Payment History</h6>
         <ChartInfo transactionYears={filteredYears} total="spendings">
-          <SpendingsChart data={transactionsData} />
+          <SpendingsChart data={spendingsChartData} />
         </ChartInfo>
       </section>
     </div>

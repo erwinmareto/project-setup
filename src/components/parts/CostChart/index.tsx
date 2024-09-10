@@ -3,27 +3,29 @@
 import { getMonth, getYear } from 'date-fns';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 
+import { CostChartData } from '@/components/parts/ChartInfo/types';
 import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 export interface CostChartProps {
   data?: Transaction[];
   costTimeframe?: 'month' | 'year';
+  testData?: CostChartData;
   // eslint-disable-next-line no-unused-vars
   totalSubsHandler?: (total: number) => void;
 }
 
-const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) => {
+const CostChart = ({ data, testData, costTimeframe, totalSubsHandler }: CostChartProps) => {
   const getFilteredData = (timeFrame: 'month' | 'year' = 'month') => {
     switch (timeFrame) {
       case 'month':
         return data?.filter(
           (transaction) =>
-            getMonth(transaction.paymentDate) === getMonth(new Date()) &&
-            getYear(transaction.paymentDate) === getYear(new Date())
+            getMonth(transaction.payment_date) === getMonth(new Date()) &&
+            getYear(transaction.payment_date) === getYear(new Date())
         );
       case 'year':
-        return data?.filter((transaction) => getYear(transaction.paymentDate) === getYear(new Date()));
+        return data?.filter((transaction) => getYear(transaction.payment_date) === getYear(new Date()));
 
       default:
         return [];
@@ -32,7 +34,7 @@ const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) =>
 
   const filteredData = getFilteredData(costTimeframe);
 
-  totalSubsHandler && totalSubsHandler(filteredData?.length || 0);
+  // totalSubsHandler && totalSubsHandler(filteredData?.length || 0);
 
   const appNames = [...new Set(filteredData?.map((transaction) => transaction.appName))];
 
@@ -48,6 +50,10 @@ const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) =>
   });
 
   const top5Apps = charts.sort((a, b) => (b?.cost ?? 0) - (a?.cost ?? 0)).slice(0, 5);
+
+  console.log(testData, 'testcostttststst');
+
+  totalSubsHandler && totalSubsHandler(testData?.totalSubscriptions || 0);
 
   // const chartData = [
   //   { app: 'Netflix', cost: 186, category: 'Entertainment' },
@@ -88,7 +94,7 @@ const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) =>
       <ChartContainer config={chartConfig} className="h-[13rem] md:h-[22.8rem]">
         <BarChart
           accessibilityLayer
-          data={top5Apps}
+          data={testData?.chartData || top5Apps}
           layout="vertical"
           margin={{
             right: 16
