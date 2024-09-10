@@ -1,5 +1,6 @@
 'use client';
 
+import { getYear } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 
 import ChartInfo from '@/components/parts/ChartInfo';
@@ -8,6 +9,7 @@ import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
+import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAllSubscriptions } from '@/queries/subscriptions';
 import { useAllTransactions } from '@/queries/transactions';
@@ -18,6 +20,13 @@ const MySubscriptions = () => {
 
   const subscriptionsQuery = useAllSubscriptions();
   const transactionsQuery = useAllTransactions();
+
+  const transactionYears = [
+    ...new Set(transactionsQuery?.data?.map((item: Transaction): number => getYear(item.paymentDate)))
+  ];
+
+  const lowestYear = Math.min(...transactionYears);
+  const filteredYears = transactionYears.filter((year) => year > lowestYear);
 
   return (
     <section className="col-span-12 rounded-lg">
@@ -41,15 +50,15 @@ const MySubscriptions = () => {
             />
           </TabsContent>
           <TabsContent value="history">
-            <div className="flex flex-col mb-9 lg:grid lg:grid-cols-12">
+            <div className="flex flex-col gap-6 mb-9 lg:grid lg:grid-cols-12">
               <section className="lg:col-span-7">
-                <ChartInfo total="spendings">
-                  <SpendingsChart />
+                <ChartInfo transactionYears={filteredYears} total="spendings">
+                  <SpendingsChart data={transactionsQuery?.data} />
                 </ChartInfo>
               </section>
               <section className="lg:col-span-5">
-                <ChartInfo total="cost">
-                  <CostChart />
+                <ChartInfo transactionYears={filteredYears} total="cost">
+                  <CostChart data={transactionsQuery?.data} />
                 </ChartInfo>
               </section>
             </div>
