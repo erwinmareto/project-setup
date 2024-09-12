@@ -74,7 +74,7 @@ const SpendingsChart = ({
         <defs>
           <linearGradient id="secondary-400-gradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="var(--color-year1)" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="var(--color-year2)" stopOpacity={0.1} />
+            <stop offset="95%" stopColor="var(--color-year1)" stopOpacity={0.1} />
           </linearGradient>
           <linearGradient id="secondary-0-gradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="var(--color-year2)" stopOpacity={0.2} />
