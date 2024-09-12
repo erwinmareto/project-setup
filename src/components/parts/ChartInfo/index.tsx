@@ -1,57 +1,103 @@
-import { ReactNode } from 'react';
+'use client';
 
-import { TrendingUp } from 'lucide-react';
+import { cloneElement, ReactElement, useState } from 'react';
 
-import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { formatIDR } from '@/lib/utils';
+
+import PercentBadge from './percentBadge';
 
 // will probably need prop for the date range select
 export interface ChartInfoProps {
-  children?: ReactNode;
+  children: ReactElement;
+  transactionYears: number[];
   total: 'spendings' | 'cost';
 }
 
-const ChartInfo = ({ children, total }: ChartInfoProps) => {
+const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedYearTotal, setSelectedYearTotal] = useState(0);
+  const [prevYearTotal, setPrevYearTotal] = useState(0);
+  const [totalSubs, setTotalSubs] = useState(0);
+  const [costTimeframe, setCostTimeframe] = useState('month');
+
+  const handleSelectedYear = (year: string) => {
+    setSelectedYear(+year);
+  };
+
+  const handleSelectedYearTotal = (total: number) => {
+    setSelectedYearTotal(total);
+  };
+
+  const handlePrevYearTotal = (total: number) => {
+    setPrevYearTotal(total);
+  };
+
+  const handleTotalSubs = (total: number) => {
+    setTotalSubs(total);
+  };
+
+  const handleCostTimeframe = (timeframe: string) => {
+    setCostTimeframe(timeframe);
+  };
+
   return (
-    <div className="bg-primary-0 p-5 mt-4">
-      <div className="flex justify-between items-center mb-4">
+    <Card className="bg-primary-0 p-3 md:p-5 mt-4">
+      <div className="flex justify-between mb-4 items-center">
         <div className="flex flex-col gap-2">
           <p className="font-medium text-primary-80 text-body-xs md:text-body-lg">Time Frame</p>
-          <Select>
-            <SelectTrigger
-              className="bg-muted max-sm:max-w-[4.75rem] 
-            max-sm:max-h-[1.75rem] max-sm:text-[0.65rem] max-sm:px-[0.4rem] max-sm:py-[0.3rem]"
-            >
-              <SelectValue placeholder="This year" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="apple">2023-2024</SelectItem>
-                <SelectItem value="banana">20222-2023</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {total === 'spendings' ? (
+            <Select value={selectedYear.toString()} onValueChange={handleSelectedYear}>
+              <SelectTrigger className="max-sm:max-w-[5.35rem] max-sm:max-h-7 max-sm:text-[0.65rem]">
+                <SelectValue placeholder="This year" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {transactionYears.map((year) => (
+                    <SelectItem key={year} value={year.toString()}>
+                      {`${year - 1}-${year}`}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ) : (
+            <Select value={costTimeframe} onValueChange={handleCostTimeframe}>
+              <SelectTrigger className="max-sm:max-w-[6.35rem] max-sm:max-h-7 max-sm:text-[0.65rem]">
+                <SelectValue placeholder="This year" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="month">This month</SelectItem>
+                  <SelectItem value="year">This year</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         </div>
 
         {total === 'spendings' ? (
-          <div className="flex gap-3 md:gap-7">
+          <div className="flex items-start gap-3 md:gap-7">
             <div>
               <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent Last Year</p>
-              <h4 className="font-semibold text-body-sm md:text-heading-4">Rp 575.000</h4>
+              <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(+prevYearTotal)}</h4>
             </div>
             <div>
               <p className="font-medium text-primary-50 text-[0.5rem] md:text-body-sm">Spent This Year</p>
               <div className="flex justify-center items-center gap-2">
-                <h4 className="font-semibold text-body-sm md:text-heading-4">Rp 825.000</h4>
+                <h4 className="font-semibold text-body-sm md:text-heading-4">{formatIDR(+selectedYearTotal)}</h4>
 
-                <Badge
+                {/* <Badge
                   variant="active"
                   className="text-[0.25rem] h-2.5 border border-success-foreground 
                   md:h-5 sm:text-[0.5rem] max-sm:px-0.5"
                 >
-                  <TrendingUp className="w-1.5 h-1.5 md:w-3 md:h-3" /> + 20
-                </Badge>
+                  <TrendingUp className="w-1.5 h-1.5 md:w-3 md:h-3" /> {calculatePercent()}
+                </Badge> */}
+                {/* {calculatePercent()} */}
+                <PercentBadge selectedYearTotal={selectedYearTotal} prevYearTotal={prevYearTotal} />
               </div>
             </div>
           </div>
@@ -59,7 +105,7 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
           <div className="flex justify-end">
             <div>
               <p className="font-medium text-primary-50 text-body-xs md:text-body-sm">Total Subscriptions</p>
-              <h4 className="font-semibold text-heading-6 md:text-heading-4">12</h4>
+              <h4 className="font-semibold text-heading-6 md:text-heading-4">{totalSubs}</h4>
             </div>
           </div>
         )}
@@ -67,8 +113,14 @@ const ChartInfo = ({ children, total }: ChartInfoProps) => {
 
       <Separator className="my-4" />
 
-      {children}
-    </div>
+      {cloneElement(children, {
+        selectedYear: selectedYear,
+        selectedYearTotalHandler: handleSelectedYearTotal,
+        prevYearTotalHandler: handlePrevYearTotal,
+        totalSubsHandler: handleTotalSubs,
+        costTimeframe: costTimeframe
+      })}
+    </Card>
   );
 };
 
