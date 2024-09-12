@@ -8,8 +8,18 @@ export interface YearlyTotal {
   total: number;
 }
 
+// export interface TopApp {
+//   app: string;
+//   cost: number;
+// }
+export interface AppCount {
+  sortedBy: 'month' | 'year';
+  count: number;
+}
+
 export interface TopApp {
-  app: string;
+  sortedBy: 'month' | 'year';
+  appName: string;
   cost: number;
 }
 
@@ -18,7 +28,12 @@ export interface SpendingsChartData {
   totals: YearlyTotal[];
 }
 
+// export interface CostChartData {
+//   chartData: TopApp[];
+//   totalSubscriptions: number;
+// }
+
 export interface CostChartData {
-  chartData: TopApp[];
-  totalSubscriptions: number;
+  totals: AppCount[];
+  topApps: TopApp[];
 }
