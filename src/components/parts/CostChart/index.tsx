@@ -1,59 +1,61 @@
 'use client';
 
-import { getMonth, getYear } from 'date-fns';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 
 import { CostChartData } from '@/components/parts/ChartInfo/types';
-import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 export interface CostChartProps {
-  data?: Transaction[];
+  // data?: Transaction[];
   costTimeframe?: 'month' | 'year';
   testData?: CostChartData;
   // eslint-disable-next-line no-unused-vars
   totalSubsHandler?: (total: number) => void;
 }
 
-const CostChart = ({ data, testData, costTimeframe, totalSubsHandler }: CostChartProps) => {
-  const getFilteredData = (timeFrame: 'month' | 'year' = 'month') => {
-    switch (timeFrame) {
-      case 'month':
-        return data?.filter(
-          (transaction) =>
-            getMonth(transaction.payment_date) === getMonth(new Date()) &&
-            getYear(transaction.payment_date) === getYear(new Date())
-        );
-      case 'year':
-        return data?.filter((transaction) => getYear(transaction.payment_date) === getYear(new Date()));
+const CostChart = ({ testData, costTimeframe, totalSubsHandler }: CostChartProps) => {
+  // const getFilteredData = (timeFrame: 'month' | 'year' = 'month') => {
+  //   switch (timeFrame) {
+  //     case 'month':
+  //       return data?.filter(
+  //         (transaction) =>
+  //           getMonth(transaction.payment_date) === getMonth(new Date()) &&
+  //           getYear(transaction.payment_date) === getYear(new Date())
+  //       );
+  //     case 'year':
+  //       return data?.filter((transaction) => getYear(transaction.payment_date) === getYear(new Date()));
 
-      default:
-        return [];
-    }
-  };
+  //     default:
+  //       return [];
+  //   }
+  // };
 
-  const filteredData = getFilteredData(costTimeframe);
+  // const filteredData = getFilteredData(costTimeframe);
 
   // totalSubsHandler && totalSubsHandler(filteredData?.length || 0);
 
-  const appNames = [...new Set(filteredData?.map((transaction) => transaction.appName))];
+  // const appNames = [...new Set(filteredData?.map((transaction) => transaction.appName))];
 
-  const charts = appNames.map((app) => {
-    const totalCost = filteredData?.reduce((total, transaction) => {
-      if (transaction.appName === app) {
-        return total + transaction.pricing;
-      }
-      return total;
-    }, 0);
+  // const charts = appNames.map((app) => {
+  //   const totalCost = filteredData?.reduce((total, transaction) => {
+  //     if (transaction.appName === app) {
+  //       return total + transaction.pricing;
+  //     }
+  //     return total;
+  //   }, 0);
 
-    return { app, cost: totalCost };
-  });
+  //   return { app, cost: totalCost };
+  // });
 
-  const top5Apps = charts.sort((a, b) => (b?.cost ?? 0) - (a?.cost ?? 0)).slice(0, 5);
+  // const top5Apps = charts.sort((a, b) => (b?.cost ?? 0) - (a?.cost ?? 0)).slice(0, 5);
 
   console.log(testData, 'testcostttststst');
 
-  totalSubsHandler && totalSubsHandler(testData?.totalSubscriptions || 0);
+  const subCount = testData?.totals.find((data) => data.sortedBy === costTimeframe)?.count;
+
+  totalSubsHandler && totalSubsHandler(subCount || 0);
+
+  const the5 = testData?.topApps.filter((app) => app.sortedBy === costTimeframe);
 
   // const chartData = [
   //   { app: 'Netflix', cost: 186, category: 'Entertainment' },
@@ -94,7 +96,7 @@ const CostChart = ({ data, testData, costTimeframe, totalSubsHandler }: CostChar
       <ChartContainer config={chartConfig} className="h-[13rem] md:h-[22.8rem]">
         <BarChart
           accessibilityLayer
-          data={testData?.chartData || top5Apps}
+          data={the5}
           layout="vertical"
           margin={{
             right: 16
@@ -102,7 +104,7 @@ const CostChart = ({ data, testData, costTimeframe, totalSubsHandler }: CostChar
         >
           <CartesianGrid horizontal={false} />
           <YAxis
-            dataKey="app"
+            dataKey="appName"
             type="category"
             tickLine={false}
             tickMargin={10}
@@ -113,7 +115,7 @@ const CostChart = ({ data, testData, costTimeframe, totalSubsHandler }: CostChar
           <XAxis dataKey="cost" type="number" hide />
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent indicator="line" nameKey="app" color="#4336F3" className="rounded-md" />}
+            content={<ChartTooltipContent indicator="line" nameKey="appName" color="#4336F3" className="rounded-md" />}
           />
           <Bar
             dataKey="cost"
@@ -122,7 +124,7 @@ const CostChart = ({ data, testData, costTimeframe, totalSubsHandler }: CostChar
             radius={10}
           >
             <LabelList
-              dataKey="app"
+              dataKey="appName"
               position="insideLeft"
               offset={8}
               className="fill-[--color-label] font-medium text-body-lg 
