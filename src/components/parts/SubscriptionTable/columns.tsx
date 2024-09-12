@@ -59,7 +59,7 @@ export const listColumns: ColumnDef<Subscription>[] = [
             <div className="rounded-sm">
               <AppIcons iconName={row.original.icon} width={20} height={20} />
             </div>
-            <p>{row.getValue<string>('appName')}</p>
+            <p>{row.getValue<string>('app_name')}</p>
           </div>
         </Link>
       );
