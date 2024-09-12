@@ -6,64 +6,19 @@ import { CostChartData } from '@/components/parts/ChartInfo/types';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 export interface CostChartProps {
-  // data?: Transaction[];
+  data?: CostChartData;
   costTimeframe?: 'month' | 'year';
-  testData?: CostChartData;
   // eslint-disable-next-line no-unused-vars
   totalSubsHandler?: (total: number) => void;
 }
 
-const CostChart = ({ testData, costTimeframe, totalSubsHandler }: CostChartProps) => {
-  // const getFilteredData = (timeFrame: 'month' | 'year' = 'month') => {
-  //   switch (timeFrame) {
-  //     case 'month':
-  //       return data?.filter(
-  //         (transaction) =>
-  //           getMonth(transaction.payment_date) === getMonth(new Date()) &&
-  //           getYear(transaction.payment_date) === getYear(new Date())
-  //       );
-  //     case 'year':
-  //       return data?.filter((transaction) => getYear(transaction.payment_date) === getYear(new Date()));
+const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) => {
+  const subCount = data?.totals.find((data) => data.sortedBy === costTimeframe)?.count;
 
-  //     default:
-  //       return [];
-  //   }
-  // };
-
-  // const filteredData = getFilteredData(costTimeframe);
-
-  // totalSubsHandler && totalSubsHandler(filteredData?.length || 0);
-
-  // const appNames = [...new Set(filteredData?.map((transaction) => transaction.appName))];
-
-  // const charts = appNames.map((app) => {
-  //   const totalCost = filteredData?.reduce((total, transaction) => {
-  //     if (transaction.appName === app) {
-  //       return total + transaction.pricing;
-  //     }
-  //     return total;
-  //   }, 0);
-
-  //   return { app, cost: totalCost };
-  // });
-
-  // const top5Apps = charts.sort((a, b) => (b?.cost ?? 0) - (a?.cost ?? 0)).slice(0, 5);
-
-  console.log(testData, 'testcostttststst');
-
-  const subCount = testData?.totals.find((data) => data.sortedBy === costTimeframe)?.count;
-
+  // change the sub total in chart info
   totalSubsHandler && totalSubsHandler(subCount || 0);
 
-  const the5 = testData?.topApps.filter((app) => app.sortedBy === costTimeframe);
-
-  // const chartData = [
-  //   { app: 'Netflix', cost: 186, category: 'Entertainment' },
-  //   { app: 'Creative Cloud', cost: 305, category: 'Work' },
-  //   { app: 'Youtube', cost: 237, category: 'Entertainment' },
-  //   { app: 'Spotify', cost: 73, category: 'Entertainment' },
-  //   { app: 'Dribbble', cost: 209, category: 'work' }
-  // ];
+  const top5Apps = data?.topApps.filter((app) => app.sortedBy === costTimeframe);
 
   const chartConfig = {
     cost: {
@@ -73,21 +28,6 @@ const CostChart = ({ testData, costTimeframe, totalSubsHandler }: CostChartProps
 
     label: {
       color: 'hsl(var(--background))'
-    },
-    netflix: {
-      label: 'Entertainment'
-    },
-    youtube: {
-      label: 'Entertainment'
-    },
-    spotify: {
-      label: 'Entertainment'
-    },
-    creativecloud: {
-      label: 'Work'
-    },
-    dribbble: {
-      label: 'Work'
     }
   } satisfies ChartConfig;
 
@@ -96,7 +36,7 @@ const CostChart = ({ testData, costTimeframe, totalSubsHandler }: CostChartProps
       <ChartContainer config={chartConfig} className="h-[13rem] md:h-[22.8rem]">
         <BarChart
           accessibilityLayer
-          data={the5}
+          data={top5Apps}
           layout="vertical"
           margin={{
             right: 16

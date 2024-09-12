@@ -61,7 +61,7 @@ const MySubscriptions = () => {
               </section>
               <section className="lg:col-span-5">
                 <ChartInfo transactionYears={filteredYears} total="cost">
-                  <CostChart testData={costChartData} />
+                  <CostChart data={costChartData} />
                 </ChartInfo>
               </section>
             </div>
