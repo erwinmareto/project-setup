@@ -28,6 +28,8 @@ import { CYCLE_DAYS } from '@/lib/constants/datas';
 import {
   ALL_SUBSCRIPTIONS_KEY,
   ALL_TRANSACTIONS_KEY,
+  COST_CHART_KEY,
+  SPENDINGS_CHART_KEY,
   SUBSCRIPTION_BY_ID,
   TRANSACTION_BY_SUB_ID_KEY
 } from '@/lib/constants/queryKeys';
@@ -57,6 +59,8 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
       // toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
       queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
     }
   });
 
@@ -67,6 +71,8 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
       queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
       router.push('/dashboard');
     }
   });
@@ -77,7 +83,8 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
       toast.success('Subscription marked as paid');
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
       queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
-      queryClient.refetchQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
     }
   });
 
