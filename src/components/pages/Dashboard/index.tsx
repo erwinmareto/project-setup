@@ -6,6 +6,7 @@ import Link from 'next/link';
 import ChartInfo from '@/components/parts/ChartInfo';
 import { MonthlySpending } from '@/components/parts/ChartInfo/types';
 import OverviewCard from '@/components/parts/OverviewCard';
+import OverviewCardSkeleton from '@/components/parts/OverviewCard/skeleton';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
@@ -56,6 +57,7 @@ const Dashboard = () => {
                 link="?status=active"
               />
             )}
+            renderLoading={<OverviewCardSkeleton />}
           />
 
           <ReactQuery
@@ -70,6 +72,7 @@ const Dashboard = () => {
                 link="?status=upcoming"
               />
             )}
+            renderLoading={<OverviewCardSkeleton />}
           />
 
           <ReactQuery
@@ -84,6 +87,7 @@ const Dashboard = () => {
                 link="?status=inactive"
               />
             )}
+            renderLoading={<OverviewCardSkeleton />}
           />
         </div>
       </section>
