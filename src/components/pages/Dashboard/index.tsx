@@ -4,6 +4,7 @@ import { CalendarCheck, CalendarClock, CalendarX } from 'lucide-react';
 import Link from 'next/link';
 
 import ChartInfo from '@/components/parts/ChartInfo';
+import ChartSkeleton from '@/components/parts/ChartInfo/Skeleton';
 import { MonthlySpending } from '@/components/parts/ChartInfo/types';
 import OverviewCard from '@/components/parts/OverviewCard';
 import OverviewCardSkeleton from '@/components/parts/OverviewCard/skeleton';
@@ -18,7 +19,7 @@ import { useAllSubscriptions } from '@/queries/subscriptions';
 
 const Dashboard = () => {
   const allSubscripitonsQuery = useAllSubscriptions();
-  const { data: spendingsChartData } = useSpendingsChart();
+  const { data: spendingsChartData, isLoading: spendingsChartLoading } = useSpendingsChart();
 
   const transactionYears: number[] = [
     ...new Set(
@@ -114,9 +115,13 @@ const Dashboard = () => {
 
       <section>
         <h6 className="font-semibold text-primary-80 lg:text-heading-6">Payment History</h6>
-        <ChartInfo transactionYears={filteredYears} total="spendings">
-          <SpendingsChart data={spendingsChartData} />
-        </ChartInfo>
+        {spendingsChartLoading ? (
+          <ChartSkeleton />
+        ) : (
+          <ChartInfo transactionYears={filteredYears} total="spendings">
+            <SpendingsChart data={spendingsChartData} />
+          </ChartInfo>
+        )}
       </section>
     </div>
   );
