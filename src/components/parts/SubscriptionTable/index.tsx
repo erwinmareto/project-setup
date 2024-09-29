@@ -31,7 +31,12 @@ import {
   SUBSCRIPTION_PRICE_RANGES,
   SUBSCRIPTION_STATUS
 } from '@/lib/constants/datas';
-import { ALL_SUBSCRIPTIONS_KEY, ALL_TRANSACTIONS_KEY } from '@/lib/constants/queryKeys';
+import {
+  ALL_SUBSCRIPTIONS_KEY,
+  ALL_TRANSACTIONS_KEY,
+  COST_CHART_KEY,
+  SPENDINGS_CHART_KEY
+} from '@/lib/constants/queryKeys';
 import { cn } from '@/lib/utils';
 import { deleteSubscription } from '@/repositories/subscriptions';
 import { deleteTransaction } from '@/repositories/transactions';
@@ -88,6 +93,8 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
     onSuccess: () => {
       toast.success('Subscription deleted successfully');
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
     }
   });
 
