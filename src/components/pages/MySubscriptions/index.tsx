@@ -4,11 +4,13 @@ import { getYear } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 
 import ChartInfo from '@/components/parts/ChartInfo';
+import ChartSkeleton from '@/components/parts/ChartInfo/Skeleton';
 import CostChart from '@/components/parts/CostChart';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
+import SubscriptionTableSkeleton from '@/components/parts/SubscriptionTable/Skeleton';
 import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCostChart, useSpendingsChart } from '@/queries/charts';
@@ -21,8 +23,8 @@ const MySubscriptions = () => {
 
   const subscriptionsQuery = useAllSubscriptions();
   const transactionsQuery = useAllTransactions();
-  const { data: spendingsChartData } = useSpendingsChart();
-  const { data: costChartData } = useCostChart();
+  const { data: spendingsChartData, isLoading: spendingsChartLoading } = useSpendingsChart();
+  const { data: costChartData, isLoading: costChartLoading } = useCostChart();
 
   const transactionYears = [
     ...new Set(transactionsQuery?.data?.map((item: Transaction): number => getYear(item.payment_date)))
@@ -50,19 +52,28 @@ const MySubscriptions = () => {
               render={(subscriptionData) => (
                 <SubscriptionTable columns={listColumns} data={subscriptionData} variant="list" />
               )}
+              renderLoading={<SubscriptionTableSkeleton />}
             />
           </TabsContent>
           <TabsContent value="history">
             <div className="flex flex-col gap-6 mb-9 lg:grid lg:grid-cols-12">
               <section className="lg:col-span-7">
-                <ChartInfo transactionYears={filteredYears} total="spendings">
-                  <SpendingsChart data={spendingsChartData} />
-                </ChartInfo>
+                {spendingsChartLoading ? (
+                  <ChartSkeleton isSpendings />
+                ) : (
+                  <ChartInfo transactionYears={filteredYears} total="spendings">
+                    <SpendingsChart data={spendingsChartData} />
+                  </ChartInfo>
+                )}
               </section>
               <section className="lg:col-span-5">
-                <ChartInfo transactionYears={filteredYears} total="cost">
-                  <CostChart data={costChartData} />
-                </ChartInfo>
+                {costChartLoading ? (
+                  <ChartSkeleton />
+                ) : (
+                  <ChartInfo transactionYears={filteredYears} total="cost">
+                    <CostChart data={costChartData} />
+                  </ChartInfo>
+                )}
               </section>
             </div>
 
@@ -71,6 +82,7 @@ const MySubscriptions = () => {
               render={(transactionData) => (
                 <SubscriptionTable columns={transactionColumns} data={transactionData} variant="transactions" />
               )}
+              renderLoading={<SubscriptionTableSkeleton />}
             />
           </TabsContent>
         </Tabs>

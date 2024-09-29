@@ -1,10 +1,12 @@
+import { Loader2 } from 'lucide-react';
+
 import { ReactQueryProps } from './types';
 
 const ReactQuery = <T,>({ queryResult, render, ...props }: ReactQueryProps<T>) => {
   const { data, isLoading, isFetching, isError, isSuccess } = queryResult;
 
   if (isLoading && isFetching) {
-    return props.renderLoading ? props.renderLoading : <p>Loading...</p>;
+    return props.renderLoading ? props.renderLoading : <Loader2 className="text-secondary-40 animate-spin" />;
   }
 
   if (isError) {
