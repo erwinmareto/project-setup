@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 
 import PaymentHistory from '@/components/parts/PaymentHistory';
+import PaymentHistorySkeleton from '@/components/parts/PaymentHistory/Skeleton';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SubscriptionDetail from '@/components/parts/SubscriptionDetail';
 import SubscriptionDetailSkeleton from '@/components/parts/SubscriptionDetail/Skeleton';
@@ -22,7 +23,11 @@ const DetailsPage = () => {
         render={(data) => <SubscriptionDetail data={data} />}
         renderLoading={<SubscriptionDetailSkeleton />}
       />
-      <ReactQuery queryResult={transactionQuery} render={(data) => <PaymentHistory data={data} />} />
+      <ReactQuery
+        queryResult={transactionQuery}
+        render={(data) => <PaymentHistory data={data} />}
+        renderLoading={<PaymentHistorySkeleton />}
+      />
     </>
   );
 };
