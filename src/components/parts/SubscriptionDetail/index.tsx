@@ -178,21 +178,21 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
 
           {data?.status !== 'inactive' && (
             <div className="flex gap-2 max-md:justify-between">
-              {data?.status !== 'active' && (
-                <StatusModal
-                  // imagePath="/modal-icons/success.png"
-                  openState={successOpen}
-                  openHandler={handleSuccessOpen}
-                  clickEvent={() => router.refresh()}
-                  // title="Congratulations!"
-                  status={editSubscriptionMutation.status}
-                  description="Your subscription has been marked as paid."
-                >
+              <StatusModal
+                // imagePath="/modal-icons/success.png"
+                openState={successOpen}
+                openHandler={handleSuccessOpen}
+                clickEvent={() => router.refresh()}
+                // title="Congratulations!"
+                status={editSubscriptionMutation.status}
+                description="Your subscription has been marked as paid."
+              >
+                {data?.status !== 'active' && (
                   <Button variant="secondary" onClick={markPaid} size={isMobileScreen ? 'sm' : 'default'}>
                     <Check className="max-md:w-4 max-md:h-4" /> Mark as Paid
                   </Button>
-                </StatusModal>
-              )}
+                )}
+              </StatusModal>
 
               <ConfirmationModal
                 imagePath="/modal-icons/warning.png"

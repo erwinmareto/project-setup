@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
 import { AlertCircle, Eye, EyeOff, Mail } from 'lucide-react';
@@ -27,6 +27,7 @@ import { loginSchema } from '@/lib/validations/auth';
 import { login } from '@/repositories/auth';
 
 const LoginForm = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const setUserId = useUserId((state: any) => state.setUserId);
   const [reveal, setReveal] = useState(false);
@@ -46,6 +47,7 @@ const LoginForm = () => {
       setUserId(data?.user?.id);
 
       toast.success('Login successful');
+      queryClient.invalidateQueries();
 
       router.replace('/dashboard');
     }

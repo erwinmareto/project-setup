@@ -44,6 +44,12 @@ const Sidebar = () => {
                 queryResult={allSubscripitonsQuery}
                 render={(data) => {
                   const filtered = getExpiringSubs(data);
+                  if (filtered.length === 0)
+                    return (
+                      <p className="font-medium text-body-xs text-center py-4">
+                        Subscriptions with 7 days remaining will show up here
+                      </p>
+                    );
                   return filtered.map((sub, index) => (
                     <>
                       <SubCard
@@ -74,6 +80,8 @@ const Sidebar = () => {
                 queryResult={allTransactionsQuery}
                 render={(data) => {
                   const last5 = getLast5Transactions(data);
+                  if (last5.length === 0)
+                    return <p className="font-medium text-body-xs text-center py-4">No payment history yet.</p>;
                   return last5.map((transaction) => (
                     <>
                       <SubCard
@@ -100,10 +108,12 @@ const Sidebar = () => {
                   <Skeleton className="w-2/3 h-4 my-3" />
                 </div>
               ) : (
-                <Link href="/my-subscriptions?tabs=history" className="link py-3">
-                  <p>See all History Payments</p>
-                  <ArrowUpRight />
-                </Link>
+                allTransactionsQuery.data?.length !== 0 && (
+                  <Link href="/my-subscriptions?tabs=history" className="link py-3">
+                    <p>See all History Payments</p>
+                    <ArrowUpRight />
+                  </Link>
+                )
               )}
             </div>
           </div>

@@ -1,17 +1,16 @@
 'use client';
 
-import { getYear } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 
 import ChartInfo from '@/components/parts/ChartInfo';
 import ChartSkeleton from '@/components/parts/ChartInfo/Skeleton';
+import { MonthlySpending } from '@/components/parts/ChartInfo/types';
 import CostChart from '@/components/parts/CostChart';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
 import SubscriptionTableSkeleton from '@/components/parts/SubscriptionTable/Skeleton';
-import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCostChart, useSpendingsChart } from '@/queries/charts';
 import { useAllSubscriptions } from '@/queries/subscriptions';
@@ -26,8 +25,18 @@ const MySubscriptions = () => {
   const { data: spendingsChartData, isLoading: spendingsChartLoading } = useSpendingsChart();
   const { data: costChartData, isLoading: costChartLoading } = useCostChart();
 
-  const transactionYears = [
-    ...new Set(transactionsQuery?.data?.map((item: Transaction): number => getYear(item.payment_date)))
+  // const transactionYears = [
+  //   ...new Set(transactionsQuery?.data?.map((item: Transaction): number => getYear(item.payment_date)))
+  // ];
+
+  const transactionYears: number[] = [
+    ...new Set(
+      spendingsChartData?.chartData?.flatMap((item: MonthlySpending) =>
+        Object.keys(item)
+          .filter((key) => key !== 'month')
+          .map((key) => +key)
+      )
+    )
   ];
 
   const lowestYear = Math.min(...transactionYears);

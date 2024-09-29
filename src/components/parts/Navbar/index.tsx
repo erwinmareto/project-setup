@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <header className="bg-primary-0 mb-3">
       <nav className="container flex justify-between items-center py-4">
-        <div className="flex items-center gap-3">
+        <Link href="/dashboard" className="flex items-center gap-3">
           <Avatar className="w-12 h-12 bg-secondary-40 flex justify-center items-center">
             <CircleDollar />
           </Avatar>
@@ -38,7 +38,7 @@ const Navbar = () => {
             <p className="text-body-sm font-semibold text-primary-70 md:text-body-md">Reminderoo</p>
             <p className="text-body-xs text-primary-45">by Loan Shark&trade;</p>
           </div>
-        </div>
+        </Link>
 
         <RightContent />
         <Button variant="ghost" className="lg:hidden">

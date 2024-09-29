@@ -56,6 +56,7 @@ const ChartInfo = ({ children, transactionYears, total }: ChartInfoProps) => {
               <SelectContent>
                 <SelectGroup>
                   {transactionYears.map((year) => (
+                    // eslint-disable-next-line react/jsx-indent
                     <SelectItem key={year} value={year.toString()}>
                       {`${year - 1}-${year}`}
                     </SelectItem>

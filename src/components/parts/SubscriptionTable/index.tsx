@@ -21,6 +21,7 @@ import toast from 'react-hot-toast';
 
 import { NoSearchResult } from '@/assets/icons';
 import FilterDropdown from '@/components/parts/FilterDropdown';
+import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -30,7 +31,12 @@ import {
   SUBSCRIPTION_PRICE_RANGES,
   SUBSCRIPTION_STATUS
 } from '@/lib/constants/datas';
-import { ALL_SUBSCRIPTIONS_KEY, ALL_TRANSACTIONS_KEY } from '@/lib/constants/queryKeys';
+import {
+  ALL_SUBSCRIPTIONS_KEY,
+  ALL_TRANSACTIONS_KEY,
+  COST_CHART_KEY,
+  SPENDINGS_CHART_KEY
+} from '@/lib/constants/queryKeys';
 import { cn } from '@/lib/utils';
 import { deleteSubscription } from '@/repositories/subscriptions';
 import { deleteTransaction } from '@/repositories/transactions';
@@ -46,6 +52,7 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get('status');
 
+  const [warningOpen, setWarningOpen] = useState(false);
   const [openFilters, setOpenFilters] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -86,8 +93,14 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
     onSuccess: () => {
       toast.success('Subscription deleted successfully');
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
     }
   });
+
+  const handleWarningOpen = () => {
+    setWarningOpen(!warningOpen);
+  };
 
   const handleOpenFilters = () => {
     setOpenFilters(!openFilters);
@@ -147,12 +160,23 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
             )}
 
             <div className="relative flex justify-center items-center">
-              <Input
-                placeholder="Search..."
-                value={(table.getColumn('appName')?.getFilterValue() as string) ?? ''}
-                onChange={(event) => table.getColumn('appName')?.setFilterValue(event.target.value)}
-                isFilter
-              />
+              {/* this conditional is only here because 
+              in the backend transactions is appName but subcriptions is app_name */}
+              {variant == 'transactions' ? (
+                <Input
+                  placeholder="Search..."
+                  value={(table.getColumn('appName')?.getFilterValue() as string) ?? ''}
+                  onChange={(event) => table.getColumn('appName')?.setFilterValue(event.target.value)}
+                  isFilter
+                />
+              ) : (
+                <Input
+                  placeholder="Search..."
+                  value={(table.getColumn('app_name')?.getFilterValue() as string) ?? ''}
+                  onChange={(event) => table.getColumn('app_name')?.setFilterValue(event.target.value)}
+                  isFilter
+                />
+              )}
               <div className="absolute text-primary-55 right-3 z-10">
                 <Search className="w-4 h-4" />
               </div>
@@ -161,10 +185,20 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
 
           <div className="hidden gap-2 lg:flex">
             {!!Object.keys(rowSelection).length && (
-              <Button variant="destructive" className="gap-2" onClick={handleDeleteSelection}>
-                <Trash2 />
-                Delete Selection
-              </Button>
+              <ConfirmationModal
+                imagePath="/modal-icons/warning.png"
+                openState={warningOpen}
+                openHandler={handleWarningOpen}
+                clickEvent={handleDeleteSelection}
+                title="Are you sure?"
+                description="Once canceled, you will not be able to recover this subscription!"
+                cancleable
+              >
+                <Button variant="destructive" className="gap-2">
+                  <Trash2 />
+                  Delete Selection
+                </Button>
+              </ConfirmationModal>
             )}
             {variant === 'dashboard' && (
               <Link href="/my-subscriptions">
