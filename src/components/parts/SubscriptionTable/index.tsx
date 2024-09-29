@@ -147,12 +147,23 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
             )}
 
             <div className="relative flex justify-center items-center">
-              <Input
-                placeholder="Search..."
-                value={(table.getColumn('appName')?.getFilterValue() as string) ?? ''}
-                onChange={(event) => table.getColumn('appName')?.setFilterValue(event.target.value)}
-                isFilter
-              />
+              {/* this conditional is only here because 
+              in the backend transactions is appName but subcriptions is app_name */}
+              {variant == 'transactions' ? (
+                <Input
+                  placeholder="Search..."
+                  value={(table.getColumn('appName')?.getFilterValue() as string) ?? ''}
+                  onChange={(event) => table.getColumn('appName')?.setFilterValue(event.target.value)}
+                  isFilter
+                />
+              ) : (
+                <Input
+                  placeholder="Search..."
+                  value={(table.getColumn('app_name')?.getFilterValue() as string) ?? ''}
+                  onChange={(event) => table.getColumn('app_name')?.setFilterValue(event.target.value)}
+                  isFilter
+                />
+              )}
               <div className="absolute text-primary-55 right-3 z-10">
                 <Search className="w-4 h-4" />
               </div>
