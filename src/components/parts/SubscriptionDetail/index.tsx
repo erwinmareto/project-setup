@@ -176,44 +176,39 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
             </div>
           </div>
 
-          <div className="flex gap-2 max-md:justify-between">
-            <StatusModal
-              // imagePath="/modal-icons/success.png"
-              openState={successOpen}
-              openHandler={handleSuccessOpen}
-              clickEvent={() => router.refresh()}
-              // title="Congratulations!"
-              status={editSubscriptionMutation.status}
-              description="Your subscription has been marked as paid."
-            >
-              <Button
-                variant="secondary"
-                onClick={markPaid}
-                disabled={data?.status === 'active' || data?.status === 'inactive'}
-                size={isMobileScreen ? 'sm' : 'default'}
-              >
-                <Check className="max-md:w-4 max-md:h-4" /> Mark as Paid
-              </Button>
-            </StatusModal>
+          {data?.status !== 'inactive' && (
+            <div className="flex gap-2 max-md:justify-between">
+              {data?.status !== 'active' && (
+                <StatusModal
+                  // imagePath="/modal-icons/success.png"
+                  openState={successOpen}
+                  openHandler={handleSuccessOpen}
+                  clickEvent={() => router.refresh()}
+                  // title="Congratulations!"
+                  status={editSubscriptionMutation.status}
+                  description="Your subscription has been marked as paid."
+                >
+                  <Button variant="secondary" onClick={markPaid} size={isMobileScreen ? 'sm' : 'default'}>
+                    <Check className="max-md:w-4 max-md:h-4" /> Mark as Paid
+                  </Button>
+                </StatusModal>
+              )}
 
-            <ConfirmationModal
-              imagePath="/modal-icons/warning.png"
-              openState={warningOpen}
-              openHandler={handleWarningOpen}
-              clickEvent={cancleSubscription}
-              title="Are you sure?"
-              description="Once cancelled, you will not be able to reactivate your subscription."
-              cancleable
-            >
-              <Button
-                variant="destructive"
-                disabled={data?.status === 'inactive'}
-                size={isMobileScreen ? 'sm' : 'default'}
+              <ConfirmationModal
+                imagePath="/modal-icons/warning.png"
+                openState={warningOpen}
+                openHandler={handleWarningOpen}
+                clickEvent={cancleSubscription}
+                title="Are you sure?"
+                description="Once cancelled, you will not be able to reactivate your subscription."
+                cancleable
               >
-                <X className="max-md:w-4 max-md:h-4" /> Cancel Subscription
-              </Button>
-            </ConfirmationModal>
-          </div>
+                <Button variant="destructive" size={isMobileScreen ? 'sm' : 'default'}>
+                  <X className="max-md:w-4 max-md:h-4" /> Cancel Subscription
+                </Button>
+              </ConfirmationModal>
+            </div>
+          )}
         </div>
 
         <Card className="flex flex-col justify-between p-4 md:h-20 md:flex-row md:items-center max-md:gap-4">
