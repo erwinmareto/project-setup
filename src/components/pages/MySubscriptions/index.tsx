@@ -9,6 +9,7 @@ import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
+import SubscriptionTableSkeleton from '@/components/parts/SubscriptionTable/Skeleton';
 import { Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCostChart, useSpendingsChart } from '@/queries/charts';
@@ -50,6 +51,7 @@ const MySubscriptions = () => {
               render={(subscriptionData) => (
                 <SubscriptionTable columns={listColumns} data={subscriptionData} variant="list" />
               )}
+              renderLoading={<SubscriptionTableSkeleton />}
             />
           </TabsContent>
           <TabsContent value="history">
@@ -71,6 +73,7 @@ const MySubscriptions = () => {
               render={(transactionData) => (
                 <SubscriptionTable columns={transactionColumns} data={transactionData} variant="transactions" />
               )}
+              renderLoading={<SubscriptionTableSkeleton />}
             />
           </TabsContent>
         </Tabs>
