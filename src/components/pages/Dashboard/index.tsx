@@ -11,6 +11,7 @@ import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { dashboardColumns } from '@/components/parts/SubscriptionTable/columns';
+import SubscriptionTableSkeleton from '@/components/parts/SubscriptionTable/Skeleton';
 import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
 import { useSpendingsChart } from '@/queries/charts';
 import { useAllSubscriptions } from '@/queries/subscriptions';
@@ -106,6 +107,7 @@ const Dashboard = () => {
           <ReactQuery
             queryResult={allSubscripitonsQuery}
             render={(subData) => <SubscriptionTable columns={dashboardColumns} data={subData} variant="dashboard" />}
+            renderLoading={<SubscriptionTableSkeleton />}
           />
         </div>
       </section>
