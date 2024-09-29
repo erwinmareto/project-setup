@@ -30,7 +30,6 @@ const Dashboard = () => {
       )
     )
   ];
-  // console.log(testYears, 'testYearsexpepepepepep');
   // const transactionYears = [
   //   ...new Set(transactionsData?.map((item: Transaction): number => getYear(item.payment_date)))
   // ];
