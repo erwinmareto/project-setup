@@ -25,9 +25,9 @@ const RegisterForm = () => {
 
   const registerMutation = useMutation({
     mutationFn: register,
-    onSuccess: (data) => {
-      console.log(data?.user, 'registerrerererewewewewe');
+    onSuccess: () => {
       toast.success('Account created successfully');
+      router.replace('/login');
     }
   });
 
@@ -38,8 +38,6 @@ const RegisterForm = () => {
   function onSubmit(values: z.infer<typeof registerSchema>) {
     const payload = { email: values.email, name: values.name, password: values.password };
     registerMutation.mutate(payload);
-
-    router.replace('/login');
   }
 
   const handleRevealPassword = () => {
