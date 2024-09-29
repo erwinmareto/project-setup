@@ -21,6 +21,7 @@ import toast from 'react-hot-toast';
 
 import { NoSearchResult } from '@/assets/icons';
 import FilterDropdown from '@/components/parts/FilterDropdown';
+import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -46,6 +47,7 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get('status');
 
+  const [warningOpen, setWarningOpen] = useState(false);
   const [openFilters, setOpenFilters] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -88,6 +90,10 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
     }
   });
+
+  const handleWarningOpen = () => {
+    setWarningOpen(!warningOpen);
+  };
 
   const handleOpenFilters = () => {
     setOpenFilters(!openFilters);
@@ -172,10 +178,20 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
 
           <div className="hidden gap-2 lg:flex">
             {!!Object.keys(rowSelection).length && (
-              <Button variant="destructive" className="gap-2" onClick={handleDeleteSelection}>
-                <Trash2 />
-                Delete Selection
-              </Button>
+              <ConfirmationModal
+                imagePath="/modal-icons/warning.png"
+                openState={warningOpen}
+                openHandler={handleWarningOpen}
+                clickEvent={handleDeleteSelection}
+                title="Are you sure?"
+                description="Once canceled, you will not be able to recover this subscription!"
+                cancleable
+              >
+                <Button variant="destructive" className="gap-2">
+                  <Trash2 />
+                  Delete Selection
+                </Button>
+              </ConfirmationModal>
             )}
             {variant === 'dashboard' && (
               <Link href="/my-subscriptions">
