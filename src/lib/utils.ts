@@ -11,7 +11,7 @@ export function formatIDR(price: number) {
     currency: 'IDR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }).format(price * 1000);
+  }).format(price);
 
   return formatted;
 }
