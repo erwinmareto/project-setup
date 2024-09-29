@@ -8,7 +8,7 @@ const SubscriptionTableSkeleton = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2 lg:w-1/3 max-md:max-w-[11.25rem]">
             <Skeleton className="h-10 w-10 rounded-md" />
-            <Skeleton className="h-10 w-[8rem] md:w-full" />
+            <Skeleton className="h-10 w-[8rem] md:w-[12rem]" />
           </div>
           <div className="hidden gap-2 lg:flex">
             <Skeleton className="h-10 w-32" />
