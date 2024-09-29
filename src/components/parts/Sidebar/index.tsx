@@ -7,9 +7,11 @@ import Link from 'next/link';
 import ReactQuery from '@/components/parts/ReactQuery';
 import { Subscription, Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAllSubscriptions } from '@/queries/subscriptions';
 import { useAllTransactions } from '@/queries/transactions';
 
+import SubCardSkeleton from './Skeleton';
 import SubCard from './SubCard';
 
 const Sidebar = () => {
@@ -56,6 +58,9 @@ const Sidebar = () => {
                     </>
                   ));
                 }}
+                renderLoading={[...Array(5)].map((_, index) => (
+                  <SubCardSkeleton key={index} />
+                ))}
               />
             </div>
           </div>
@@ -85,12 +90,21 @@ const Sidebar = () => {
                     </>
                   ));
                 }}
+                renderLoading={[...Array(5)].map((_, index) => (
+                  <SubCardSkeleton key={index} />
+                ))}
               />
 
-              <Link href="/my-subscriptions?tabs=history" className="link py-3">
-                <p>See all History Payments</p>
-                <ArrowUpRight />
-              </Link>
+              {allTransactionsQuery.isLoading ? (
+                <div className="flex justify-center items-center">
+                  <Skeleton className="w-2/3 h-4 my-3" />
+                </div>
+              ) : (
+                <Link href="/my-subscriptions?tabs=history" className="link py-3">
+                  <p>See all History Payments</p>
+                  <ArrowUpRight />
+                </Link>
+              )}
             </div>
           </div>
         </article>
