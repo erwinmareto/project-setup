@@ -191,7 +191,7 @@ const SubscriptionTable = <TData, TValue>({ columns, data, variant = 'dashboard'
                 openHandler={handleWarningOpen}
                 clickEvent={handleDeleteSelection}
                 title="Are you sure?"
-                description="Once canceled, you will not be able to recover this subscription!"
+                description="Once deleted, you will not be able to recover this subscription!"
                 cancleable
               >
                 <Button variant="destructive" className="gap-2">
