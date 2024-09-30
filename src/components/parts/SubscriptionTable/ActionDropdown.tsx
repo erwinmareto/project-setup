@@ -1,8 +1,13 @@
+'use client';
+
+import { useState } from 'react';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Edit3, MoreHorizontal, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
+import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,6 +20,7 @@ import { deleteSubscription } from '@/repositories/subscriptions';
 
 const ActionDropdown = ({ id }: { id: string }) => {
   const queryClient = useQueryClient();
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const deleteSubscriptionMutation = useMutation({
     mutationFn: () => deleteSubscription(id),
@@ -26,6 +32,15 @@ const ActionDropdown = ({ id }: { id: string }) => {
 
   const handleDeleteSubscription = () => {
     deleteSubscriptionMutation.mutate();
+  };
+
+  const handleWarningOpen = () => {
+    setWarningOpen(!warningOpen);
+  };
+
+  const handleModalOpen = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    handleWarningOpen();
   };
 
   return (
@@ -42,13 +57,23 @@ const ActionDropdown = ({ id }: { id: string }) => {
             <Edit3 className="w-5 h-5" /> Edit
           </DropdownMenuItem>
         </Link>
-        <DropdownMenuItem
-          className="text-destructive-foreground gap-2
-            focus:bg-destructive focus:text-destructive-foreground"
-          onClick={handleDeleteSubscription}
+        <ConfirmationModal
+          imagePath="/modal-icons/warning.png"
+          openState={warningOpen}
+          openHandler={handleWarningOpen}
+          clickEvent={handleDeleteSubscription}
+          title="Are you sure?"
+          description="Once deleted, you will not be able to recover this subscription!"
+          cancleable
         >
-          <Trash2 className="w-5 h-5" /> Delete
-        </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleModalOpen}
+            className="text-destructive-foreground gap-2
+            focus:bg-destructive focus:text-destructive-foreground"
+          >
+            <Trash2 className="w-5 h-5" /> Delete
+          </DropdownMenuItem>
+        </ConfirmationModal>
       </DropdownMenuContent>
     </DropdownMenu>
   );
