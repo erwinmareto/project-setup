@@ -19,10 +19,7 @@ const Sidebar = () => {
   const allTransactionsQuery = useAllTransactions();
 
   const getExpiringSubs = (subs: Subscription[]) => {
-    const filteredSubs = subs.filter(
-      (sub: Subscription) =>
-        differenceInDays(sub.next_payment, new Date()) > 0 && differenceInDays(sub.next_payment, new Date()) <= 7
-    );
+    const filteredSubs = subs.filter((sub: Subscription) => differenceInDays(sub.next_payment, new Date()) <= 7);
     return filteredSubs;
   };
 
