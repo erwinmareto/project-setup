@@ -2,48 +2,41 @@
 
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 
+import { CostChartData } from '@/components/parts/ChartInfo/types';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-const chartData = [
-  { app: 'Netflix', cost: 186, category: 'Entertainment' },
-  { app: 'Creative Cloud', cost: 305, category: 'Work' },
-  { app: 'Youtube', cost: 237, category: 'Entertainment' },
-  { app: 'Spotify', cost: 73, category: 'Entertainment' },
-  { app: 'Dribbble', cost: 209, category: 'work' }
-];
 
-const chartConfig = {
-  cost: {
-    label: 'Total Cost',
-    color: '#4336F3'
-  },
+export interface CostChartProps {
+  data?: CostChartData;
+  costTimeframe?: 'month' | 'year';
+  // eslint-disable-next-line no-unused-vars
+  totalSubsHandler?: (total: number) => void;
+}
 
-  label: {
-    color: 'hsl(var(--background))'
-  },
-  netflix: {
-    label: 'Entertainment'
-  },
-  youtube: {
-    label: 'Entertainment'
-  },
-  spotify: {
-    label: 'Entertainment'
-  },
-  creativecloud: {
-    label: 'Work'
-  },
-  dribbble: {
-    label: 'Work'
-  }
-} satisfies ChartConfig;
+const CostChart = ({ data, costTimeframe, totalSubsHandler }: CostChartProps) => {
+  const subCount = data?.totals.find((data) => data.sortedBy === costTimeframe)?.count;
 
-const CostChart = () => {
+  // change the sub total in chart info
+  totalSubsHandler && totalSubsHandler(subCount || 0);
+
+  const top5Apps = data?.topApps.filter((app) => app.sortedBy === costTimeframe);
+
+  const chartConfig = {
+    cost: {
+      label: 'Total Cost',
+      color: '#4336F3'
+    },
+
+    label: {
+      color: 'hsl(var(--background))'
+    }
+  } satisfies ChartConfig;
+
   return (
     <div className="flex flex-col gap-4">
       <ChartContainer config={chartConfig} className="h-[13rem] md:h-[22.8rem]">
         <BarChart
           accessibilityLayer
-          data={chartData}
+          data={top5Apps}
           layout="vertical"
           margin={{
             right: 16
@@ -51,7 +44,7 @@ const CostChart = () => {
         >
           <CartesianGrid horizontal={false} />
           <YAxis
-            dataKey="app"
+            dataKey="appName"
             type="category"
             tickLine={false}
             tickMargin={10}
@@ -62,7 +55,7 @@ const CostChart = () => {
           <XAxis dataKey="cost" type="number" hide />
           <ChartTooltip
             cursor={false}
-            content={<ChartTooltipContent indicator="line" nameKey="app" color="#4336F3" className="rounded-md" />}
+            content={<ChartTooltipContent indicator="line" nameKey="appName" color="#4336F3" className="rounded-md" />}
           />
           <Bar
             dataKey="cost"
@@ -71,7 +64,7 @@ const CostChart = () => {
             radius={10}
           >
             <LabelList
-              dataKey="app"
+              dataKey="appName"
               position="insideLeft"
               offset={8}
               className="fill-[--color-label] font-medium text-body-lg 

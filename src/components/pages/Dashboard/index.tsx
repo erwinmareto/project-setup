@@ -4,16 +4,37 @@ import { CalendarCheck, CalendarClock, CalendarX } from 'lucide-react';
 import Link from 'next/link';
 
 import ChartInfo from '@/components/parts/ChartInfo';
+import ChartSkeleton from '@/components/parts/ChartInfo/Skeleton';
+import { MonthlySpending } from '@/components/parts/ChartInfo/types';
 import OverviewCard from '@/components/parts/OverviewCard';
+import OverviewCardSkeleton from '@/components/parts/OverviewCard/skeleton';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { dashboardColumns } from '@/components/parts/SubscriptionTable/columns';
+import SubscriptionTableSkeleton from '@/components/parts/SubscriptionTable/Skeleton';
 import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
+import { useSpendingsChart } from '@/queries/charts';
 import { useAllSubscriptions } from '@/queries/subscriptions';
 
 const Dashboard = () => {
   const allSubscripitonsQuery = useAllSubscriptions();
+  const { data: spendingsChartData, isLoading: spendingsChartLoading } = useSpendingsChart();
+
+  const transactionYears: number[] = [
+    ...new Set(
+      spendingsChartData?.chartData?.flatMap((item: MonthlySpending) =>
+        Object.keys(item)
+          .filter((key) => key !== 'month')
+          .map((key) => +key)
+      )
+    )
+  ];
+  // const transactionYears = [
+  //   ...new Set(transactionsData?.map((item: Transaction): number => getYear(item.payment_date)))
+  // ];
+  const lowestYear = Math.min(...transactionYears);
+  const filteredYears = transactionYears.filter((year) => year > lowestYear);
 
   const getStatusCount = (subs: Subscription[], status: SubStatus) => {
     const filteredSubs = subs.filter((sub: Subscription) => sub.status === status);
@@ -37,6 +58,7 @@ const Dashboard = () => {
                 link="?status=active"
               />
             )}
+            renderLoading={<OverviewCardSkeleton />}
           />
 
           <ReactQuery
@@ -51,6 +73,7 @@ const Dashboard = () => {
                 link="?status=upcoming"
               />
             )}
+            renderLoading={<OverviewCardSkeleton />}
           />
 
           <ReactQuery
@@ -65,6 +88,7 @@ const Dashboard = () => {
                 link="?status=inactive"
               />
             )}
+            renderLoading={<OverviewCardSkeleton />}
           />
         </div>
       </section>
@@ -83,15 +107,20 @@ const Dashboard = () => {
           <ReactQuery
             queryResult={allSubscripitonsQuery}
             render={(subData) => <SubscriptionTable columns={dashboardColumns} data={subData} variant="dashboard" />}
+            renderLoading={<SubscriptionTableSkeleton />}
           />
         </div>
       </section>
 
       <section>
-        <h6 className="font-medium text-primary-80 text-body-lg md:text-heading-6">Payment History</h6>
-        <ChartInfo total="spendings">
-          <SpendingsChart />
-        </ChartInfo>
+        <h6 className="font-semibold text-primary-80 lg:text-heading-6">Payment History</h6>
+        {spendingsChartLoading ? (
+          <ChartSkeleton />
+        ) : (
+          <ChartInfo transactionYears={filteredYears} total="spendings">
+            <SpendingsChart data={spendingsChartData} />
+          </ChartInfo>
+        )}
       </section>
     </div>
   );

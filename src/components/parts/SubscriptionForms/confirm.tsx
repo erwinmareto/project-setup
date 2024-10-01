@@ -98,12 +98,12 @@ const CofirmFormSteps = ({ prevStatus, currentId }: { prevStatus?: SubStatus; cu
     appName: appNameGlobal,
     category: categoryGlobal,
     cycle: cycleGlobal,
-    startPayment: checkedPaymentStart?.toISOString(),
-    nextPayment: checkedPaymentEnd?.toISOString(),
+    startPayment: format(checkedPaymentStart || new Date(), 'yyyy-MM-dd'),
+    nextPayment: format(checkedPaymentEnd || new Date(), 'yyyy-MM-dd'),
     pricing: priceGlobal,
     paymentMethod: paymentMethodGlobal,
     status,
-    interval: timeGlobal,
+    intervalDays: timeGlobal,
     email: emailGlobal
   };
   const handleSubmitSubscripiton = () => {

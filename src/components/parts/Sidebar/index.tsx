@@ -7,9 +7,11 @@ import Link from 'next/link';
 import ReactQuery from '@/components/parts/ReactQuery';
 import { Subscription, Transaction } from '@/components/parts/SubscriptionTable/types';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAllSubscriptions } from '@/queries/subscriptions';
 import { useAllTransactions } from '@/queries/transactions';
 
+import SubCardSkeleton from './Skeleton';
 import SubCard from './SubCard';
 
 const Sidebar = () => {
@@ -17,22 +19,15 @@ const Sidebar = () => {
   const allTransactionsQuery = useAllTransactions();
 
   const getExpiringSubs = (subs: Subscription[]) => {
-    const filteredSubs = subs.filter(
-      (sub: Subscription) =>
-        differenceInDays(sub.nextPayment, new Date()) > 0 && differenceInDays(sub.nextPayment, new Date()) <= 7
-    );
-
-    const sorted = filteredSubs.sort((a, b) => new Date(a.nextPayment).getTime() - new Date(b.nextPayment).getTime());
-    return sorted;
+    const filteredSubs = subs.filter((sub: Subscription) => differenceInDays(sub.next_payment, new Date()) <= 7);
+    return filteredSubs;
   };
 
-  const getWeekOldTransactions = (transactions: Transaction[]) => {
-    const weekOld = transactions.filter(
-      (transaction: Transaction) => differenceInDays(new Date(), transaction.paymentDate) <= 7
-    );
-    const sorted = weekOld.sort((a, b) => new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime());
+  const getLast5Transactions = (subs: Transaction[]) => {
+    const totalSubs = subs.length;
+    const last5 = subs.slice(totalSubs - 5);
 
-    return sorted;
+    return last5;
   };
 
   return (
@@ -46,20 +41,29 @@ const Sidebar = () => {
                 queryResult={allSubscripitonsQuery}
                 render={(data) => {
                   const filtered = getExpiringSubs(data);
+                  if (filtered.length === 0)
+                    return (
+                      <p className="font-medium text-body-xs text-center py-4">
+                        Subscriptions with 7 days remaining will show up here
+                      </p>
+                    );
                   return filtered.map((sub, index) => (
                     <>
                       <SubCard
                         key={sub.id}
                         id={sub.id}
                         icon={sub.icon}
-                        title={sub.appName}
+                        title={sub.app_name}
                         category={sub.category}
-                        paymentDate={sub.nextPayment}
+                        paymentDate={sub.next_payment}
                       />
                       {index < filtered.length - 1 && <Separator />}
                     </>
                   ));
                 }}
+                renderLoading={[...Array(5)].map((_, index) => (
+                  <SubCardSkeleton key={index} />
+                ))}
               />
             </div>
           </div>
@@ -72,15 +76,17 @@ const Sidebar = () => {
               <ReactQuery
                 queryResult={allTransactionsQuery}
                 render={(data) => {
-                  const weekOldTransactions = getWeekOldTransactions(data);
-                  return weekOldTransactions.map((transaction) => (
+                  const last5 = getLast5Transactions(data);
+                  if (last5.length === 0)
+                    return <p className="font-medium text-body-xs text-center py-4">No payment history yet.</p>;
+                  return last5.map((transaction) => (
                     <>
                       <SubCard
                         key={transaction.id}
                         icon={transaction.icon}
                         title={transaction.appName}
                         category={transaction.category}
-                        paymentDate={transaction.paymentDate}
+                        paymentDate={transaction.payment_date}
                         price={transaction.pricing}
                         isHistory
                       />
@@ -89,12 +95,23 @@ const Sidebar = () => {
                     </>
                   ));
                 }}
+                renderLoading={[...Array(5)].map((_, index) => (
+                  <SubCardSkeleton key={index} />
+                ))}
               />
 
-              <Link href="/my-subscriptions?tabs=history" className="link py-3">
-                <p>See all History Payments</p>
-                <ArrowUpRight />
-              </Link>
+              {allTransactionsQuery.isLoading ? (
+                <div className="flex justify-center items-center">
+                  <Skeleton className="w-2/3 h-4 my-3" />
+                </div>
+              ) : (
+                allTransactionsQuery.data?.length !== 0 && (
+                  <Link href="/my-subscriptions?tabs=history" className="link py-3">
+                    <p>See all History Payments</p>
+                    <ArrowUpRight />
+                  </Link>
+                )
+              )}
             </div>
           </div>
         </article>

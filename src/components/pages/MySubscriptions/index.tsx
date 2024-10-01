@@ -3,12 +3,16 @@
 import { useSearchParams } from 'next/navigation';
 
 import ChartInfo from '@/components/parts/ChartInfo';
+import ChartSkeleton from '@/components/parts/ChartInfo/Skeleton';
+import { MonthlySpending } from '@/components/parts/ChartInfo/types';
 import CostChart from '@/components/parts/CostChart';
 import ReactQuery from '@/components/parts/ReactQuery';
 import SpendingsChart from '@/components/parts/SpendingsChart';
 import SubscriptionTable from '@/components/parts/SubscriptionTable';
 import { listColumns, transactionColumns } from '@/components/parts/SubscriptionTable/columns';
+import SubscriptionTableSkeleton from '@/components/parts/SubscriptionTable/Skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useCostChart, useSpendingsChart } from '@/queries/charts';
 import { useAllSubscriptions } from '@/queries/subscriptions';
 import { useAllTransactions } from '@/queries/transactions';
 
@@ -18,6 +22,25 @@ const MySubscriptions = () => {
 
   const subscriptionsQuery = useAllSubscriptions();
   const transactionsQuery = useAllTransactions();
+  const { data: spendingsChartData, isLoading: spendingsChartLoading } = useSpendingsChart();
+  const { data: costChartData, isLoading: costChartLoading } = useCostChart();
+
+  // const transactionYears = [
+  //   ...new Set(transactionsQuery?.data?.map((item: Transaction): number => getYear(item.payment_date)))
+  // ];
+
+  const transactionYears: number[] = [
+    ...new Set(
+      spendingsChartData?.chartData?.flatMap((item: MonthlySpending) =>
+        Object.keys(item)
+          .filter((key) => key !== 'month')
+          .map((key) => +key)
+      )
+    )
+  ];
+
+  const lowestYear = Math.min(...transactionYears);
+  const filteredYears = transactionYears.filter((year) => year > lowestYear);
 
   return (
     <section className="col-span-12 rounded-lg">
@@ -38,19 +61,28 @@ const MySubscriptions = () => {
               render={(subscriptionData) => (
                 <SubscriptionTable columns={listColumns} data={subscriptionData} variant="list" />
               )}
+              renderLoading={<SubscriptionTableSkeleton />}
             />
           </TabsContent>
           <TabsContent value="history">
-            <div className="flex flex-col mb-9 lg:grid lg:grid-cols-12">
+            <div className="flex flex-col gap-6 mb-9 lg:grid lg:grid-cols-12">
               <section className="lg:col-span-7">
-                <ChartInfo total="spendings">
-                  <SpendingsChart />
-                </ChartInfo>
+                {spendingsChartLoading ? (
+                  <ChartSkeleton isSpendings />
+                ) : (
+                  <ChartInfo transactionYears={filteredYears} total="spendings">
+                    <SpendingsChart data={spendingsChartData} />
+                  </ChartInfo>
+                )}
               </section>
               <section className="lg:col-span-5">
-                <ChartInfo total="cost">
-                  <CostChart />
-                </ChartInfo>
+                {costChartLoading ? (
+                  <ChartSkeleton />
+                ) : (
+                  <ChartInfo transactionYears={filteredYears} total="cost">
+                    <CostChart data={costChartData} />
+                  </ChartInfo>
+                )}
               </section>
             </div>
 
@@ -59,6 +91,7 @@ const MySubscriptions = () => {
               render={(transactionData) => (
                 <SubscriptionTable columns={transactionColumns} data={transactionData} variant="transactions" />
               )}
+              renderLoading={<SubscriptionTableSkeleton />}
             />
           </TabsContent>
         </Tabs>

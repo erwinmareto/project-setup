@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addDays, differenceInDays, format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { ArrowLeft, Check, Edit3, MoreHorizontal, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -13,7 +13,7 @@ import { useMediaQuery } from 'react-responsive';
 import AppIcons from '@/components/parts/AppIcons';
 import ConfirmationModal from '@/components/parts/Modals/ConfirmationModal';
 import StatusModal from '@/components/parts/Modals/StatusModal';
-import { Subscription, SubStatus } from '@/components/parts/SubscriptionTable/types';
+import { Subscription } from '@/components/parts/SubscriptionTable/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -25,7 +25,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { CYCLE_DAYS } from '@/lib/constants/datas';
-import { ALL_SUBSCRIPTIONS_KEY, ALL_TRANSACTIONS_KEY, SUBSCRIPTION_BY_ID } from '@/lib/constants/queryKeys';
+import {
+  ALL_SUBSCRIPTIONS_KEY,
+  ALL_TRANSACTIONS_KEY,
+  COST_CHART_KEY,
+  SPENDINGS_CHART_KEY,
+  SUBSCRIPTION_BY_ID,
+  TRANSACTION_BY_SUB_ID_KEY
+} from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
 import { deleteSubscription, editSubscription } from '@/repositories/subscriptions';
 import { addTransaction } from '@/repositories/transactions';
@@ -47,11 +54,13 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   };
 
   const editSubscriptionMutation = useMutation({
-    mutationFn: (data: Subscription) => editSubscription(id as string, data),
+    mutationFn: (data: Record<string, unknown>) => editSubscription(id as string, data),
     onSuccess: () => {
       // toast.success('Subscription updated successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
       queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
     }
   });
 
@@ -60,7 +69,10 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     onSuccess: () => {
       toast.success('Subscription deleted successfully');
       queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
-      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
+      queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
       router.push('/dashboard');
     }
   });
@@ -70,36 +82,46 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     onSuccess: () => {
       toast.success('Subscription marked as paid');
       queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
+      queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
+      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
+      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
     }
   });
 
-  const status: SubStatus =
-    data?.status === 'inactive'
-      ? 'inactive'
-      : differenceInDays(data?.nextPayment, new Date()) < 0
-        ? 'overdue'
-        : differenceInDays(data?.nextPayment, new Date()) < 7
-          ? 'upcoming'
-          : 'active';
+  // this is here because the data is in snake_case but it accepts camelCase so i am converting
+  const subPayload = {
+    appName: data?.app_name,
+    icon: data?.icon,
+    category: data?.category,
+    pricing: data?.pricing,
+    status: 'active',
+    startPayment: format(data?.start_payment, 'yyyy-MM-dd'),
+    nextPayment: format(data?.next_payment, 'yyyy-MM-dd'),
+    paymentMethod: data?.payment_method,
+    cycle: data?.cycle,
+    intervalDays: data?.interval_days,
+    email: data?.email
+  };
 
   const markPaid = () => {
-    const newNextPaymentDate = addDays(data?.nextPayment, CYCLE_DAYS[data?.cycle as string] ?? 'monthly');
-    editSubscriptionMutation.mutate({ ...data, status: status, nextPayment: newNextPaymentDate.toISOString() });
+    const newNextPaymentDate = addDays(data?.next_payment, CYCLE_DAYS[data?.cycle as string] ?? 'monthly');
+    editSubscriptionMutation.mutate({ ...subPayload, nextPayment: format(newNextPaymentDate, 'yyyy-MM-dd') });
 
     const transactionPayload = {
-      appName: data?.appName,
+      subscriptionId: data?.id,
+      appName: data?.app_name,
       icon: data?.icon,
       category: data?.category,
       pricing: data?.pricing,
-      status: 'active',
-      payment: data?.paymentMethod,
-      paymentDate: new Date().toISOString()
+      status: 'completed',
+      paymentMethod: data?.payment_method,
+      paymentDate: format(new Date(), 'yyyy-MM-dd')
     };
     addTransactionMutation.mutate(transactionPayload);
   };
 
   const cancleSubscription = () => {
-    editSubscriptionMutation.mutate({ ...data, status: 'inactive' });
+    editSubscriptionMutation.mutate({ ...subPayload, status: 'inactive' });
   };
 
   const handleDeleteSubscription = () => {
@@ -149,49 +171,44 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
               className="w-[2.65rem] h-[2.65rem] rounded-xl md:w-[3.25rem] md:h-[3.25rem]"
             />
             <div>
-              <h6 className="font-semibold text-body-md capitalize md:text-heading-6">{data?.appName}</h6>
+              <h6 className="font-semibold text-body-md capitalize md:text-heading-6">{data?.app_name}</h6>
               <p className="font-medium text-primary-50 text-body-sm capitalize">{data?.category}</p>
             </div>
           </div>
 
-          <div className="flex gap-2 max-md:justify-between">
-            <StatusModal
-              // imagePath="/modal-icons/success.png"
-              openState={successOpen}
-              openHandler={handleSuccessOpen}
-              clickEvent={() => router.refresh()}
-              // title="Congratulations!"
-              status={editSubscriptionMutation.status}
-              description="Your subscription has been marked as paid."
-            >
-              <Button
-                variant="secondary"
-                onClick={markPaid}
-                disabled={data?.status === 'active' || data?.status === 'inactive'}
-                size={isMobileScreen ? 'sm' : 'default'}
+          {data?.status !== 'inactive' && (
+            <div className="flex gap-2 max-md:justify-between">
+              <StatusModal
+                // imagePath="/modal-icons/success.png"
+                openState={successOpen}
+                openHandler={handleSuccessOpen}
+                clickEvent={() => router.refresh()}
+                // title="Congratulations!"
+                status={editSubscriptionMutation.status}
+                description="Your subscription has been marked as paid."
               >
-                <Check className="max-md:w-4 max-md:h-4" /> Mark as Paid
-              </Button>
-            </StatusModal>
+                {data?.status !== 'active' && (
+                  <Button variant="secondary" onClick={markPaid} size={isMobileScreen ? 'sm' : 'default'}>
+                    <Check className="max-md:w-4 max-md:h-4" /> Mark as Paid
+                  </Button>
+                )}
+              </StatusModal>
 
-            <ConfirmationModal
-              imagePath="/modal-icons/warning.png"
-              openState={warningOpen}
-              openHandler={handleWarningOpen}
-              clickEvent={cancleSubscription}
-              title="Are you sure?"
-              description="Once cancelled, you will not be able to reactivate your subscription."
-              cancleable
-            >
-              <Button
-                variant="destructive"
-                disabled={data?.status === 'inactive'}
-                size={isMobileScreen ? 'sm' : 'default'}
+              <ConfirmationModal
+                imagePath="/modal-icons/warning.png"
+                openState={warningOpen}
+                openHandler={handleWarningOpen}
+                clickEvent={cancleSubscription}
+                title="Are you sure?"
+                description="Once cancelled, you will not be able to reactivate your subscription."
+                cancleable
               >
-                <X className="max-md:w-4 max-md:h-4" /> Cancel Subscription
-              </Button>
-            </ConfirmationModal>
-          </div>
+                <Button variant="destructive" size={isMobileScreen ? 'sm' : 'default'}>
+                  <X className="max-md:w-4 max-md:h-4" /> Cancel Subscription
+                </Button>
+              </ConfirmationModal>
+            </div>
+          )}
         </div>
 
         <Card className="flex flex-col justify-between p-4 md:h-20 md:flex-row md:items-center max-md:gap-4">
@@ -204,12 +221,12 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
           <Separator orientation={isMobileScreen ? 'horizontal' : 'vertical'} />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Payment Method</p>
-            <p className="font-medium text-body-sm capitalize md:text-body-lg">{data?.paymentMethod}</p>
+            <p className="font-medium text-body-sm capitalize md:text-body-lg">{data?.payment_method}</p>
           </div>
           <Separator orientation={isMobileScreen ? 'horizontal' : 'vertical'} />
           <div>
             <p className="font-medium text-primary-50 text-body-sm">Next Payment</p>
-            <p className="font-medium text-body-sm md:text-body-lg">{format(data?.nextPayment, 'dd MMM yyyy')}</p>
+            <p className="font-medium text-body-lg">{format(data?.next_payment, 'dd MMM yyyy')}</p>
           </div>
           <Separator orientation={isMobileScreen ? 'horizontal' : 'vertical'} />
           <div>
@@ -231,19 +248,21 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
             <p className="font-medium text-primary-55 text-body-sm md:text-body-md">Payment Method</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.appName}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.app_name}</p>
             <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.category}</p>
             <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">
               {formatIDR(data?.pricing)}
             </p>
             <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.cycle}</p>
             <p className="font-medium text-primary-90 text-body-sm md:text-body-md">
-              {format(data?.startPayment, 'dd MMM yyyy')}
+              {format(data?.start_payment, 'dd MMM yyyy')}
             </p>
             <p className="font-medium text-primary-90 text-body-sm md:text-body-md">
-              {format(data?.nextPayment, 'dd MMM yyyy')}
+              {format(data?.next_payment, 'dd MMM yyyy')}
             </p>
-            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">{data?.paymentMethod}</p>
+            <p className="font-medium text-primary-90 text-body-sm capitalize md:text-body-md">
+              {data?.payment_method}
+            </p>
           </div>
         </div>
       </article>
