@@ -53,7 +53,11 @@ const SubCard = ({ id, icon, title, category, paymentDate, isHistory, price }: S
             className="flex-initial font-medium bg-destructive text-destructive-foreground 
           hover:bg-destructive-hover"
           >
-            {differenceInDays(paymentDate as string, new Date())} Days Left
+            {differenceInDays(paymentDate as string, new Date()) === 0
+              ? `Today`
+              : differenceInDays(paymentDate as string, new Date()) < 0
+                ? 'Overdue'
+                : `${differenceInDays(paymentDate as string, new Date())} Days Left`}
           </Badge>
         )}
       </section>
