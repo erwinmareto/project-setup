@@ -26,11 +26,9 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { CYCLE_DAYS } from '@/lib/constants/datas';
 import {
-  ALL_SUBSCRIPTIONS_KEY,
   ALL_TRANSACTIONS_KEY,
   COST_CHART_KEY,
   SPENDINGS_CHART_KEY,
-  SUBSCRIPTION_BY_ID,
   TRANSACTION_BY_SUB_ID_KEY
 } from '@/lib/constants/queryKeys';
 import { formatIDR } from '@/lib/utils';
@@ -44,6 +42,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
   const { id } = useParams();
   const [successOpen, setSuccessOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const handleSuccessOpen = () => {
     setSuccessOpen(!successOpen);
@@ -53,14 +52,20 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     setWarningOpen(!warningOpen);
   };
 
+  const handleDeleteOpen = () => {
+    setDeleteOpen(!deleteOpen);
+  };
+
+  const handleDeleteModal = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    handleDeleteOpen();
+  };
+
   const editSubscriptionMutation = useMutation({
     mutationFn: (data: Record<string, unknown>) => editSubscription(id as string, data),
     onSuccess: () => {
       // toast.success('Subscription updated successfully');
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
-      queryClient.invalidateQueries({ queryKey: [ALL_SUBSCRIPTIONS_KEY] });
-      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
-      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
+      queryClient.invalidateQueries();
     }
   });
 
@@ -68,11 +73,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
     mutationFn: () => deleteSubscription(id as string),
     onSuccess: () => {
       toast.success('Subscription deleted successfully');
-      queryClient.invalidateQueries({ queryKey: [SUBSCRIPTION_BY_ID, id] });
-      queryClient.invalidateQueries({ queryKey: [TRANSACTION_BY_SUB_ID_KEY, id] });
-      queryClient.invalidateQueries({ queryKey: [ALL_TRANSACTIONS_KEY] });
-      queryClient.invalidateQueries({ queryKey: [SPENDINGS_CHART_KEY] });
-      queryClient.invalidateQueries({ queryKey: [COST_CHART_KEY] });
+      queryClient.invalidateQueries();
       router.push('/dashboard');
     }
   });
@@ -150,13 +151,23 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
                 <Edit3 className="w-5 h-5" /> Edit
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuItem
-              className="text-destructive-foreground gap-2
-            focus:bg-destructive focus:text-destructive-foreground"
-              onClick={handleDeleteSubscription}
+            <ConfirmationModal
+              imagePath="/modal-icons/warning.png"
+              openState={deleteOpen}
+              openHandler={handleDeleteOpen}
+              clickEvent={handleDeleteSubscription}
+              title="Are you sure?"
+              description="Once cancelled, you will not be able to reactivate your subscription."
+              cancleable
             >
-              <Trash2 className="w-5 h-5" /> Delete
-            </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-destructive-foreground gap-2
+            focus:bg-destructive focus:text-destructive-foreground"
+                onClick={handleDeleteModal}
+              >
+                <Trash2 className="w-5 h-5" /> Delete
+              </DropdownMenuItem>
+            </ConfirmationModal>
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
