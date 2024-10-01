@@ -42,6 +42,7 @@ export const CYCLE_DAYS: Record<string, number> = {
 };
 
 export const AVAILABLE_ICONS: Record<string, string> = {
+  prime: 'Amazon Prime Video',
   'creative-cloud': 'Creative Cloud',
   disney: 'Disney+',
   dribbble: 'Dribbble',
@@ -53,7 +54,6 @@ export const AVAILABLE_ICONS: Record<string, string> = {
   netflix: 'Netflix',
   notion: 'Notion',
   playstation: 'Playstation',
-  prime: 'Amazon Prime',
   spotify: 'Spotify',
   xbox: ' Xbox',
   youtube: 'YouTube',
@@ -63,7 +63,7 @@ export const AVAILABLE_ICONS: Record<string, string> = {
   'category-entertainment': 'Entertainment',
   'category-games': 'Games',
   'category-health': 'Health',
-  others: 'Others'
+  'category-others': 'Others'
 };
 
 export const PAYMENT_METHODS = ['credit card', 'debit card', 'paypal', 'gopay', 'OVO', 'shopee pay', 'dana'];
