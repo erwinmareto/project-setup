@@ -20,12 +20,12 @@ export interface SubscriptionPriceRanges {
 }
 
 export const SUBSCRIPTION_PRICE_RANGES: SubscriptionPriceRanges = {
-  'Less than Rp.100.000': [0, 100],
-  'Rp.100.000 - Rp.200.000': [100, 200],
-  'Rp.200.000 - Rp.300.000': [200, 300],
-  'Rp.300.000 - Rp.400.000': [300, 400],
-  'Rp.400.000 - Rp.500.000': [400, 500],
-  'Rp.500.000 and above': [500, Infinity]
+  'Less than Rp.100.000': [0, 100000],
+  'Rp.100.000 - Rp.200.000': [100000, 200000],
+  'Rp.200.000 - Rp.300.000': [200000, 300000],
+  'Rp.300.000 - Rp.400.000': [300000, 400000],
+  'Rp.400.000 - Rp.500.000': [400000, 500000],
+  'Rp.500.000 and above': [500000, Infinity]
 };
 
 export const SUBSCRIPTION_STATUS = ['Inactive', 'Upcoming', 'Active', 'Overdue'];
