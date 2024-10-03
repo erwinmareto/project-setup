@@ -17,7 +17,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
 import { useUserId } from '@/context/UserIdGlobal';
 import { ACCESS_TOKEN_KEY } from '@/lib/constants/storageKeys';
 import { getCookie, setAccessToken } from '@/lib/cookies';
@@ -123,11 +122,6 @@ const LoginForm = () => {
 
         <div className="flex flex-col justify-center gap-4 overflow-hidden max-md:mt-[8.5rem]">
           <Button type="submit">Sign In</Button>
-          <div className="flex justify-center items-center gap-3">
-            <Separator className="w-1/2" />
-            <p className="font-medium text-primary-35 text-body-md">or</p>
-            <Separator className="w-1/2" />
-          </div>
 
           <p className="font-medium text-primary-45 text-center">
             Don&apos;t have an account?{' '}
