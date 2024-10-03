@@ -73,7 +73,7 @@ const PersonalInfo = () => {
   }, [data, profileForm]);
 
   return (
-    <main className="p-3 lg:col-span-9">
+    <main className="p-3 lg:col-span-12">
       <article className="flex flex-col gap-8">
         <div className="flex flex-wrap justify-between items-center gap-8">
           <div className="flex items-center gap-4">
