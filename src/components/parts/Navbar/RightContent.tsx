@@ -6,9 +6,10 @@ import { deleteCookie } from 'cookies-next';
 import { ArrowUpRightIcon, Bell, ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Identicon from 'react-identicons';
 
 import NotificationCard from '@/components/parts/Navbar/NotificationCard';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -19,6 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { ACCESS_TOKEN_KEY } from '@/lib/constants/storageKeys';
+import { getCookie } from '@/lib/cookies';
 
 const RightContent = () => {
   const router = useRouter();
@@ -74,8 +76,9 @@ const RightContent = () => {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="flex justify-center items-center gap-3 hover:bg-transparent p-0">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>
+                <Identicon string={getCookie('userId')} size={16} />
+              </AvatarFallback>
             </Avatar>
             <ChevronDown />
           </Button>

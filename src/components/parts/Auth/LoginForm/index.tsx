@@ -19,7 +19,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useUserId } from '@/context/UserIdGlobal';
 import { ACCESS_TOKEN_KEY } from '@/lib/constants/storageKeys';
-import { getCookie, setAccessToken } from '@/lib/cookies';
+import { getCookie, setAccessToken, setUsername } from '@/lib/cookies';
 import { loginSchema } from '@/lib/validations/auth';
 import { login } from '@/repositories/auth';
 
@@ -41,6 +41,7 @@ const LoginForm = () => {
 
       setAccessToken(data?.accessToken);
       setUserId(data?.user?.id);
+      setUsername(data?.user?.username);
 
       toast.success('Login successful');
       queryClient.invalidateQueries();
