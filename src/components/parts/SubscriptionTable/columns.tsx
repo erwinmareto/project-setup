@@ -195,7 +195,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     }
   },
   {
-    accessorKey: 'appName',
+    accessorKey: 'app_name',
     header: ({ column }) => (
       <div
         className="flex gap-2 justify-start items-center cursor-pointer"
@@ -211,7 +211,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
           <div className="bg-red-300 rounded-sm">
             <AppIcons iconName={row.original.icon} width={20} height={20} />
           </div>
-          <p>{row.getValue<string>('appName')}</p>
+          <p>{row.getValue<string>('app_name')}</p>
         </div>
       );
     }

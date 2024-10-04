@@ -57,7 +57,7 @@ const PaymentHistory = ({ data }: PaymentHistoryProps) => {
                 <Transaction
                   key={item.id}
                   icon={item.icon}
-                  appName={item.appName}
+                  appName={item.app_name}
                   date={item.payment_date}
                   pricing={item.pricing}
                 />
@@ -67,7 +67,7 @@ const PaymentHistory = ({ data }: PaymentHistoryProps) => {
                 <Transaction
                   key={item.id}
                   icon={item.icon}
-                  appName={item.appName}
+                  appName={item.app_name}
                   date={item.payment_date}
                   pricing={item.pricing}
                 />
