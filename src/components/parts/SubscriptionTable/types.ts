@@ -31,7 +31,7 @@ export type Subscription = {
 export type Transaction = {
   id: string;
   icon: string;
-  appName: string;
+  app_name: string;
   category: SubscriptionCategory;
   pricing: number;
   status: SubStatus;

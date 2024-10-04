@@ -114,7 +114,7 @@ const SubscriptionDetail = ({ data }: { data: Subscription }) => {
       icon: data?.icon,
       category: data?.category,
       pricing: data?.pricing,
-      status: 'completed',
+      status: 'Completed',
       paymentMethod: data?.payment_method,
       paymentDate: format(new Date(), 'yyyy-MM-dd')
     };

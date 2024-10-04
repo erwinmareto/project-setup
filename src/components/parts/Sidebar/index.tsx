@@ -84,7 +84,7 @@ const Sidebar = () => {
                       <SubCard
                         key={transaction.id}
                         icon={transaction.icon}
-                        title={transaction.appName}
+                        title={transaction.app_name}
                         category={transaction.category}
                         paymentDate={transaction.payment_date}
                         price={transaction.pricing}
