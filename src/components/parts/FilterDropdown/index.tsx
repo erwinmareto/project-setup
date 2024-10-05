@@ -1,6 +1,7 @@
 'use client';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { formatSnakeCase } from '@/lib/utils';
 
 /* eslint-disable no-unused-vars  */
 export type FilterDropdownType = {
@@ -13,14 +14,14 @@ export type FilterDropdownType = {
 const FilterDropdown = ({ filterFn, title, data }: FilterDropdownType) => {
   return (
     <div className="flex flex-col gap-2 lg:w-1/3 ">
-      <p className="text-body-sm font-medium text-primary-80 capitalize">{title}</p>
+      <p className="text-body-sm font-medium text-primary-80 capitalize">{formatSnakeCase(title)}</p>
       <Select onValueChange={(value) => filterFn(value, title)}>
         <SelectTrigger>
-          <SelectValue placeholder={`All ${title}`} className="capitalize" />
+          <SelectValue placeholder={`All ${formatSnakeCase(title)}`} className="capitalize" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all" className="capitalize">
-            All {title}
+            All {formatSnakeCase(title)}
           </SelectItem>
           {Array.isArray(data)
             ? data.map((field: string) => (

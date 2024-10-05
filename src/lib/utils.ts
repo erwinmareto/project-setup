@@ -15,3 +15,8 @@ export function formatIDR(price: number) {
 
   return formatted;
 }
+
+export function formatSnakeCase(str: string) {
+  const splitString = str.split('_').map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase());
+  return splitString.join(' ');
+}
