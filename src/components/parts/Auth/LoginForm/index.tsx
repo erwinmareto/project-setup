@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
-import { AlertCircle, Eye, EyeOff, Mail } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, Loader2, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -143,7 +143,9 @@ const LoginForm = () => {
         />
 
         <div className="flex flex-col justify-center gap-4 overflow-hidden max-md:mt-[8.5rem]">
-          <Button type="submit">Sign In</Button>
+          <Button type="submit" disabled={loginMutation.isPending}>
+            {loginMutation.isPending ? <Loader2 className="w-8 h-8 text-primary-0 animate-spin" /> : 'Sign In'}
+          </Button>
           <div className="flex justify-center items-center gap-3">
             <Separator className="w-1/2" />
             <p className="font-medium text-primary-35 text-body-md">or</p>
