@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Eye, EyeOff, Mail } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -14,7 +14,6 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
 import { registerSchema } from '@/lib/validations/auth';
 import { register } from '@/repositories/auth';
 
@@ -46,10 +45,6 @@ const RegisterForm = () => {
 
   const handleRevealConfirm = () => {
     setRevealConfirm(!revealConfirm);
-  };
-
-  const googleSignIn = () => {
-    console.log('google sign in');
   };
 
   return (
@@ -123,16 +118,10 @@ const RegisterForm = () => {
         />
 
         <div className="flex flex-col justify-center gap-4 overflow-hidden">
-          <Button type="submit">Sign Up</Button>
-          <div className="flex justify-center items-center gap-3">
-            <Separator className="w-1/2" />
-            <p className="font-medium text-primary-35 text-body-md">or</p>
-            <Separator className="w-1/2" />
-          </div>
-          <Button variant="outline" type="button" onClick={googleSignIn}>
-            <Mail className="w-4 h-4 mr-2" />
-            Sign in With Google
+          <Button type="submit" disabled={registerMutation.isPending}>
+            {registerMutation.isPending ? <Loader2 className="w-8 h-8 text-primary-0 animate-spin" /> : 'Register'}
           </Button>
+
           <p className="font-medium text-primary-45 text-center">
             Already have an account?{' '}
             <Link href="/login" className="text-secondary-40 hover:underline">
