@@ -20,7 +20,8 @@ const Sidebar = () => {
 
   const getExpiringSubs = (subs: Subscription[]) => {
     const filteredSubs = subs.filter((sub: Subscription) => differenceInDays(sub.next_payment, new Date()) <= 7);
-    return filteredSubs;
+    const noInactive = filteredSubs.filter((sub: Subscription) => sub.status !== 'inactive');
+    return noInactive;
   };
 
   const getLast5Transactions = (subs: Transaction[]) => {
